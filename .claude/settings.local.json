@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(godot:*)",
+      "Bash(find:*)",
+      "Bash(cat:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "mcp__minimal-godot-mcp__scan_workspace_diagnostics",
+      "Bash(python3:*)",
+      "Bash(for file:*)",
+      "Bash(do)",
+      "Bash(echo \"=== Checking $file ===\")",
+      "Read(//c/Users/seanm/Nextcloud2/Gamedev/GodotGames/Love-Lichens-4.4/**)",
+      "Bash(done)",
+      "Bash(for plugin:*)",
+      "Bash(echo \"=== $plugin ===\")",
+      "Bash(/tmp/final_report.txt:*)",
+      "Read(//tmp/**)",
+      "Bash(ls -lh /c/Users/seanm/Nextcloud2/Gamedev/GodotGames/Love-Lichens-4.4/scenes/ui/phone/apps/*.tscn)",
+      "Bash(grep -l \"^- \" \"/c/Users/seanm/Nextcloud2/Gamedev/GodotGames/Love-Lichens-4.4/data/dialogues/\"*.dialogue)",
+      "Bash(grep -r \"FileAccess\\\\|JSON.new\\\\|json.parse\" /c/Users/seanm/Nextcloud2/Gamedev/GodotGames/Love-Lichens-4.4/scripts --include=*.gd)",
+      "Bash(python tools/conv_dialogue_to_json.py)",
+      "Bash(grep -E \"\\\\.gd$\")",
+      "Bash(grep:*)",
+      "Bash(ls:*)",
+      "Bash(xargs -I {} sh -c 'echo \"=== {} ===\" && head -10 {}')",
+      "Bash(grep -rl \"is_phone_active\\\\|PHONE_APPS\\\\|get_phone_app\\\\|hide_phone_ui\\\\|has_phone\\\\|PhoneScene\\\\|phone_apps\" scripts/)",
+      "Bash(grep -rl \"PlayerCombatant\\\\|NPCCombatant\\\\|extends Combatant\\\\|CombatManager\\\\b\" scripts/)",
+      "Bash(ls scripts/combat/)",
+      "mcp__godot-mcp__godot_docs",
+      "mcp__godot-mcp__node",
+      "mcp__minimal-godot-mcp__get_console_output",
+      "mcp__minimal-godot-mcp__get_diagnostics"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

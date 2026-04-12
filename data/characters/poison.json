@@ -1,0 +1,123 @@
+{
+	"id": "poison",
+	"name": "Poison",
+	"description": "Wry, sharp-tongued and funny without cruelty. Masks deeper loyalty and tenderness under sarcasm.",
+	"portrait_path": "res://assets/characters/poison_portrait.png",
+	"dialogue_file": "res://data/dialogues/poison.dialogue",
+	"character_scale": 2.537,
+	"initial_dialogue_title": "start",
+	"font_path": "res://assets/fonts/numb_bunny/Numbbunny-L7L5.otf",
+	"font_color": "#74ff33",
+	"font_size": 2,
+	"observable_features": {
+		"necklace": {
+			"description": "Poison wears a silver necklace with a large pendant. He occasionally touches it, apparenly without thinking.",
+			"observed": false,
+			"memory_tag": "poison_necklace_seen",
+			"dialogue_title": "ask_poison_about_necklace"
+			},
+		"stance": {
+			"description": "They stand in a way that makes others feel safe — a protective presence without needing to say much.",
+			"observed": false
+			}
+		},
+	"personality_traits": [
+		"sarcastic",
+		"loyal",
+		"tender",
+		"funny",
+		"sharp-tongued"
+	],
+
+	"interests": [
+		"music",
+		"family memories",
+		"insects"
+	],
+
+	"background": "Had enmity with Dusty due to dating the same manipulative ex, resolved on the last day of high school when they broke free together.",
+
+	"special_items": [
+		{
+			"id": "peepaw_necklace",
+			"name": "Memorial Necklace",
+			"description": "A necklace containing ashes of their grandfather (\"Pee-Paw\"). Sometimes jokes when misplacing it: \"Where's Pee-Paw?\"",
+			"memory_significance": "Deep but understated bond with family memory."
+		}
+	],
+
+	"relationships": {
+		"Dusty": {
+			"type": "complicated_friendship",
+			"description": "Past enmity with Dusty, caused by dating the same manipulative ex, resolved on the last day of high school."
+		},
+		"aiden": {
+			"type": "potential_friend",
+			"description": "Intrigued by aiden's earnestness, though unlikely to admit it directly."
+		}
+	},
+
+	"memory_chains": [
+		{
+			"id": "poison_intro_chain",
+			"character_id": "poison",
+			"relationship_reward": 5,
+			"completed_tag": null,
+			"steps": [
+				{
+					"id": "first_look",
+					"trigger_type": 0,
+					"target_id": "poison",
+					"unlock_tag": "poison_observed",
+					"unlock_tag": "posion_necklace_seen",
+					"description": "You notice Poison's sharp wit barely conceals a deeper loyalty.",
+					"condition_tags": []
+				},
+				{
+					"id": "observe_necklace",
+					"trigger_type": 0,
+					"target_id": "poison_necklace",
+					"unlock_tag": "poison_necklace_seen",
+					"description": "Poison's wearing a small metal vial necklace. It catches the light strangely, and they sometimes touch it without seeming to realize.",
+					"dialogue_title": "ask_about_necklace",
+					"condition_tags": []
+				},
+				{
+					"id": "observe_expression",
+					"trigger_type": 0,
+					"target_id": "poison_expression",
+					"unlock_tag": "poison_expression_seen",
+					"description": "Their expression shifts between sarcastic and genuinely warm, especially when talking about certain topics.",
+					"condition_tags": []
+				},
+				{
+					"id": "peepaw_explained",
+					"trigger_type": 3,
+					"target_id": "peepaw_explanation",
+					"unlock_tag": "poison_peepaw_known",
+					"description": "Poison explained the necklace contains their grandfather's ashes - a way of keeping family close.",
+					"dialogue_title": "peepaw_explanation",
+					"condition_tags": ["poison_necklace_seen"]
+				},
+				{
+					"id": "mention_peepaw_story",
+					"trigger_type": 3,
+					"target_id": "poison_peepaw_memory_stirred",
+					"unlock_tag": "poison_peepaw_memory_stirred",
+					"description": "Poison mentioned they have a story about their Pee-Paw they'd like to share with you.",
+					"dialogue_title": "peepaw_memory_mention",
+					"condition_tags": ["poison_peepaw_known"]
+				},
+				{
+					"id": "tell_grandpa_goat_story",
+					"trigger_type": 3,
+					"target_id": "grandpa_goat_story",
+					"unlock_tag": "poison_peepaw_story_shared",
+					"description": "Poison recounted sitting on a creaky porch swing, drinking gas station root beer, while Pee-Paw solemnly advised them: 'If you ever find yourself on a roof with a goat and a weathervane, bet on the goat.'",
+					"dialogue_title": "grandpa_goat_story",
+					"condition_tags": ["poison_peepaw_memory_stirred"]
+				}
+			]
+		}
+	]
+}

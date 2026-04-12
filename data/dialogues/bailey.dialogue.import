@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://crmfya6bmsnc5"
+path="res://.godot/imported/bailey.dialogue-db30b63fe9b9375ead91a043738d259e.tres"
+
+[deps]
+
+source_file="res://data/dialogues/bailey.dialogue"
+dest_files=["res://.godot/imported/bailey.dialogue-db30b63fe9b9375ead91a043738d259e.tres"]
+
+[params]
+
+defaults=true

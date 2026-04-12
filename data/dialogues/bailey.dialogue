@@ -1,0 +1,98 @@
+# poison.dialogue
+~ tags
+	# Meeting & introduction
+	"after_sermon" - the sermon is over
+	
+
+
+# ==============================================================================
+# ENTRY POINT
+# ==============================================================================
+
+~ start
+
+if not GameState.has_tag("after_sermon")
+	=> before_sermon
+if GameState.has_tag("after_sermon")
+	=> after_sermon
+
+
+
+~ before_sermon
+do GameState.set_player_input_enabled(false)
+Bailey: I was looking forward to the celebration today but... The vibe is really off today. 
+- Aiden: It's that damn Inquisitor!
+	Bailey: That's my bet, yeah. Le'ts just hope for the best.
+- Aiden: Let's hope for the best. Matthew can handle it.
+	Bailey: I trust him. I just don't trust the Inquisitor.
+- Aiden: Don't be a worrywort, it'll be fine!
+	Bailey: I hope you're right.
+do GameState.set_player_input_enabled(true)
+=> END!
+
+
+~ after_sermon
+do GameState.set_player_input_enabled(false)
+Bailey: I can't believe he did that.
+- Aiden: I didn't realize he was that brave.
+	Bailey: I... always thought of him as brave, but... not like that.
+- Aiden: I didn't realize he was that reckless.
+	Bailey: I don't think it was recklessness. I think it was something else.
+	Aiden: What? Courage?
+	Bailey: That too? But I meant... what he said. The Spirit speaking to him.
+- Aiden: I didn't realize he was that stupid.
+	Bailey: That wasn't stupidity.
+	Aiden: What would you call it? He just gave the Inquisitor everything he needed to take over the church.
+	Bailey: He spoke the truth in the face of power.
+	Aiden: That's not going to do any of us any good now.
+	Ira: I don't get it. What did he say that was wrong?
+	Bailey: He said a lot, Ira. 
+	Aiden: He said that love was more important than God. 
+	Bailey: And he said that God could be wrong.
+Aiden: What's going to happen to him?
+Bailey: I'm not sure. If he stands accused of heresy, there will have to be a trial. The Inquisitor can't discipline a priest directly; he'll have to be brought to the Holy City.
+Aiden: What about people who aren't priests?
+Ira: He can appoint a jury in the case of laity.
+Aiden: How do you know that?
+Ira: My father studied to be a priest when he was younger. He never took his orders, but he knew a lot about the Inquisitors. 
+Ira: He said that they were the [i]reason[/i] he never took his orders.
+Bailey: Did... you talk to the Inquisitor, Aiden?
+Aiden: What? Why?
+Bailey: Because he seems to be coming toward us.
+Aiden: We should go.
+
+do GameState.set_player_input_enabled(true)
+=> END!
+
+~ later
+Bailey: I think it's too late. Running is just going to make them hunt us down.
+::Inquisitor Malachai stops as Samwell puts himself in his path.::
+Samwell: Hey, Father Inquisitor, I need to speak with you.
+Inquisitor Malachai: ::surprised and annoyed::  You may call me Inquisitor Malachai. And now is not the time--
+Samwell: But yer actin' preist, ain't ya? You just said so. So you're a Father. 
+Samwell: An' I'm a father too, just the more physical, less spiritual, sort. And I gotta tell you, Dad to Dad, you're makin' a mistake on this one. 
+Samwell: Father Matthew, he's as good a man a`s there is who ain't--
+Inquisitor Malachai: I will be taking interviews later as part of my investigation, right now I--
+Samwell: ::ahem:: I should tell you, Father, that my name, which I've not yet mentioned, not wantin' to abuse my reputation, is [i]Samwell[/i].
+Inquisitor Malachai: ...
+Samwell: Of [i]Samwell's Farm[/i]!
+Guard: ::whispers to Inquisitor Malachai::
+Bailey: Okay, [i]now[/i] I think we should go.
+Aiden: Yeah, good plan. 
+::Aiden, Bailey, and Ira leave::
+Inquisitor Malachai: [i]::to Guard::[/i] What do you mean you've heard of him? That has nothing to do with anything! [i]He[/i] has nothing to do with anything! Get him out of my way!
+Inquisitor Malachai: [i]::resumes moving toward Aiden and company:: [/i]
+Mrs Azir: What about the flowers?!
+Inquisitor Malachai: What? How did this woman get in front of--
+Mrs Azir: It's the Blessing. [wait = 1] Of. [wait = 1] The Flowers.
+Mrs Azir: You can't just end the Mass without one flower bein' blessed! I am an old woman, I got a lot of sinnin' to take care of!
+Inquisitor Malachai: You can deal with those at Confession!
+Mrs Azir: Nah, nah! I ain't havin' my sin's just up an' vanish! It's gotta be flowers!
+Inquisitor Malachai: For your information, the High Lictor is expected to eliminate the Blessing of Flowers from the liturgical calendar at the next Conclave.
+Inquisitor Malachai: It is a heretical tradition that was brought into the church in a misguided attempt to woo pagans to the Church.
+Mrs Azir: They're takin' away the flowers!? You tryin' to get folks to just stay home?!
+
+::This is as far as has been written::
+=> END!
+
+

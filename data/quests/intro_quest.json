@@ -1,0 +1,43 @@
+{
+	"id": "intro_quest",
+	"title": "First Day on Campus",
+	"description": "It's your first day on campus. Explore the area and meet Poison.",
+	"objectives": [
+		{
+			"type": "explore",
+			"target": "campus_quad",
+			"description": "Explore at least 3 areas of the campus quad",
+			"progress": 0,
+			"required": 3
+		},
+		{
+			"type": "talk",
+			"target": "Poison",
+			"description": "Talk to Poison"
+		}
+	],
+	"rewards": [
+		{
+			"type": "item",
+			"id": "common_lichen3",
+			"amount": 1
+		},
+		{
+			"type": "item",
+			"id": "common_lichen3",
+			"amount": 1
+		},
+		{
+			"type": "knowledge",
+			"id": "intro_to_lichenology"
+		},
+		{
+			"type": "relationship",
+			"character": "Poison",
+			"amount": 2
+		}
+	],
+	"follow_up_quests": ["quest_lichen_research"],
+	"auto_start_follow_ups": false,
+	"completed": false
+}

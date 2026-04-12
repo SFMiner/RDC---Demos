@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://sw62q6cwyeg4"
+path="res://.godot/imported/father_matthew.dialogue-4b30f0937fd10ecb58751f5e024d1ec2.tres"
+
+[deps]
+
+source_file="res://data/dialogues/father_matthew.dialogue"
+dest_files=["res://.godot/imported/father_matthew.dialogue-4b30f0937fd10ecb58751f5e024d1ec2.tres"]
+
+[params]
+
+defaults=true

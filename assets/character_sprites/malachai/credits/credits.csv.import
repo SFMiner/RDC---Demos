@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://crjv0be5hy0er"
+
+[deps]
+
+files=["res://assets/character_sprites/malachai/credits/credits.notes.translation", "res://assets/character_sprites/malachai/credits/credits.authors.translation", "res://assets/character_sprites/malachai/credits/credits.licenses.translation", "res://assets/character_sprites/malachai/credits/credits.urls.translation"]
+
+source_file="res://assets/character_sprites/malachai/credits/credits.csv"
+dest_files=["res://assets/character_sprites/malachai/credits/credits.notes.translation", "res://assets/character_sprites/malachai/credits/credits.authors.translation", "res://assets/character_sprites/malachai/credits/credits.licenses.translation", "res://assets/character_sprites/malachai/credits/credits.urls.translation"]
+
+[params]
+
+compress=true
+delimiter=0
