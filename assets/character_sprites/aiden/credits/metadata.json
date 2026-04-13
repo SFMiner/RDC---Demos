@@ -1,5 +1,5 @@
 {
-  "exportTimestamp": "2026-04-12T15-54-01",
+  "exportTimestamp": "2026-04-12T23-24-25",
   "bodyType": "male",
   "standardAnimations": {
     "exported": [
@@ -31,17 +31,17 @@
   "frameCounts": {},
   "performance": {
     "exportKind": "splitAnimations",
-    "totalMs": 286.4,
+    "totalMs": 274.8,
     "phasesMs": {
-      "render_composite_extractAnimationFromCanvas": 1.8,
-      "drawAndSlice": 2.7,
-      "pngEncode": 250.9,
-      "zipFile": 1.7,
+      "render_composite_extractAnimationFromCanvas": 1.3,
+      "drawAndSlice": 3.3,
+      "pngEncode": 248,
+      "zipFile": 2.2,
       "staticFiles": 1.5
     },
     "counters": {
       "pngEncodeCount": 17,
-      "totalPngBytes": 448372,
+      "totalPngBytes": 446926,
       "drawAndSliceCount": 17,
       "zipFileEntryCount": 17,
       "renderExtractAnimationFromCanvasCalls": 17,

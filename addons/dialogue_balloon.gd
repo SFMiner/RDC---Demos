@@ -123,13 +123,13 @@ func apply_font_for_character(character_name: String):
 		
 	if debug: print(GameState.script_name_tag(self, _fname) + "Applying font for character: '", character_name, "' with character_id '" + character_id + "'")
 
-	var character = GameState.get_npc_by_id(character_id) 
-	
+	var character = GameState.get_npc_by_id(character_id)
+
 	# Default values
 	var font_to_use = loaded_fonts.get("Default")
 	var color_to_use = Color(1, 1, 1, 1)  # Default white
 	var font_size = 25  # Default font size
-	
+
 	if character:
 		if character.font_path:
 			font_to_use = load(character.font_path)
@@ -137,6 +137,30 @@ func apply_font_for_character(character_name: String):
 			color_to_use = character.font_color
 		if character.font_size:
 			font_size = 25 + character.font_size
+	else:
+		# Fallback: no live NPC found (player-character lines, or speaker name doesn't
+		# match the NPC's character_id). Try loading directly from the character data file.
+		if debug: print(GameState.script_name_tag(self, _fname) + "No NPC found for '" + character_id + "' — trying character data file fallback")
+		var data_path = "res://data/characters/" + character_id + ".json"
+		if ResourceLoader.exists(data_path):
+			var file_text = FileAccess.get_file_as_string(data_path)
+			var json = JSON.new()
+			if json.parse(file_text) == OK:
+				var data : Dictionary = json.get_data()
+				var fp : String = data.get("font_path", "")
+				var fc : String = data.get("font_color", "")
+				var fs : int    = data.get("font_size", 0)
+				if fp != "" and ResourceLoader.exists(fp):
+					font_to_use = load(fp)
+				if fc != "":
+					color_to_use = Color(fc)
+				if fs != 0:
+					font_size = 25 + fs
+				if debug: print(GameState.script_name_tag(self, _fname) + "Loaded character data from file for: " + character_id)
+			else:
+				if debug: print(GameState.script_name_tag(self, _fname) + "Failed to parse character data file for: " + character_id)
+		else:
+			if debug: print(GameState.script_name_tag(self, _fname) + "No character data file found for: " + character_id)
 		
 	dialogue_label.add_theme_font_override("normal_font", font_to_use)
 	if debug: print(GameState.script_name_tag(self, _fname) + "Applied font: ", font_to_use.resource_path if font_to_use.resource_path else "built-in")

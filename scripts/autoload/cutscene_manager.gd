@@ -656,6 +656,27 @@ func play_animation(character_id, animation_name, wait: bool = false):
 	
 	return true
 
+func trigger_location_animation(anim_name: String) -> void:
+	const _fname : String = "trigger_location_animation"
+	var scene : Node = GameState.get_current_scene()
+	if not scene:
+		if debug: print(GameState.script_name_tag(self, _fname) + "No current scene found")
+		return
+	var ap : AnimationPlayer = scene.get_node_or_null("AnimationPlayer")
+	if not ap:
+		if debug: print(GameState.script_name_tag(self, _fname) + "No AnimationPlayer in current scene — skipping: " + anim_name)
+		return
+	if not ap.has_animation(anim_name):
+		if debug: print(GameState.script_name_tag(self, _fname) + "Animation not found in scene: " + anim_name)
+		return
+	if debug: print(GameState.script_name_tag(self, _fname) + "Playing scene animation: " + anim_name)
+	ap.play(anim_name)
+
+func wait(seconds: float) -> Signal:
+	const _fname : String = "wait"
+	if debug: print(GameState.script_name_tag(self, _fname) + "Waiting for " + str(seconds) + " seconds")
+	return get_tree().create_timer(seconds).timeout
+
 func wait_for_movements():
 	const _fname : String = "wait_for_movements"
 	if debug: print(GameState.script_name_tag(self) + "Wait for movements called, active movements: ", active_movements.size())

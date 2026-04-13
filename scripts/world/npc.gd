@@ -679,6 +679,9 @@ func play_animation(anim_name: String, direction: String = "") -> void:
 	else:
 		if debug: print(GameState.script_name_tag(self) + "Animation not found: " + anim_name)
 
+func _fire_scene_animation(anim_name: String) -> void:
+	CutsceneManager.trigger_location_animation(anim_name)
+
 func change_facing(dir: String) -> void:
 	const _fname : String = "change_facing"
 	if debug: print(GameState.script_name_tag(self, _fname) + "Changing facing toward: ", dir)

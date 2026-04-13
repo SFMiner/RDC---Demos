@@ -70,6 +70,7 @@ func set_animation_data():
 		"emote": {"path": sheets_path + "emote.png", "hframes": 3, "vframes": 4, "total_frames": 12, "frame_time": 0.1},
 		"hurt": {"path": sheets_path + "hurt.png", "hframes": 6, "vframes": 1, "total_frames": 6, "frame_time": 0.1},
 		"idle": {"path": sheets_path + "idle.png", "hframes": 2, "vframes": 4, "total_frames": 8, "frame_time": 0.4},
+		"swipe": {"path": sheets_path + "swipe.png", "hframes": 2, "vframes": 4, "total_frames": 8, "frame_time": 1.0},
 		"point": {"path": sheets_path + "point.png", "hframes": 2, "vframes": 4, "total_frames": 8, "frame_time": 0.2},
 		"jump": {
 			"path": sheets_path + "jump.png", 

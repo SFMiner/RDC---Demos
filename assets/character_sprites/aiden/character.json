@@ -30,20 +30,6 @@
       "recolor": "",
       "name": "Afro (light brown)"
     },
-    "jacket": {
-      "itemId": "torso_jacket_frock",
-      "subId": null,
-      "variant": "green",
-      "recolor": "",
-      "name": "Frock coat (green)"
-    },
-    "jacket_trim": {
-      "itemId": "torso_jacket_frock_lace",
-      "subId": null,
-      "variant": "gold",
-      "recolor": "",
-      "name": "Frock coat lace (gold)"
-    },
     "jacket_collar": {
       "itemId": "torso_jacket_frock_collar",
       "subId": null,
@@ -52,11 +38,11 @@
       "name": "Frock collar (gold)"
     },
     "clothes": {
-      "itemId": "torso_clothes_tshirt_buttoned",
+      "itemId": "torso_clothes_longsleeve2_cardigan",
       "subId": null,
       "variant": "",
-      "recolor": "teal",
-      "name": "TShirt Buttoned (teal)"
+      "recolor": "green",
+      "name": "Cardigan (green)"
     },
     "legs": {
       "itemId": "legs_pantaloons",
@@ -73,7 +59,7 @@
       "name": "Sandals (yellow)"
     }
   },
-  "selectedAnimation": "walk",
+  "selectedAnimation": "idle",
   "showTransparencyGrid": true,
   "applyTransparencyMask": false,
   "matchBodyColorEnabled": true,
@@ -104,7 +90,7 @@
     "1h_backslash": false,
     "1h_halfslash": false
   },
-  "url": "https://liberatedpixelcup.github.io/Universal-LPC-Spritesheet-Character-Generator/#sex=male&body=Body_Color_olive&head=Human_Male_olive&expression=Neutral_olive&hair=Afro_light%20brown&jacket=Frock_coat_green&jacket_trim=Frock_coat_lace_gold&jacket_collar=Frock_collar_gold&clothes=TShirt_Buttoned_teal&legs=Pantaloons_green&shoes=Sandals_yellow",
+  "url": "https://liberatedpixelcup.github.io/Universal-LPC-Spritesheet-Character-Generator/#sex=male&body=Body_Color_olive&head=Human_Male_olive&expression=Neutral_olive&hair=Afro_light%20brown&jacket_collar=Frock_collar_gold&clothes=Cardigan_green&legs=Pantaloons_green&shoes=Sandals_yellow",
   "layers": [
     {
       "itemId": "body",
@@ -198,18 +184,18 @@
       ]
     },
     {
-      "itemId": "torso_clothes_tshirt_buttoned",
-      "name": "TShirt Buttoned (teal)",
+      "itemId": "torso_clothes_longsleeve2_cardigan",
+      "name": "Cardigan (green)",
       "variant": "",
       "recolors": {
-        "clothes": "teal"
+        "clothes": "green"
       },
       "zPos": 35,
       "layerNum": 1,
       "yPos": 0,
       "isCustom": false,
       "needsRecolor": false,
-      "fileName": "torso/clothes/shortsleeve/tshirt_buttoned/male/spellcast.png",
+      "fileName": "torso/clothes/longsleeve/longsleeve2_cardigan/male/spellcast.png",
       "supportedAnimations": [
         "spellcast",
         "thrust",
@@ -229,26 +215,6 @@
       ]
     },
     {
-      "itemId": "torso_jacket_frock",
-      "name": "Frock coat (green)",
-      "variant": "green",
-      "recolors": null,
-      "zPos": 55,
-      "layerNum": 1,
-      "yPos": 0,
-      "isCustom": false,
-      "needsRecolor": false,
-      "fileName": "torso/jacket/frock/male/spellcast/green.png",
-      "supportedAnimations": [
-        "spellcast",
-        "thrust",
-        "walk",
-        "slash",
-        "shoot",
-        "hurt"
-      ]
-    },
-    {
       "itemId": "torso_jacket_frock_collar",
       "name": "Frock collar (gold)",
       "variant": "gold",
@@ -259,26 +225,6 @@
       "isCustom": false,
       "needsRecolor": false,
       "fileName": "torso/jacket/trim/frock_collar/spellcast/gold.png",
-      "supportedAnimations": [
-        "spellcast",
-        "thrust",
-        "walk",
-        "slash",
-        "shoot",
-        "hurt"
-      ]
-    },
-    {
-      "itemId": "torso_jacket_frock_lace",
-      "name": "Frock coat lace (gold)",
-      "variant": "gold",
-      "recolors": null,
-      "zPos": 58,
-      "layerNum": 1,
-      "yPos": 0,
-      "isCustom": false,
-      "needsRecolor": false,
-      "fileName": "torso/jacket/trim/frock_lace/spellcast/gold.png",
       "supportedAnimations": [
         "spellcast",
         "thrust",
@@ -380,7 +326,7 @@
   ],
   "credits": [
     {
-      "fileName": "body/bodies/male/walk.png",
+      "fileName": "body/bodies/male/idle.png",
       "file": "body/bodies/male",
       "notes": "see details at https://opengameart.org/content/lpc-character-bases; 'Thick' Male Revised Run/Climb by JaidynReiman (based on ElizaWy's LPC Revised)",
       "authors": [
@@ -413,7 +359,7 @@
       ]
     },
     {
-      "fileName": "head/heads/human/male/walk.png",
+      "fileName": "head/heads/human/male/idle.png",
       "file": "head/heads/human/male",
       "notes": "original head by Redshrike, tweaks by BenCreating, modular version by bluecarrot16",
       "authors": [
@@ -432,7 +378,7 @@
       ]
     },
     {
-      "fileName": "head/faces/male/neutral/walk.png",
+      "fileName": "head/faces/male/neutral/idle.png",
       "file": "head/faces",
       "notes": "Original by Redshrike, Expressions by ElizaWy, mapped to all frames by JaidynReiman",
       "authors": [
@@ -449,7 +395,7 @@
       ]
     },
     {
-      "fileName": "hair/afro/adult/walk/light_brown.png",
+      "fileName": "hair/afro/adult/idle/light_brown.png",
       "file": "hair/afro",
       "notes": "",
       "authors": [
@@ -463,21 +409,7 @@
       ]
     },
     {
-      "fileName": "torso/jacket/frock/male/walk/green.png",
-      "file": "torso/jacket/frock",
-      "notes": "",
-      "authors": [
-        "bluecarrot16"
-      ],
-      "licenses": [
-        "CC-BY-SA 3.0"
-      ],
-      "urls": [
-        "https://opengameart.org/content/lpc-pirates"
-      ]
-    },
-    {
-      "fileName": "torso/jacket/trim/frock_lace/walk/gold.png",
+      "fileName": "torso/jacket/trim/frock_collar/idle/gold.png",
       "file": "torso/jacket/trim",
       "notes": "",
       "authors": [
@@ -491,22 +423,8 @@
       ]
     },
     {
-      "fileName": "torso/jacket/trim/frock_collar/walk/gold.png",
-      "file": "torso/jacket/trim",
-      "notes": "",
-      "authors": [
-        "bluecarrot16"
-      ],
-      "licenses": [
-        "OGA-BY 3.0"
-      ],
-      "urls": [
-        "https://opengameart.org/content/lpc-pirates"
-      ]
-    },
-    {
-      "fileName": "torso/clothes/shortsleeve/tshirt_buttoned/male/walk.png",
-      "file": "torso/clothes/shortsleeve/tshirt_buttoned",
+      "fileName": "torso/clothes/longsleeve/longsleeve2_cardigan/male/idle.png",
+      "file": "torso/clothes/longsleeve/longsleeve2_cardigan",
       "notes": "original by ElizaWy; spellcast/thrust/shoot/hurt/male adapted from original by JaidynReiman",
       "authors": [
         "ElizaWy",
@@ -525,7 +443,7 @@
       ]
     },
     {
-      "fileName": "legs/pantaloons/male/walk.png",
+      "fileName": "legs/pantaloons/male/idle.png",
       "file": "legs/pantaloons",
       "notes": "Original bases by Redshrike, thrust/shoot bases by Wulax, Original Pantaloons by Nila122, climb/jump/run/sit/emotes/revised combat by JaidynReiman",
       "authors": [
@@ -547,7 +465,7 @@
       ]
     },
     {
-      "fileName": "feet/sandals/male/walk/yellow.png",
+      "fileName": "feet/sandals/male/idle/yellow.png",
       "file": "feet/sandals",
       "notes": "edited for v3 bases by bluecarrot16, Jump/Sit/Emote/Run/Revised Combat by JaidynReiman",
       "authors": [
