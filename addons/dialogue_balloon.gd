@@ -293,7 +293,7 @@ func _on_mutated(mutation):
 
 func _on_balloon_gui_input(event: InputEvent) -> void:
 	# See if we need to skip typing of the dialogue
-	if dialogue_label.is_typing:
+	if dialogue_label.is_typing and GameState.dialogue_skip_enabled:
 		var mouse_was_clicked: bool = event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed()
 		var skip_button_was_pressed: bool = event.is_action_pressed(skip_action)
 		if mouse_was_clicked or skip_button_was_pressed:
@@ -308,8 +308,10 @@ func _on_balloon_gui_input(event: InputEvent) -> void:
 	get_viewport().set_input_as_handled()
 
 	if event is InputEventMouseButton and event.is_pressed() and event.button_index == MOUSE_BUTTON_LEFT:
-		next(dialogue_line.next_id)
+		is_waiting_for_input = false  # Prevent re-entry: do-commands run async inside next(), so
+		next(dialogue_line.next_id)   # is_waiting_for_input staying true would let a second click
 	elif event.is_action_pressed(next_action) and get_viewport().gui_get_focus_owner() == balloon:
+		is_waiting_for_input = false  # fire another next() while animations are mid-execution.
 		next(dialogue_line.next_id)
 
 func _on_responses_menu_response_selected(response: DialogueResponse) -> void:

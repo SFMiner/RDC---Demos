@@ -55,7 +55,10 @@ var scenes: Dictionary = {
 	},
 	"PermacultureGarden":{
 		"pickups":[]
-	}	
+	},
+	"ChurchInterior":{
+		"pickups":[]
+	}
 }
 
 
@@ -78,6 +81,12 @@ var current_scene
 var current_npc_list = []
 var current_marker_list = []
 var knowledge : Array[String] = []
+
+## When false, clicking/pressing skip during typed dialogue has no effect.
+var dialogue_skip_enabled : bool = true
+
+func set_dialogue_skip_enabled(enabled: bool) -> void:
+	dialogue_skip_enabled = enabled
 
 # NEW: Memory data storage (loaded at startup, persisted in saves)
 var memory_definitions: Dictionary = {}

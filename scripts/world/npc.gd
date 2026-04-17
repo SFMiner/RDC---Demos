@@ -528,8 +528,9 @@ func _setup_sprite():
 		var texture = load(texture_path)
 		if texture:
 			sprite.texture = texture
-			sprite.hframes = 2
-			sprite.vframes = 4
+			# Do NOT set hframes/vframes here — CharacterAnimator._ready() already
+			# sets them correctly per-animation from animation_data. Overriding them
+			# with hardcoded 2×4 shrinks the frame count and causes out-of-bounds errors.
 			sprite.visible = true
 			sprite.modulate.a = 1.0
 			sprite.position = Vector2(0, -30)
@@ -542,8 +543,7 @@ func _setup_sprite():
 			texture = load(fallback_path)
 			if texture:
 				sprite.texture = texture
-				sprite.hframes = 2
-				sprite.vframes = 4
+				# hframes/vframes managed by CharacterAnimator
 
 func _setup_navigation():
 	"""Set up navigation agent"""

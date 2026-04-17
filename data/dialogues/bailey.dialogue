@@ -51,14 +51,15 @@ Ira: My father studied to be a priest when he was younger. He never took his ord
 Ira: He said that they were the [i]reason[/i] he never took his orders.
 Bailey: Did... you talk to the Inquisitor, Aiden?
 Aiden: What? Why?
+do CutsceneManager.move_to("malachai", "IM3", "walk", true)
 Bailey: Because he seems to be coming toward us.
 Aiden: We should go.
-
+Bailey: I think it's too late. Running is just going to make them hunt us down.
+do CutsceneManager.move_to("malachai", "IM3", "walk", true)
 do GameState.set_player_input_enabled(true)
 => END!
 
 ~ later
-Bailey: I think it's too late. Running is just going to make them hunt us down.
 ::Inquisitor Malachai stops as Samwell puts himself in his path.::
 Samwell: Hey, Father Inquisitor, I need to speak with you.
 Inquisitor Malachai: ::surprised and annoyed::  You may call me Inquisitor Malachai. And now is not the time--

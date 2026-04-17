@@ -1,14 +1,22 @@
-[gd_scene load_steps=23 format=4 uid="uid://b88uumqwjee5n"]
+[gd_scene load_steps=31 format=4 uid="uid://b88uumqwjee5n"]
 
 [ext_resource type="Script" uid="uid://be51l7q53xb04" path="res://scripts/world/church_interior.gd" id="1_h0ajb"]
 [ext_resource type="Texture2D" uid="uid://c2v7tijqkjow" path="res://assets/tilesets/Fantasy RPG Interior Pack (48x48 grid).png" id="3_h0ajb"]
 [ext_resource type="Texture2D" uid="uid://bqfvc45ixax24" path="res://assets/sprites/church_interior/altar.png" id="4_q3gja"]
+[ext_resource type="Texture2D" uid="uid://cukd5wgedvvhn" path="res://assets/character_sprites/samwell/standard/idle.png" id="5_fc4fh"]
+[ext_resource type="Texture2D" uid="uid://b44l15d76napj" path="res://assets/character_sprites/father_matthew/standard/idle.png" id="5_h0ajb"]
 [ext_resource type="Texture2D" uid="uid://m4x1plmpp426" path="res://assets/images/items/sermon_notes.png" id="6_i6vls"]
+[ext_resource type="Texture2D" uid="uid://5imuwqm2kx0x" path="res://assets/character_sprites/malachai/standard/idle.png" id="6_q3gja"]
+[ext_resource type="Texture2D" uid="uid://dgmfx55wr4w51" path="res://assets/character_sprites/guard2/standard/idle.png" id="7_4ovcp"]
 [ext_resource type="Script" uid="uid://b0vt1wx861dgx" path="res://scripts/world/interactable.gd" id="7_r571s"]
+[ext_resource type="Texture2D" uid="uid://5hk4ko8xu3ga" path="res://assets/character_sprites/guard1/standard/idle.png" id="7_rw0um"]
 [ext_resource type="Texture2D" uid="uid://dj4al42uq0o0q" path="res://assets/sprites/church_interior/pew_back.png" id="7_v4q0u"]
 [ext_resource type="PackedScene" uid="uid://by56nppcy6bhp" path="res://scenes/npc.tscn" id="8_4ovcp"]
+[ext_resource type="Texture2D" uid="uid://cng7nogwxg7t8" path="res://assets/character_sprites/bailey/standard/idle.png" id="9_80s8o"]
+[ext_resource type="Texture2D" uid="uid://b0jq5337smctf" path="res://assets/character_sprites/ira/standard/idle.png" id="9_rw0um"]
 [ext_resource type="Script" uid="uid://bhfkcl6u6ldi0" path="res://scripts/world/location_transition.gd" id="11_v6kps"]
 [ext_resource type="PackedScene" uid="uid://bvb20kbggr188" path="res://scenes/player.tscn" id="12_2n5m3"]
+[ext_resource type="Texture2D" uid="uid://bhne184y2060g" path="res://assets/character_sprites/mrs_azir/standard/idle.png" id="16_cg1a3"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_4ovcp"]
 vertices = PackedVector2Array(468, 713.03906, 697.0078, 710.9531, 1098, 712.03906, 1095.7188, 752.0703, 701, 749.9219, -68.671875, 1074.0313, 470.21094, 791, 701, 788, 1101.7109, 788, 1691.7422, 1077.9609, 1100.2969, 590.03906, 1100.0313, 561, 1673.2266, -50.132813, 1098, 675.0781, 1096.8125, 631.9297, 68, 791, -44.3125, -65.859375, 68, 749, 1097.0391, 516.1094, 702, 301.0703, 702, 241, 695.1406, 512.8672, 457, 299.9297, 457, 241, 487.14844, 540, 697.8125, 561, 697.96094, 588.96094, 469.10156, 589.0781, 458.28125, 557.3281, 468, 672.9219, 471.96094, 634.96094, 700.96875, 634.0781, 701.77344, 672.9297, 459.3125, 523.28906, 450.46094, 520.34375, 441.02344, 518.9922, 72.77344, 636.03906, 68.71875, 675.09375, 459.71094, 749, 73.99219, 711.96094, 60.789063, 540, 92.90625, 521, 84.46094, 521, 449.28906, 558.8203, 441.03906, 560, 92.96094, 559, 70.1875, 586.90625, 87.14844, 559, 77.328125, 556.53906, 75.109375, 525.6719)
@@ -634,33 +642,6 @@ size = Vector2(1198, 143.5)
 [sub_resource type="CircleShape2D" id="CircleShape2D_dbj4a"]
 radius = 30.0
 
-[sub_resource type="Animation" id="Animation_i6vls"]
-resource_name = "swipe_notes"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Node2D/z_Objects/Altar/SermonNotes:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.06666667),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(-2.011954, -11.01135), Vector2(-24.814177, -14.48864)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Node2D/z_Objects/Altar/SermonNotes:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.06666667),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [0.0, 0.2617993877991494]
-}
-
 [sub_resource type="Animation" id="Animation_h0ajb"]
 length = 0.001
 tracks/0/type = "value"
@@ -688,6 +669,33 @@ tracks/1/keys = {
 "values": [0.0]
 }
 
+[sub_resource type="Animation" id="Animation_i6vls"]
+resource_name = "swipe_notes"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node2D/z_Objects/Altar/SermonNotes:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.06666667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-2.011954, -11.01135), Vector2(-24.814177, -14.48864)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Node2D/z_Objects/Altar/SermonNotes:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.06666667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 0.2617993877991494]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_h0ajb"]
 _data = {
 &"RESET": SubResource("Animation_h0ajb"),
@@ -698,6 +706,7 @@ _data = {
 script = ExtResource("1_h0ajb")
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+visible = false
 light_mask = 3
 visibility_layer = 3
 position = Vector2(5, -3)
@@ -785,7 +794,10 @@ shape = SubResource("RectangleShape2D_80s8o")
 y_sort_enabled = true
 
 [node name="Player" parent="Node2D/z_Objects" instance=ExtResource("12_2n5m3")]
-position = Vector2(633, 822)
+position = Vector2(610, 774)
+character_name = "Aiden"
+
+[node name="Sprite2D" parent="Node2D/z_Objects/Player" index="0"]
 scale = Vector2(1.63, 1.63)
 
 [node name="FatherMatthew" parent="Node2D/z_Objects" instance=ExtResource("8_4ovcp")]
@@ -796,6 +808,9 @@ character_name = "father_matthew"
 dialogue_file = "father_matthew"
 initial_dialogue_title = "sermon_start"
 
+[node name="Sprite2D" parent="Node2D/z_Objects/FatherMatthew" index="0"]
+texture = ExtResource("5_h0ajb")
+
 [node name="Malachai" parent="Node2D/z_Objects" instance=ExtResource("8_4ovcp")]
 position = Vector2(1321.0001, 231)
 scale = Vector2(1.63, 1.63)
@@ -805,6 +820,11 @@ character_id = "malachai"
 character_name = "malachai"
 dialogue_file = "malachai"
 initial_dialogue_title = ""
+initial_animation = "idle_left"
+
+[node name="Sprite2D" parent="Node2D/z_Objects/Malachai" index="0"]
+texture = ExtResource("6_q3gja")
+frame = 13
 
 [node name="Guard1" parent="Node2D/z_Objects" instance=ExtResource("8_4ovcp")]
 position = Vector2(1433, 161)
@@ -815,6 +835,11 @@ character_id = "guard1"
 character_name = "Guard 1"
 dialogue_file = "guard1"
 initial_dialogue_title = ""
+initial_animation = "idle_left"
+
+[node name="Sprite2D" parent="Node2D/z_Objects/Guard1" index="0"]
+texture = ExtResource("7_rw0um")
+frame = 14
 
 [node name="Guard2" parent="Node2D/z_Objects" instance=ExtResource("8_4ovcp")]
 position = Vector2(1435.0001, 276)
@@ -825,6 +850,11 @@ character_id = "guard2"
 character_name = "Guard 2"
 dialogue_file = "guard2"
 initial_dialogue_title = ""
+initial_animation = "idle_left"
+
+[node name="Sprite2D" parent="Node2D/z_Objects/Guard2" index="0"]
+texture = ExtResource("7_4ovcp")
+frame = 16
 
 [node name="Bailey" parent="Node2D/z_Objects" instance=ExtResource("8_4ovcp")]
 position = Vector2(511.00012, 819)
@@ -832,7 +862,12 @@ scale = Vector2(1.63, 1.63)
 character_id = "bailey"
 character_name = "bailey"
 dialogue_file = "bailey"
+initial_animation = "idle_up"
 auto_follow_player = true
+
+[node name="Sprite2D" parent="Node2D/z_Objects/Bailey" index="0"]
+texture = ExtResource("9_80s8o")
+frame = 0
 
 [node name="Ira" parent="Node2D/z_Objects" instance=ExtResource("8_4ovcp")]
 position = Vector2(575, 918.00006)
@@ -840,7 +875,12 @@ scale = Vector2(1.63, 1.63)
 character_id = "ira"
 character_name = "ira"
 dialogue_file = "ira"
+initial_animation = "idle_up"
 auto_follow_player = true
+
+[node name="Sprite2D" parent="Node2D/z_Objects/Ira" index="0"]
+texture = ExtResource("9_rw0um")
+frame = 0
 
 [node name="Altar" type="Sprite2D" parent="Node2D/z_Objects"]
 position = Vector2(592.2647, 246.99998)
@@ -874,6 +914,29 @@ position = Vector2(278, 549)
 scale = Vector2(1.6395342, 1.6395342)
 texture = ExtResource("7_v4q0u")
 offset = Vector2(-0.24816895, -19.670227)
+
+[node name="Samwell" parent="Node2D/z_Objects" instance=ExtResource("8_4ovcp")]
+position = Vector2(132, 753)
+scale = Vector2(1.63, 1.63)
+character_id = "samwell"
+character_name = "Samwell"
+initial_animation = "idle_up"
+
+[node name="Sprite2D" parent="Node2D/z_Objects/Samwell" index="0"]
+texture = ExtResource("5_fc4fh")
+frame = 0
+
+[node name="MrsAzir" parent="Node2D/z_Objects" instance=ExtResource("8_4ovcp")]
+position = Vector2(913.00006, 594)
+scale = Vector2(1.63, 1.63)
+character_id = "mrs_azir"
+character_name = "Mrs. Azir"
+dialogue_file = "mrs_azir"
+initial_animation = "idle_up"
+
+[node name="Sprite2D" parent="Node2D/z_Objects/MrsAzir" index="0"]
+texture = ExtResource("16_cg1a3")
+frame = 0
 
 [node name="PewBackL2" type="Sprite2D" parent="Node2D/z_Objects"]
 position = Vector2(277, 624)
@@ -973,3 +1036,13 @@ metadata/_edit_use_anchors_ = true
 libraries = {
 &"": SubResource("AnimationLibrary_h0ajb")
 }
+
+[editable path="Node2D/z_Objects/Player"]
+[editable path="Node2D/z_Objects/FatherMatthew"]
+[editable path="Node2D/z_Objects/Malachai"]
+[editable path="Node2D/z_Objects/Guard1"]
+[editable path="Node2D/z_Objects/Guard2"]
+[editable path="Node2D/z_Objects/Bailey"]
+[editable path="Node2D/z_Objects/Ira"]
+[editable path="Node2D/z_Objects/Samwell"]
+[editable path="Node2D/z_Objects/MrsAzir"]

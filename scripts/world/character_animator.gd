@@ -54,29 +54,29 @@ func set_sheets_path(char_id: String):
 func set_animation_data():
 	animation_data = {
 		"walk": {
-			"path": sheets_path + "walk.png", 
-			"hframes": 9, 
-			"vframes": 4, 
-			"total_frames": 36, 
+			"path": sheets_path + "walk.png",
+			"hframes": 13,
+			"vframes": 4,
+			"total_frames": 52,
 			"frame_time": 0.1,
 			"frame_times": {
-				"down": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1],
-				"left": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1],
+				"down":  [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1],
+				"left":  [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1],
 				"right": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1],
-				"up": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+				"up":    [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
 			}
 		},
-		"climb": {"path": sheets_path + "climb.png", "hframes": 6, "vframes": 1, "total_frames": 6, "frame_time": 0.1},
-		"emote": {"path": sheets_path + "emote.png", "hframes": 3, "vframes": 4, "total_frames": 12, "frame_time": 0.1},
-		"hurt": {"path": sheets_path + "hurt.png", "hframes": 6, "vframes": 1, "total_frames": 6, "frame_time": 0.1},
-		"idle": {"path": sheets_path + "idle.png", "hframes": 2, "vframes": 4, "total_frames": 8, "frame_time": 0.4},
-		"swipe": {"path": sheets_path + "swipe.png", "hframes": 2, "vframes": 4, "total_frames": 8, "frame_time": 1.0},
-		"point": {"path": sheets_path + "point.png", "hframes": 2, "vframes": 4, "total_frames": 8, "frame_time": 0.2},
+		"climb": {"path": sheets_path + "climb.png", "hframes": 13, "vframes": 1, "total_frames": 13, "frame_time": 0.1},
+		"emote": {"path": sheets_path + "emote.png", "hframes": 13, "vframes": 4, "total_frames": 42, "frame_time": 0.1},
+		"hurt": {"path": sheets_path + "hurt.png", "hframes": 13, "vframes": 1, "total_frames": 13, "frame_time": 0.1},
+		"idle": {"path": sheets_path + "idle.png", "hframes": 13, "vframes": 4, "total_frames": 42, "frame_time": 0.4},
+		"swipe": {"path": sheets_path + "swipe.png", "hframes": 13, "vframes": 4, "total_frames": 42, "frame_time": 1.0},
+		"point": {"path": sheets_path + "point.png", "hframes": 13, "vframes": 4, "total_frames": 42, "frame_time": 0.2},
 		"jump": {
 			"path": sheets_path + "jump.png", 
-			"hframes": 6, 
+			"hframes": 13, 
 			"vframes": 4, 
-			"total_frames": 24, 
+			"total_frames": 42, 
 			"frame_time": 0.3,
 			"frame_times": {
 				"down": [0.05, 0.2, 0.2, 0.4, 0.2, 0.15],
@@ -87,9 +87,9 @@ func set_animation_data():
 		},
 		"run": {
 			"path": sheets_path + "run.png",  
-			"hframes": 8, 
+			"hframes": 13, 
 			"vframes": 4, 
-			"total_frames": 32, 
+			"total_frames": 42, 
 			"frame_time": 0.08,
 			"frame_times": {
 				"down": [0.08, 0.08, 0.08, 0.08, 0.08, 0.08, 0.08, 0.08],
@@ -209,7 +209,9 @@ func _load_animation_texture(anim_type: String) -> bool:
 		if debug: print(GameState.script_name_tag(self) + "ERROR: Failed to load texture: ", anim.path)
 		return false
 	
-	# Apply to sprite
+	# Apply to sprite — reset frame first so Godot doesn't validate the old frame
+	# index against the new (smaller) sheet dimensions and throw an out-of-bounds error.
+	sprite.frame = 0
 	sprite.texture = texture
 	sprite.hframes = anim.hframes
 	sprite.vframes = anim.vframes
@@ -231,35 +233,16 @@ func _set_initial_frame(anim_type: String, direction: String):
 		"up": 0
 	}
 	
-	# Override with animation-specific frame indices
+	# All spritesheets are 13 columns wide, row order top-to-bottom: up, left, down, right.
+	# Row start frames: up=0, left=13, down=26, right=39.
+	# Override with animation-specific frame indices (all share the same row layout).
 	match anim_type:
-		"run":
+		"run", "walk", "idle", "jump", "emote", "swipe", "point", "hurt", "climb":
 			frame_indices = {
-				"down": 16,  # Row 3 (0-indexed)
-				"left": 8,   # Row 2
-				"right": 24, # Row 4
-				"up": 0      # Row 1
-			}
-		"walk":
-			frame_indices = {
-				"down": 18,  # Row 3
-				"left": 9,   # Row 2
-				"right": 27, # Row 4
-				"up": 0      # Row 1
-			}
-		"idle":
-			frame_indices = {
-				"down": 4,   # Row 3
-				"left": 2,   # Row 2
-				"right": 6,  # Row 4
-				"up": 0      # Row 1
-			}
-		"jump":
-			frame_indices = {
-				"down": 12,  # Row 3
-				"left": 6,   # Row 2
-				"right": 18, # Row 4
-				"up": 0      # Row 1
+				"up":    0,
+				"left":  13,
+				"down":  26,
+				"right": 39,
 			}
 	
 	# Set the frame if valid

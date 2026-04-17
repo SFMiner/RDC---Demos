@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://b12pkjgau1m1o"
+
+[deps]
+
+files=["res://assets/character_sprites/cora/credits/credits.notes.translation", "res://assets/character_sprites/cora/credits/credits.authors.translation", "res://assets/character_sprites/cora/credits/credits.licenses.translation", "res://assets/character_sprites/cora/credits/credits.urls.translation"]
+
+source_file="res://assets/character_sprites/cora/credits/credits.csv"
+dest_files=["res://assets/character_sprites/cora/credits/credits.notes.translation", "res://assets/character_sprites/cora/credits/credits.authors.translation", "res://assets/character_sprites/cora/credits/credits.licenses.translation", "res://assets/character_sprites/cora/credits/credits.urls.translation"]
+
+[params]
+
+compress=true
+delimiter=0

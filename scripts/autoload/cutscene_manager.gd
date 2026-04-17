@@ -398,9 +398,16 @@ func _physics_process(delta):
 		var character = movement_data.character
 		
 		if not is_instance_valid(character):
-			if debug: print(GameState.script_name_tag(self) + "Character no longer valid: ", character_id)
-			completed_movements.append(character_id)
-			continue
+			# Try to re-fetch the character before giving up
+			var refetched = GameState.get_player() if character_id == "player" else GameState.get_npc_by_id(character_id)
+			if refetched and is_instance_valid(refetched):
+				push_warning("CutsceneManager._physics_process: re-fetched stale reference for " + character_id)
+				movement_data["character"] = refetched
+				character = refetched
+			else:
+				push_warning("CutsceneManager._physics_process: character invalid and cannot re-fetch: " + character_id)
+				completed_movements.append(character_id)
+				continue
 			
 		# Process movement
 		var finished = _process_movement(character_id, movement_data, delta)
@@ -445,6 +452,8 @@ func _process_movement(character_id, movement_data, delta):
 		if "is_running" in character:
 			character.is_running = false
 		return true
+	# Diagnostic: log first-frame movement attempt so we can confirm it's being processed
+	if debug: print(GameState.script_name_tag(self, _fname) + character_id + " moving: dist=" + str(distance) + " target=" + str(target_position) + " pos=" + str(character.global_position))
 
 	var animation = movement_data.get("animation", "walk")
 
@@ -746,9 +755,12 @@ func move_to(character_id: String, marker_id: String, mode: String = "walk", wai
 
 	var target_pos : Vector2 = _determine_target_position(marker_id)
 
-	if not actor or target_pos == Vector2.ZERO:
-		push_error("CutsceneManager.move_to: actor or marker missing. id="
-			+ character_id + " marker=" + marker_id)
+	if not actor:
+		push_error("CutsceneManager.move_to: actor not found. id=" + character_id)
+		return
+	if target_pos == Vector2.ZERO:
+		push_error("CutsceneManager.move_to: marker resolved to ZERO. marker=" + marker_id
+			+ "  cutscene_markers has it: " + str(cutscene_markers.has(marker_id)))
 		return
 
 	# Set animation state before physics loop takes over
@@ -774,8 +786,24 @@ func move_to(character_id: String, marker_id: String, mode: String = "walk", wai
 		actor.get_node("NavigationAgent2D").target_position = target_pos
 
 	var speed_mult : float = 2.0 if mode == "run" else 1.0
-	move_character(character_id, target_pos, mode,
+	var moved : bool = move_character(character_id, target_pos, mode,
 		actor.base_speed * speed_mult, 10.0, null, use_nav)
+
+	# move_character does a second get_npc_by_id lookup which can fail even when
+	# we already have a valid actor reference.  Fall back to adding directly.
+	if not moved:
+		push_warning("CutsceneManager.move_to: move_character failed for '"
+			+ character_id + "' — adding movement directly from actor reference")
+		var movement_data : Dictionary = {
+			"character": actor,
+			"target_position": target_pos,
+			"speed": actor.base_speed * speed_mult,
+			"animation": mode,
+			"stop_distance": 10.0,
+			"use_navigation": use_nav
+		}
+		active_movements[character_id] = movement_data
+		movement_started.emit(character_id, target_pos)
 
 	if debug: print(GameState.script_name_tag(self, _fname) + "Moving " + character_id + " to " + marker_id + " [" + mode + "]")
 
