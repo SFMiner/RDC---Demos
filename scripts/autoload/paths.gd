@@ -40,28 +40,28 @@ const CUTSCENES = {
 }
 
 # Helper function to get scene path
-static func get_scene(scene_id: String) -> String:
+func get_scene(scene_id: String) -> String:
 	if scene_id in SCENES:
 		return SCENES[scene_id]
 	push_warning("Unknown scene ID: " + scene_id)
 	return ""
 
 # Helper function to get UI path
-static func get_ui(ui_id: String) -> String:
+func get_ui(ui_id: String) -> String:
 	if ui_id in UI:
 		return UI[ui_id]
 	push_warning("Unknown UI ID: " + ui_id)
 	return ""
 
 # Helper function to get data directory
-static func get_data_dir(data_type: String) -> String:
+func get_data_dir(data_type: String) -> String:
 	if data_type in DATA:
 		return DATA[data_type]
 	push_warning("Unknown data type: " + data_type)
 	return ""
 
 # Helper function to get cutscene path
-static func get_cutscene(cutscene_id: String) -> String:
+func get_cutscene(cutscene_id: String) -> String:
 	if cutscene_id in CUTSCENES:
 		return CUTSCENES[cutscene_id]
 	push_warning("Unknown cutscene ID: " + cutscene_id)
