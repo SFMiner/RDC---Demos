@@ -1,33 +1,10 @@
 {
-	"library_map": {
-		"name": "Library Map",
-		"description": "A hand-drawn map with moisture warnings.",
-		"category": 2,
-		"image_path": "res://assets/images/items/library_map.png",
-		"tags": ["map", "library"]
-	},
 	"energy_drink": {
 		"name": "Energy Drink",
 		"description": "Restores your energy level. Tastes like science.",
 		"category": 2,
 		"image_path": "res://assets/images/items/energy_drink.png",
 		"tags": ["consumable", "drink", "energy"]
-	},
-	"student_id": {
-		"name": "Student ID Card",
-		"description": "Your university identification card. Grants access to campus facilities.",
-		"category": 1,
-		"stackable": false,
-		"image_path": "res://assets/images/items/student_id.png",
-		"tags": ["id", "student", "quest_item"]
-	},
-	"lucky_charm": {
-		"name": "Lucky Charm",
-		"description": "A small trinket that brings you comfort during exams.",
-		"category": 3,
-		"stackable": false,
-		"image_path": "res://assets/images/items/lucky_charm.png",
-		"tags": ["charm"]
 	},
 	"focus_tea": {
 		"name": "Focus Tea",

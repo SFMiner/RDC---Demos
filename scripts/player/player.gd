@@ -873,7 +873,6 @@ func _create_default_movement_marker():
 	var scene = PackedScene.new()
 	
 	var marker = Sprite2D.new()
-	marker.texture = preload("res://icon.svg") # Godot icon as fallback
 	marker.scale = Vector2(0.3, 0.3)
 	
 	var script = GDScript.new()

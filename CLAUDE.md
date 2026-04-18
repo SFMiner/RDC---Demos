@@ -3,16 +3,16 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Common Syntax Errors
-- Other than speciifc data types like Dictionaries, there is no general method has() to check for properties. 
+- Other than specific data types like Dictionaries, there is no general method has() to check for properties. 
 	- The proper syntax to look for a property in the same script (that is, self), is simply: 
 		if property_name:
 		- Example: to check if the current script's script_data poperty has a value, use:
 			if script_data: 
-	- To check in another object (an object with in the scirpt, or anotehr script), use:
+	- To check in another object (an object with in the script, or another script), use:
 		if "property_name" in object:
-		- Example: to check if the object named my_variable has the peroperty _is_alive, use:
+		- Example: to check if the object named my_variable has the property _is_alive, use:
 			if "_is_alive" in my_variable: 
-- Ternary operators: condition ? value_if_true : value_if_false is NOT corerct gdscript syntax. Instead iuse:
+- Ternary operators: condition ? value_if_true : value_if_false is NOT correct gdscript syntax. Instead use:
 	value = true_val if condition else false_val 
 - NEVER check for a property within a script unless you know that it has been declared. Checking an undeclared property will cause an error
 - Type inference with `:=` fails when the right-hand side has no static type (e.g., array element access, `get_node_or_null`, untyped function returns). Always use explicit typing in these cases:

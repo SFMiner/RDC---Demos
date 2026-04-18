@@ -1,6 +1,6 @@
-[gd_scene load_steps=31 format=4 uid="uid://b88uumqwjee5n"]
+[gd_scene load_steps=31 format=4 uid="uid://b87l3yo4fw0rw"]
 
-[ext_resource type="Script" uid="uid://be51l7q53xb04" path="res://scripts/world/church_interior.gd" id="1_h0ajb"]
+[ext_resource type="Script" uid="uid://cw5fxs5vo6owp" path="res://scripts/world/church_interior.gd" id="1_h0ajb"]
 [ext_resource type="Texture2D" uid="uid://c2v7tijqkjow" path="res://assets/tilesets/Fantasy RPG Interior Pack (48x48 grid).png" id="3_h0ajb"]
 [ext_resource type="Texture2D" uid="uid://bqfvc45ixax24" path="res://assets/sprites/church_interior/altar.png" id="4_q3gja"]
 [ext_resource type="Texture2D" uid="uid://cukd5wgedvvhn" path="res://assets/character_sprites/samwell/standard/idle.png" id="5_fc4fh"]

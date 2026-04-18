@@ -35,7 +35,10 @@
       "Skill(investigate)",
       "Bash(find assets/character_sprites/father_matthew -name \"*.png\")",
       "Bash(ls assets/character_sprites/)",
-      "Bash(wc *)"
+      "Bash(wc *)",
+      "Bash(git checkout *)",
+      "Bash(git reset *)",
+      "Bash(git show *)"
     ],
     "deny": [],
     "ask": []
