@@ -95,9 +95,8 @@ const scr_debug : bool = false
 # ==========================================
 
 func _ready():
-	var _fname = "_ready"
 	debug = scr_debug or GameController.sys_debug 
-	if debug: print(GameState.script_name_tag(self, _fname) + "NPC initialized: ", character_id)
+	if debug: DebugManager.print_debug_auto(self, "NPC initialized: ", character_id)
 	#label.text = str(z_index)
 	#label_z.text = str(sprite.z_index)
 	#label3.text = str(z_index)
@@ -119,10 +118,10 @@ func _ready():
 	
 	
 	if debug: 
-		print(GameState.script_name_tag(self, _fname) + "Character setup complete. Observable features: ", observable_features.keys())
-		print(GameState.script_name_tag(self, _fname) + "Character setup complete. Character font_path: ", font_path)
-		print(GameState.script_name_tag(self, _fname) + "Character setup complete. Character font_color: ", font_color)
-		print(GameState.script_name_tag(self, _fname) + "Character setup complete. Character font_size: ", str(font_size))
+		print(GameState.script_name_tag(self) + "Character setup complete. Observable features: ", observable_features.keys())
+		print(GameState.script_name_tag(self) + "Character setup complete. Character font_path: ", font_path)
+		print(GameState.script_name_tag(self) + "Character setup complete. Character font_color: ", font_color)
+		print(GameState.script_name_tag(self) + "Character setup complete. Character font_size: ", str(font_size))
 
 		char_anim._initialize_animation_info(initial_animation)
 
@@ -134,7 +133,6 @@ func set_animation(animation_direction):
 
 func _sync_to_character_data():
 	"""Sync @export variables to character_data dictionary and load additional data from JSON"""
-	var _fname = "_sync_to_character_data"
 	
 	# First, populate from @export variables
 	character_data = {
@@ -153,23 +151,22 @@ func _sync_to_character_data():
 		"font_size": font_size,
 		"special_items": special_items.duplicate()
 	}
-	if debug: print(GameState.script_name_tag(self, _fname) + "character_data for " + character_id + " = " + str(character_data))
+	if debug: DebugManager.print_debug_auto(self, "character_data for " + character_id + " = " + str(character_data))
 
 	# Then, load and merge additional data from JSON file if it exists
 	_load_additional_data_from_json()
 	
-	if debug: print(GameState.script_name_tag(self, _fname) + "Synced character data for: ", character_id)
+	if debug: DebugManager.print_debug_auto(self, "Synced character data for: ", character_id)
 
 func _load_additional_data_from_json():
 	"""Load additional character data from JSON file to supplement @export variables"""
-	var _fname = "_load_additional_data_from_json"
 	
 	if character_id == "":
 		return
 	
 	var data_path = "res://data/characters/" + character_id + ".json"
 	if not FileAccess.file_exists(data_path):
-		if debug: print(GameState.script_name_tag(self, _fname) + "No JSON file found for: ", character_id)
+		if debug: DebugManager.print_debug_auto(self, "No JSON file found for: ", character_id)
 		return
 	
 	var file = FileAccess.open(data_path, FileAccess.READ)
@@ -178,7 +175,7 @@ func _load_additional_data_from_json():
 	
 	var json = JSON.new()
 	if json.parse(json_text) != OK:
-		if debug: print(GameState.script_name_tag(self, _fname) + "Failed to parse JSON for: ", character_id)
+		if debug: DebugManager.print_debug_auto(self, "Failed to parse JSON for: ", character_id)
 		return
 	
 	
@@ -218,28 +215,26 @@ func _load_additional_data_from_json():
 		if not character_data.has(key):
 			character_data[key] = json_data[key]
 	
-	if debug: print(GameState.script_name_tag(self, _fname) + "Merged JSON data for: ", character_id)
+	if debug: DebugManager.print_debug_auto(self, "Merged JSON data for: ", character_id)
 
 func _setup_character_specific_features():
 	"""Load observable features from character data files, not hardcoded"""
-	var _fname = "_setup_character_specific_features"
 	
 	# Load observable features from the character data file
 	_load_observable_features_from_data()
 
 func _load_observable_features_from_data():
 	"""Load observable features from character JSON files"""
-	var _fname = "_load_observable_features_from_data"
 	
 	if character_id == "":
-		if debug: print(GameState.script_name_tag(self, _fname) + "No character_id set, skipping feature loading")
+		if debug: DebugManager.print_debug_auto(self, "No character_id set, skipping feature loading")
 		return
 	
 	var data_path = "res://data/characters/" + character_id + ".json"
-	if debug: print(GameState.script_name_tag(self, _fname) + "Loading features from: ", data_path)
+	if debug: DebugManager.print_debug_auto(self, "Loading features from: ", data_path)
 	
 	if not FileAccess.file_exists(data_path):
-		if debug: print(GameState.script_name_tag(self, _fname) + "No data file found for: ", character_id)
+		if debug: DebugManager.print_debug_auto(self, "No data file found for: ", character_id)
 		return
 	
 	var file = FileAccess.open(data_path, FileAccess.READ)
@@ -248,16 +243,16 @@ func _load_observable_features_from_data():
 	
 	var json = JSON.new()
 	if json.parse(json_text) != OK:
-		if debug: print(GameState.script_name_tag(self, _fname) + "Failed to parse JSON for: ", character_id)
+		if debug: DebugManager.print_debug_auto(self, "Failed to parse JSON for: ", character_id)
 		return
 	
 	var data = json.data
 	if not data.has("observable_features"):
-		if debug: print(GameState.script_name_tag(self, _fname) + "No observable_features in data for: ", character_id)
+		if debug: DebugManager.print_debug_auto(self, "No observable_features in data for: ", character_id)
 		return
 	
 	var features_data = data["observable_features"]
-	if debug: print(GameState.script_name_tag(self, _fname) + "Loading ", features_data.size(), " features for ", character_id)
+	if debug: DebugManager.print_debug_auto(self, "Loading ", features_data.size(), " features for ", character_id)
 	
 	# Load each feature from the data
 	for feature_id in features_data.keys():
@@ -265,14 +260,13 @@ func _load_observable_features_from_data():
 		var description = feature_data.get("description", "")
 		var memory_tag = feature_data.get("memory_tag", "")
 		
-		if debug: print(GameState.script_name_tag(self, _fname) + "Adding feature: ", feature_id, " -> ", memory_tag)
+		if debug: DebugManager.print_debug_auto(self, "Adding feature: ", feature_id, " -> ", memory_tag)
 		add_observable_feature(feature_id, description, memory_tag)
 	
-	if debug: print(GameState.script_name_tag(self, _fname) + "Successfully loaded features: ", observable_features.keys())
+	if debug: DebugManager.print_debug_auto(self, "Successfully loaded features: ", observable_features.keys())
 
 func _initialize_game_behavior():
 	"""Initialize game behavior systems"""
-	var _fname = "_initialize_game_behavior"
 	
 	# Set up groups
 	add_to_group("interactable")
@@ -321,7 +315,6 @@ func get_character_data() -> Dictionary:
 
 func set_character_data(data: Dictionary):
 	"""Set character data from dictionary (syncs to @export vars)"""
-	var _fname = "set_character_data"
 	
 	# Update @export variables from dictionary
 	character_id = data.get("id", character_id)
@@ -335,7 +328,7 @@ func set_character_data(data: Dictionary):
 	background = data.get("background", background)
 	base_relationship_level = data.get("base_relationship_level", base_relationship_level)
 	font_path = data.get("font_path", font_path)
-	if debug: print(GameState.script_name_tag(self, _fname) + "font_path for " + character_id + " = " + font_path)
+	if debug: DebugManager.print_debug_auto(self, "font_path for " + character_id + " = " + font_path)
 	font_color = data.get("font_color", font_color)
 	font_size = data.get("font_size", font_size)
 	special_items = data.get("special_items", special_items)
@@ -343,7 +336,7 @@ func set_character_data(data: Dictionary):
 	# Re-sync to character_data dictionary
 	_sync_to_character_data()
 	
-	if debug: print(GameState.script_name_tag(self, _fname) + "Updated character data for: ", character_id)
+	if debug: DebugManager.print_debug_auto(self, "Updated character data for: ", character_id)
 
 # Legacy compatibility function
 func get_character_property(property_name: String):
@@ -369,15 +362,14 @@ func get_current_relationship_level() -> int:
 
 func observe_feature(feature_id: String) -> String:
 	"""Observe a feature and trigger memory system"""
-	var _fname = "observe_feature"
-	print(GameState.script_name_tag(self, _fname) + "Observing feature: ", feature_id, " on ", character_id)
+	print(GameState.script_name_tag(self) + "Observing feature: ", feature_id, " on ", character_id)
 	
 	if not observable_features.has(feature_id):
-		print(GameState.script_name_tag(self, _fname) + "Feature not found: ", feature_id)
+		print(GameState.script_name_tag(self) + "Feature not found: ", feature_id)
 		return ""
 	
 	var feature = observable_features[feature_id]
-	print(GameState.script_name_tag(self, _fname) + "Feature data: ", feature)
+	print(GameState.script_name_tag(self) + "Feature data: ", feature)
 	
 	if not feature.get("observed", false):
 		feature["observed"] = true
@@ -386,20 +378,19 @@ func observe_feature(feature_id: String) -> String:
 		# Set memory tag if it exists
 		var memory_tag = feature.get("memory_tag", "")
 		if memory_tag != "":
-			print(GameState.script_name_tag(self, _fname) + "Setting memory tag: ", memory_tag)
+			print(GameState.script_name_tag(self) + "Setting memory tag: ", memory_tag)
 			GameState.set_tag(memory_tag, true)
 		
 		var description = feature.get("description", "")
-		print(GameState.script_name_tag(self, _fname) + "Returning description: ", description)
+		print(GameState.script_name_tag(self) + "Returning description: ", description)
 		return description
 	else:
 		var short_desc = feature.get("short_description", feature.description)
-		print(GameState.script_name_tag(self, _fname) + "Feature already observed: ", short_desc)
+		print(GameState.script_name_tag(self) + "Feature already observed: ", short_desc)
 		return short_desc
 
 func add_observable_feature(feature_id: String, description: String, memory_tag: String = "") -> void:
 	"""Add an observable feature to this character"""
-	var _fname = "add_observable_feature"
 	
 	observable_features[feature_id] = {
 		"description": description,
@@ -408,7 +399,7 @@ func add_observable_feature(feature_id: String, description: String, memory_tag:
 		"short_description": "You notice the " + feature_id + " again."
 	}
 	
-	if debug: print(GameState.script_name_tag(self, _fname) + "Added observable feature: ", feature_id, " with tag: ", memory_tag)
+	if debug: DebugManager.print_debug_auto(self, "Added observable feature: ", feature_id, " with tag: ", memory_tag)
 
 func has_observable_feature(feature_id: String) -> bool:
 	return observable_features.has(feature_id)
@@ -472,21 +463,21 @@ func get_look_description() -> String:
 
 func interact():
 	const _fname : String = "interact"
-	if debug: print(GameState.script_name_tag(self, _fname) + "Interaction pressed")
+	if debug: DebugManager.print_debug_auto(self, "Interaction pressed")
 	"""Handle player interaction with this NPC"""
 	if not interactable:
-		if debug: print(GameState.script_name_tag(self, _fname) + character_name, " is not interactable")
+		if debug: DebugManager.print_debug_auto(self, character_name, " is not interactable")
 		return
 		
-	if debug: print(GameState.script_name_tag(self, _fname) + "Interacting with: ", character_name)
+	if debug: DebugManager.print_debug_auto(self, "Interacting with: ", character_name)
 	interaction_started.emit(character_id)
 	
 	var player = GameState.get_player()
 	if player:
-		if debug: print(GameState.script_name_tag(self, _fname) + "player found, face_target called")
+		if debug: DebugManager.print_debug_auto(self, "player found, face_target called")
 		face_target(player)
 	else:
-		if debug: print(GameState.script_name_tag(self, _fname) + "player not found")
+		if debug: DebugManager.print_debug_auto(self, "player not found")
 	
 	# Start dialogue using the Dialogue Manager
 	if dialogue_system:
@@ -495,11 +486,11 @@ func interact():
 		
 		var result = dialogue_system.start_dialog(character_id, initial_dialogue_title)
 		if result:
-			if debug: print(GameState.script_name_tag(self, _fname) + "Dialogue started successfully")
+			if debug: DebugManager.print_debug_auto(self, "Dialogue started successfully")
 		else:
-			if debug: print(GameState.script_name_tag(self, _fname) + "Failed to start dialogue!")
+			if debug: DebugManager.print_debug_auto(self, "Failed to start dialogue!")
 	else:
-		if debug: print(GameState.script_name_tag(self, _fname) + "Dialogue system not found!")
+		if debug: DebugManager.print_debug_auto(self, "Dialogue system not found!")
 
 # ==========================================
 # SERIALIZATION SUPPORT
@@ -519,11 +510,10 @@ func deserialize_character_data(data: Dictionary):
 
 func _setup_sprite():
 	"""Set up character sprite and texture"""
-	var _fname = "_setup_sprite"
 	
 	if sprite:
 		var texture_path = "res://assets/character_sprites/" + character_id + "/standard/idle.png"
-		if debug: print(GameState.script_name_tag(self, _fname) + "Loading texture from: " + texture_path)
+		if debug: DebugManager.print_debug_auto(self, "Loading texture from: " + texture_path)
 
 		var texture = load(texture_path)
 		if texture:
@@ -535,9 +525,9 @@ func _setup_sprite():
 			sprite.modulate.a = 1.0
 			sprite.position = Vector2(0, -30)
 			sprite.z_index = 0
-			if debug: print(GameState.script_name_tag(self, _fname) + "Successfully loaded texture")
+			if debug: DebugManager.print_debug_auto(self, "Successfully loaded texture")
 		else:
-			if debug: print(GameState.script_name_tag(self, _fname) + "Failed to load texture, using fallback")
+			if debug: DebugManager.print_debug_auto(self, "Failed to load texture, using fallback")
 			# Try fallback texture
 			var fallback_path = "res://assets/character_sprites/adan/standard/idle.png"
 			texture = load(fallback_path)
@@ -593,13 +583,12 @@ func stop_movement() -> void:
 	is_moving       = false
 
 func _start_auto_follow():
-	var _fname = "_start_auto_follow"
 	var player : Node2D = GameState.get_player()
 	if player:
 		follow_target = player
-		if debug: print(GameState.script_name_tag(self, _fname) + character_id + " auto-following player")
+		if debug: DebugManager.print_debug_auto(self, character_id + " auto-following player")
 	else:
-		if debug: print(GameState.script_name_tag(self, _fname) + "WARNING: player not found for auto-follow on " + character_id)
+		if debug: DebugManager.print_debug_auto(self, "WARNING: player not found for auto-follow on " + character_id)
 
 func _physics_process(delta: float) -> void:
 	# Cutscene system owns this NPC's movement — step aside entirely
@@ -651,15 +640,15 @@ func _physics_process(delta: float) -> void:
 
 func play_animation(anim_name: String, direction: String = "") -> void:
 	const _fname : String = "play_animation"
-	if debug: print(GameState.script_name_tag(self, _fname) + "Playing animation " + anim_name + " for " + character_id)
+	if debug: DebugManager.print_debug_auto(self, "Playing animation " + anim_name + " for " + character_id)
 	var is_jump_anim := anim_name.begins_with("jump")
 	if is_jumping and not is_jump_anim and jump_timer > 0.2:
-		if debug: print(GameState.script_name_tag(self) + "Ignoring animation during jump: " + anim_name)
+		if debug: DebugManager.print_debug_auto(self, "Ignoring animation during jump: " + anim_name)
 		return
 	if is_jump_anim and not is_jumping:
 		is_jumping = true
 		jump_timer = JUMP_DURATION
-		if debug: print(GameState.script_name_tag(self) + "Starting jump animation")
+		if debug: DebugManager.print_debug_auto(self, "Starting jump animation")
 	# If anim_name already ends with a direction suffix, extract it so the
 	# animator doesn't double-append (e.g. "idle_left" + "left" → "idle_left_left")
 	var base_name : String = anim_name
@@ -677,18 +666,18 @@ func play_animation(anim_name: String, direction: String = "") -> void:
 	elif ap and ap.has_animation(anim_name):
 		ap.play(anim_name)
 	else:
-		if debug: print(GameState.script_name_tag(self) + "Animation not found: " + anim_name)
+		if debug: DebugManager.print_debug_auto(self, "Animation not found: " + anim_name)
 
 func _fire_scene_animation(anim_name: String) -> void:
 	CutsceneManager.trigger_location_animation(anim_name)
 
 func change_facing(dir: String) -> void:
 	const _fname : String = "change_facing"
-	if debug: print(GameState.script_name_tag(self, _fname) + "Changing facing toward: ", dir)
-	if debug: print(GameState.script_name_tag(self, _fname) + character_id + " was facing: " + last_animation)
+	if debug: DebugManager.print_debug_auto(self, "Changing facing toward: ", dir)
+	if debug: DebugManager.print_debug_auto(self, character_id + " was facing: " + last_animation)
 	if animator and animator.has_method("set_animation"):
 		animator.set_animation(last_animation, dir, character_id)
-	if debug: print(GameState.script_name_tag(self, _fname) + character_id + " now faces: " + dir)
+	if debug: DebugManager.print_debug_auto(self, character_id + " now faces: " + dir)
 
 
 
@@ -696,10 +685,10 @@ func change_facing(dir: String) -> void:
 func test_all_animations():
 	"""Test all character animations (debug function)"""
 	if not has_method("get") or not get("animator"):
-		if debug: print(GameState.script_name_tag(self) + "No animator found for NPC: ", character_id)
+		if debug: DebugManager.print_debug_auto(self, "No animator found for NPC: ", character_id)
 		return
 	
-	if debug: print(GameState.script_name_tag(self) + "Testing all animations for NPC: ", character_id)
+	if debug: DebugManager.print_debug_auto(self, "Testing all animations for NPC: ", character_id)
 	
 	# Test sequence of animations with different directions
 	var test_sequence = [
@@ -718,7 +707,7 @@ func test_all_animations():
 		var anim_name = test.anim
 		var direction = test.dir
 		
-		if debug: print(GameState.script_name_tag(self) + "Testing animation: ", anim_name, "_", direction)
+		if debug: DebugManager.print_debug_auto(self, "Testing animation: ", anim_name, "_", direction)
 		
 		# Play the animation
 		if get("animator").has_method("set_animation"):
@@ -739,7 +728,7 @@ func _unhandled_input(event):
 	"""Handle unhandled input events"""
 	if event is InputEventKey and event.keycode == KEY_T and event.pressed and not event.echo:
 		test_all_animations()
-		if debug: print(GameState.script_name_tag(self) + "Started animation test sequence")
+		if debug: DebugManager.print_debug_auto(self, "Started animation test sequence")
 
 func _is_near_interaction_zone() -> bool:
 	"""Check if near interaction zone"""
@@ -756,7 +745,7 @@ func update_relationship(new_level: int):
 	var relationship_system = get_node_or_null("/root/RelationshipSystem")
 	if relationship_system:
 		relationship_system.set_relationship_score(character_id, new_level)
-		if debug: print(GameState.script_name_tag(self) + character_name, " relationship updated to level ", new_level)
+		if debug: DebugManager.print_debug_auto(self, character_name, " relationship updated to level ", new_level)
 		
 		# Notify memory system of relationship change
 		if memory_system:
@@ -769,8 +758,8 @@ func end_interaction():
 func face_target(target):
 	const _fname : String ="face_target"
 	"""Face toward a target (like the player)"""
-	if debug: print(GameState.script_name_tag(self, _fname) + "called")
-	if debug: print(GameState.script_name_tag(self, _fname) + name + " turning to face " + target.name + ".")
+	if debug: DebugManager.print_debug_auto(self, "called")
+	if debug: DebugManager.print_debug_auto(self, name + " turning to face " + target.name + ".")
 
 	if not target:
 		return
@@ -782,9 +771,9 @@ func face_target(target):
 		facing_dir = "right" if direction.x > 0 else "left"
 	else:
 		facing_dir = "down" if direction.y > 0 else "up"
-	if debug: print(GameState.script_name_tag(self, _fname) + "last_direction = " + str(last_direction))
+	if debug: DebugManager.print_debug_auto(self, "last_direction = " + str(last_direction))
 	change_facing(facing_dir)
-	if debug: print(GameState.script_name_tag(self, _fname) + "last_direction = " + str(last_direction))
+	if debug: DebugManager.print_debug_auto(self, "last_direction = " + str(last_direction))
 
 # ==========================================
 # DIALOGUE INTEGRATION (from original NPC)
@@ -819,7 +808,7 @@ func _setup_sprite_deferred():
 			sprite.texture = texture
 			sprite.hframes = 2
 			sprite.vframes = 4
-			if debug: print(GameState.script_name_tag(self) + "Deferred sprite setup complete")
+			if debug: DebugManager.print_debug_auto(self, "Deferred sprite setup complete")
 
 func _on_sprite_2d_frame_changed() -> void:
 	"""Handle sprite frame changes"""
@@ -837,7 +826,6 @@ func _on_sprite_2d_texture_changed() -> void:
 
 func validate_observable_features() -> Dictionary:
 	"""Validate observable features are properly set up"""
-	var _fname = "validate_observable_features"
 	var validation_result = {
 		"feature_count": observable_features.size(),
 		"features_with_memory_tags": 0,
@@ -863,9 +851,9 @@ func validate_observable_features() -> Dictionary:
 			validation_result.features_without_memory_tags += 1
 	
 	if debug and validation_result.warnings.size() > 0:
-		print(GameState.script_name_tag(self, _fname) + "Observable feature validation issues for ", character_id, ":")
+		print(GameState.script_name_tag(self) + "Observable feature validation issues for ", character_id, ":")
 		for warning in validation_result.warnings:
-			print(GameState.script_name_tag(self, _fname) + "  ", warning)
+			print(GameState.script_name_tag(self) + "  ", warning)
 	
 	return validation_result
 
@@ -891,17 +879,16 @@ func debug_character_info():
 
 func validate_character_setup() -> bool:
 	"""Validate that character is set up correctly"""
-	var _fname = "validate_character_setup"
 	var valid = true
 	
 	if character_id == "":
-		print(GameState.script_name_tag(self, _fname) + "ERROR: character_id is empty")
+		print(GameState.script_name_tag(self) + "ERROR: character_id is empty")
 		valid = false
 	
 	if character_name == "":
-		print(GameState.script_name_tag(self, _fname) + "WARNING: character_name is empty")
+		print(GameState.script_name_tag(self) + "WARNING: character_name is empty")
 	
 	if observable_features.is_empty() and character_id != "":
-		print(GameState.script_name_tag(self, _fname) + "WARNING: No observable features set up for ", character_id)
+		print(GameState.script_name_tag(self) + "WARNING: No observable features set up for ", character_id)
 	
 	return valid

@@ -23,9 +23,8 @@ func _ready():
 	debug = scr_debug or GameController.sys_debug
 
 func _run():
-	var _fname = "_run"
-	if debug: print(GameState.script_name_tag(self, _fname) + "🔍 Starting Memory Tag Linter...")
-	if debug: print(GameState.script_name_tag(self, _fname) + "=".repeat(60))
+	if debug: DebugManager.print_debug_auto(self, "🔍 Starting Memory Tag Linter...")
+	if debug: DebugManager.print_debug_auto(self, "=".repeat(60))
 	
 	# Clear previous data
 	_clear_data()
@@ -41,10 +40,9 @@ func _run():
 	# Generate validation report
 	_generate_report()
 	
-	if debug: print(GameState.script_name_tag(self, _fname) + "🏁 Linting complete!")
+	if debug: DebugManager.print_debug_auto(self, "🏁 Linting complete!")
 
 func _clear_data():
-	var _fname = "_clear_data"
 	memory_tags.clear()
 	dialogue_tag_checks.clear()
 	dialogue_tag_sets.clear()
@@ -56,8 +54,7 @@ func _clear_data():
 # ============================================================================
 
 func _collect_memory_tags():
-	var _fname = "_collect_memory_tags"
-	if debug: print(GameState.script_name_tag(self, _fname) + "📁 Collecting memory tags from memory and character files...")
+	if debug: DebugManager.print_debug_auto(self, "📁 Collecting memory tags from memory and character files...")
 
 	var files_found := []
 	var dir : DirAccess  # Declare outside the loop for compatibility
@@ -65,7 +62,7 @@ func _collect_memory_tags():
 	for dir_path in MEMORY_SCAN_DIRS:
 		dir = DirAccess.open(dir_path)
 		if not dir:
-			if debug: print(GameState.script_name_tag(self, _fname) + "❌ Could not open directory: " + dir_path)
+			if debug: DebugManager.print_debug_auto(self, "❌ Could not open directory: " + dir_path)
 			continue
 
 		dir.list_dir_begin()
@@ -76,18 +73,17 @@ func _collect_memory_tags():
 				files_found.append(dir_path + file_name)
 			file_name = dir.get_next()
 
-	if debug: print(GameState.script_name_tag(self, _fname) + "   🔍 Found " + str(files_found.size()) + " JSON files: " + str(files_found))
+	if debug: DebugManager.print_debug_auto(self, "   🔍 Found " + str(files_found.size()) + " JSON files: " + str(files_found))
 
 	for file_path in files_found:
 		_parse_memory_file(file_path)
 
-	if debug: print(GameState.script_name_tag(self, _fname) + "   📊 Total memory tags collected: " + str(memory_tags.size()))
+	if debug: DebugManager.print_debug_auto(self, "   📊 Total memory tags collected: " + str(memory_tags.size()))
 
 func _parse_memory_file(file_path: String):
-	var _fname = "_parse_memory_file"
 	var file = FileAccess.open(file_path, FileAccess.READ)
 	if not file:
-		if debug: print(GameState.script_name_tag(self, _fname) + "⚠️  Could not open file: " + file_path)
+		if debug: DebugManager.print_debug_auto(self, "⚠️  Could not open file: " + file_path)
 		return
 	
 	var json_text = file.get_as_text()
@@ -96,22 +92,22 @@ func _parse_memory_file(file_path: String):
 	var json = JSON.new()
 	var parse_result = json.parse(json_text)
 	if parse_result != OK:
-		if debug: print(GameState.script_name_tag(self, _fname) + "⚠️  Failed to parse JSON: " + file_path + " - " + json.get_error_message())
+		if debug: DebugManager.print_debug_auto(self, "⚠️  Failed to parse JSON: " + file_path + " - " + json.get_error_message())
 		return
 	
 	var data = json.data
-	if debug: print(GameState.script_name_tag(self, _fname) + "   📄 Processing: " + file_path.get_file() + " (type: " + str(typeof(data)) + ")")
+	if debug: DebugManager.print_debug_auto(self, "   📄 Processing: " + file_path.get_file() + " (type: " + str(typeof(data)) + ")")
 	
 	# Handle different JSON root structures
 	if typeof(data) == TYPE_ARRAY:
 		# Array format (like poison.json)
-		if debug: print(GameState.script_name_tag(self, _fname) + "      📋 Array format detected")
+		if debug: DebugManager.print_debug_auto(self, "      📋 Array format detected")
 		for item in data:
 			if typeof(item) == TYPE_DICTIONARY:
 				_parse_memory_chain_item(item, file_path)
 	elif typeof(data) == TYPE_DICTIONARY:
 		if "memory_chains" in data:
-			if debug: print(GameState.script_name_tag(self, _fname) + "      📚 Character memory_chains format detected")
+			if debug: DebugManager.print_debug_auto(self, "      📚 Character memory_chains format detected")
 			var character_id = data.get("id", "")
 			for chain in data.memory_chains:
 				if typeof(chain) == TYPE_DICTIONARY:
@@ -119,7 +115,7 @@ func _parse_memory_file(file_path: String):
 						chain["character_id"] = character_id
 					_parse_memory_chain_item(chain, file_path)
 		else:
-			if debug: print(GameState.script_name_tag(self, _fname) + "      📝 Individual memories format detected")
+			if debug: DebugManager.print_debug_auto(self, "      📝 Individual memories format detected")
 			for memory_id in data:
 				if memory_id.begins_with("_"):
 					continue
@@ -135,12 +131,11 @@ func _parse_memory_file(file_path: String):
 								"description": memory_data.get("description", "")
 							}
 	else:
-		if debug: print(GameState.script_name_tag(self, _fname) + "⚠️  Unsupported JSON format in: " + file_path)
+		if debug: DebugManager.print_debug_auto(self, "⚠️  Unsupported JSON format in: " + file_path)
 
 func _parse_memory_chain_item(chain_item: Dictionary, file_path: String):
-	var _fname = "_parse_memory_chain_item"
 	var chain_id = chain_item.get("id", "unknown_chain")
-	if debug: print(GameState.script_name_tag(self, _fname) + "      🔗 Processing chain: " + chain_id)
+	if debug: DebugManager.print_debug_auto(self, "      🔗 Processing chain: " + chain_id)
 	
 	# Extract tags from the chain item itself
 	_extract_tags_from_step(chain_item, file_path, chain_id)
@@ -150,7 +145,7 @@ func _parse_memory_chain_item(chain_item: Dictionary, file_path: String):
 		var steps = chain_item.steps
 		if typeof(steps) == TYPE_ARRAY:
 			var char_id = chain_item.get("character_id", "")
-			if debug: print(GameState.script_name_tag(self, _fname) + "in step of spes loop, looking at chatracter_id:", char_id)
+			if debug: DebugManager.print_debug_auto(self, "in step of spes loop, looking at chatracter_id:", char_id)
 			for step in steps:
 				if typeof(step) == TYPE_DICTIONARY:
 					var step_id = step.get("id", "unknown_step")
@@ -162,7 +157,6 @@ func _parse_memory_chain_item(chain_item: Dictionary, file_path: String):
 					_extract_tags_from_step(step, file_path, chain_id + "." + step_id)
 
 func _extract_tags_from_step(step_data: Dictionary, file_path: String, step_id: String):
-	var _fname = "_extract_tags_from_step"
 	# Handle unlock_tag as either string or array
 	var unlock_tags = []
 	var unlock_tag_value = step_data.get("unlock_tag", "")
@@ -196,15 +190,14 @@ func _extract_tags_from_step(step_data: Dictionary, file_path: String, step_id: 
 				"dialogue_title": step_data.get("dialogue_title", ""),
 				"condition_tags": step_data.get("condition_tags", [])
 			}
-			if debug: print(GameState.script_name_tag(self, _fname) + "      🏷️  Found tag: " + tag)
+			if debug: DebugManager.print_debug_auto(self, "      🏷️  Found tag: " + tag)
 
 # ============================================================================
 # MEMORY REGISTRY EXPORT
 # ============================================================================
 
 func _export_memory_registry():
-	var _fname = "_export_memory_registry"
-	if debug: print(GameState.script_name_tag(self, _fname) + "📄 Exporting memory tag registry...")
+	if debug: DebugManager.print_debug_auto(self, "📄 Exporting memory tag registry...")
 	
 	var registry = {}
 	
@@ -235,22 +228,21 @@ func _export_memory_registry():
 	if file:
 		file.store_string(json_string)
 		file.close()
-		print(GameState.script_name_tag(self, _fname) + "   ✅ Memory registry saved to: memory_tag_registry.json")
-		print(GameState.script_name_tag(self, _fname) + "   📊 Exported " + str(registry.size()) + " memory tags")
+		print(GameState.script_name_tag(self) + "   ✅ Memory registry saved to: memory_tag_registry.json")
+		print(GameState.script_name_tag(self) + "   📊 Exported " + str(registry.size()) + " memory tags")
 	else:
-		print(GameState.script_name_tag(self, _fname) + "   ❌ Failed to create memory_tag_registry.json file")
+		print(GameState.script_name_tag(self) + "   ❌ Failed to create memory_tag_registry.json file")
 
 # ============================================================================
 # DIALOGUE FILE PARSING
 # ============================================================================
 
 func _parse_dialogue_files():
-	var _fname = "_parse_dialogue_files"
-	if debug: print(GameState.script_name_tag(self, _fname) + "💬 Parsing dialogue files for tag usage...")
+	if debug: DebugManager.print_debug_auto(self, "💬 Parsing dialogue files for tag usage...")
 	
 	var dir = DirAccess.open(DIALOGUE_DIR)
 	if not dir:
-		if debug: print(GameState.script_name_tag(self, _fname) + "❌ Could not open dialogue directory: " + DIALOGUE_DIR)
+		if debug: DebugManager.print_debug_auto(self, "❌ Could not open dialogue directory: " + DIALOGUE_DIR)
 		return
 	
 	dir.list_dir_begin()
@@ -262,14 +254,13 @@ func _parse_dialogue_files():
 			_parse_dialogue_file(file_path)
 		file_name = dir.get_next()
 	
-	if debug: print(GameState.script_name_tag(self, _fname) + "   Found " + str(dialogue_tag_checks.size()) + " tag checks")
-	if debug: print(GameState.script_name_tag(self, _fname) + "   Found " + str(dialogue_tag_sets.size()) + " tag sets")
+	if debug: DebugManager.print_debug_auto(self, "   Found " + str(dialogue_tag_checks.size()) + " tag checks")
+	if debug: DebugManager.print_debug_auto(self, "   Found " + str(dialogue_tag_sets.size()) + " tag sets")
 
 func _parse_dialogue_file(file_path: String):
-	var _fname = "_parse_dialogue_file"
 	var file = FileAccess.open(file_path, FileAccess.READ)
 	if not file:
-		if debug: print(GameState.script_name_tag(self, _fname) + "⚠️  Could not open dialogue file: " + file_path)
+		if debug: DebugManager.print_debug_auto(self, "⚠️  Could not open dialogue file: " + file_path)
 		return
 	
 	var content = file.get_as_text()
@@ -313,12 +304,11 @@ func _parse_dialogue_file(file_path: String):
 # ============================================================================
 
 func _parse_character_files():
-	var _fname = "_parse_character_files"
-	if debug: print(GameState.script_name_tag(self, _fname) + "👥 Parsing character files for observable features...")
+	if debug: DebugManager.print_debug_auto(self, "👥 Parsing character files for observable features...")
 	
 	var dir = DirAccess.open(CHARACTER_DIR)
 	if not dir:
-		if debug: print(GameState.script_name_tag(self, _fname) + "❌ Could not open character directory: " + CHARACTER_DIR)
+		if debug: DebugManager.print_debug_auto(self, "❌ Could not open character directory: " + CHARACTER_DIR)
 		return
 	
 	dir.list_dir_begin()
@@ -330,13 +320,12 @@ func _parse_character_files():
 			_parse_character_file(file_path)
 		file_name = dir.get_next()
 	
-	if debug: print(GameState.script_name_tag(self, _fname) + "   Found " + str(character_features.size()) + " observable features")
+	if debug: DebugManager.print_debug_auto(self, "   Found " + str(character_features.size()) + " observable features")
 
 func _parse_character_file(file_path: String):
-	var _fname = "_parse_character_file"
 	var file = FileAccess.open(file_path, FileAccess.READ)
 	if not file:
-		if debug: print(GameState.script_name_tag(self, _fname) + "⚠️  Could not open character file: " + file_path)
+		if debug: DebugManager.print_debug_auto(self, "⚠️  Could not open character file: " + file_path)
 		return
 	
 	var json_text = file.get_as_text()
@@ -345,7 +334,7 @@ func _parse_character_file(file_path: String):
 	var json = JSON.new()
 	var parse_result = json.parse(json_text)
 	if parse_result != OK:
-		if debug: print(GameState.script_name_tag(self, _fname) + "⚠️  Failed to parse character JSON: " + file_path)
+		if debug: DebugManager.print_debug_auto(self, "⚠️  Failed to parse character JSON: " + file_path)
 		return
 	
 	var data = json.data
@@ -374,9 +363,8 @@ func _parse_character_file(file_path: String):
 # ============================================================================
 
 func _generate_report():
-	var _fname = "_generate_report"
-	if debug: print(GameState.script_name_tag(self, _fname) + "\n📊 VALIDATION REPORT")
-	if debug: print(GameState.script_name_tag(self, _fname) + "=".repeat(60))
+	if debug: DebugManager.print_debug_auto(self, "\n📊 VALIDATION REPORT")
+	if debug: DebugManager.print_debug_auto(self, "=".repeat(60))
 	
 	# Collect all tag names from all sources
 	var all_dialogue_tags = {}
@@ -401,71 +389,67 @@ func _generate_report():
 	_report_summary()
 
 func _report_valid_tags(all_dialogue_tags: Dictionary):
-	var _fname = "_report_valid_tags"
-	if debug: print(GameState.script_name_tag(self, _fname) + "\n✅ VALID TAGS")
-	if debug: print(GameState.script_name_tag(self, _fname) + "-".repeat(30))
+	if debug: DebugManager.print_debug_auto(self, "\n✅ VALID TAGS")
+	if debug: DebugManager.print_debug_auto(self, "-".repeat(30))
 	
 	var valid_count = 0
 	for tag in all_dialogue_tags:
 		if memory_tags.has(tag):
 			valid_count += 1
 			var memory_info = memory_tags[tag]
-			if debug: print(GameState.script_name_tag(self, _fname) + "   " + tag + " (" + memory_info.file.get_file() + ")")
+			if debug: DebugManager.print_debug_auto(self, "   " + tag + " (" + memory_info.file.get_file() + ")")
 	
 	if valid_count == 0:
-		if debug: print(GameState.script_name_tag(self, _fname) + "   No valid tags found")
+		if debug: DebugManager.print_debug_auto(self, "   No valid tags found")
 	else:
-		if debug: print(GameState.script_name_tag(self, _fname) + "   Total: " + str(valid_count) + " valid tags")
+		if debug: DebugManager.print_debug_auto(self, "   Total: " + str(valid_count) + " valid tags")
 
 func _report_missing_memory_tags(all_dialogue_tags: Dictionary):
-	var _fname = "_report_missing_memory_tags"
-	if debug: print(GameState.script_name_tag(self, _fname) + "\n⚠️  TAGS USED IN DIALOGUE BUT MISSING FROM MEMORY FILES")
-	if debug: print(GameState.script_name_tag(self, _fname) + "-".repeat(30))
+	if debug: DebugManager.print_debug_auto(self, "\n⚠️  TAGS USED IN DIALOGUE BUT MISSING FROM MEMORY FILES")
+	if debug: DebugManager.print_debug_auto(self, "-".repeat(30))
 	
 	var missing_count = 0
 	for tag in all_dialogue_tags:
 		if not memory_tags.has(tag):
 			missing_count += 1
-			if debug: print(GameState.script_name_tag(self, _fname) + "   ❌ " + tag)
+			if debug: DebugManager.print_debug_auto(self, "   ❌ " + tag)
 			
 			# Show where it's used
 			if dialogue_tag_checks.has(tag):
 				for file_path in dialogue_tag_checks[tag]:
-					if debug: print(GameState.script_name_tag(self, _fname) + "      🔍 Checked in: " + file_path.get_file())
+					if debug: DebugManager.print_debug_auto(self, "      🔍 Checked in: " + file_path.get_file())
 			
 			if dialogue_tag_sets.has(tag):
 				for file_path in dialogue_tag_sets[tag]:
-					if debug: print(GameState.script_name_tag(self, _fname) + "      ✏️  Set in: " + file_path.get_file())
+					if debug: DebugManager.print_debug_auto(self, "      ✏️  Set in: " + file_path.get_file())
 	
 	if missing_count == 0:
-		if debug: print(GameState.script_name_tag(self, _fname) + "   ✅ All dialogue tags have corresponding memory definitions")
+		if debug: DebugManager.print_debug_auto(self, "   ✅ All dialogue tags have corresponding memory definitions")
 	else:
-		if debug: print(GameState.script_name_tag(self, _fname) + "   Total: " + str(missing_count) + " missing tags")
+		if debug: DebugManager.print_debug_auto(self, "   Total: " + str(missing_count) + " missing tags")
 
 func _report_unused_memory_tags(all_dialogue_tags: Dictionary):
-	var _fname = "_report_unused_memory_tags"
-	if debug: print(GameState.script_name_tag(self, _fname) + "\n⚠️  TAGS DEFINED IN MEMORY FILES BUT UNUSED")
-	if debug: print(GameState.script_name_tag(self, _fname) + "-".repeat(30))
+	if debug: DebugManager.print_debug_auto(self, "\n⚠️  TAGS DEFINED IN MEMORY FILES BUT UNUSED")
+	if debug: DebugManager.print_debug_auto(self, "-".repeat(30))
 	
 	var unused_count = 0
 	for tag in memory_tags:
 		if not all_dialogue_tags.has(tag):
 			unused_count += 1
 			var memory_info = memory_tags[tag]
-			if debug: print(GameState.script_name_tag(self, _fname) + "   🗃️  " + tag)
-			if debug: print(GameState.script_name_tag(self, _fname) + "      📁 Defined in: " + memory_info.file.get_file() + " (" + memory_info.step_id + ")")
+			if debug: DebugManager.print_debug_auto(self, "   🗃️  " + tag)
+			if debug: DebugManager.print_debug_auto(self, "      📁 Defined in: " + memory_info.file.get_file() + " (" + memory_info.step_id + ")")
 			if memory_info.description != "":
-				if debug: print(GameState.script_name_tag(self, _fname) + "      📝 Description: " + memory_info.description)
+				if debug: DebugManager.print_debug_auto(self, "      📝 Description: " + memory_info.description)
 	
 	if unused_count == 0:
-		if debug: print(GameState.script_name_tag(self, _fname) + "   ✅ All memory tags are used in dialogue")
+		if debug: DebugManager.print_debug_auto(self, "   ✅ All memory tags are used in dialogue")
 	else:
-		if debug: print(GameState.script_name_tag(self, _fname) + "   Total: " + str(unused_count) + " unused tags")
+		if debug: DebugManager.print_debug_auto(self, "   Total: " + str(unused_count) + " unused tags")
 
 func _report_unmatched_features():
-	var _fname = "_report_unmatched_features"
-	if debug: print(GameState.script_name_tag(self, _fname) + "\n🧩 OBSERVABLE FEATURES WITHOUT MATCHING LOOK_AT TARGETS")
-	if debug: print(GameState.script_name_tag(self, _fname) + "-".repeat(30))
+	if debug: DebugManager.print_debug_auto(self, "\n🧩 OBSERVABLE FEATURES WITHOUT MATCHING LOOK_AT TARGETS")
+	if debug: DebugManager.print_debug_auto(self, "-".repeat(30))
 	
 	var unmatched_count = 0
 	for feature_id in character_features:
@@ -490,28 +474,27 @@ func _report_unmatched_features():
 		
 		if not found_target:
 			unmatched_count += 1
-			if debug: print(GameState.script_name_tag(self, _fname) + "   🔍 " + feature_id + " (character: " + feature.character + ")")
-			if debug: print(GameState.script_name_tag(self, _fname) + "      📁 Defined in: " + feature.file.get_file())
-			if debug: print(GameState.script_name_tag(self, _fname) + "      🎯 Expected target_id: " + target_id)
+			if debug: DebugManager.print_debug_auto(self, "   🔍 " + feature_id + " (character: " + feature.character + ")")
+			if debug: DebugManager.print_debug_auto(self, "      📁 Defined in: " + feature.file.get_file())
+			if debug: DebugManager.print_debug_auto(self, "      🎯 Expected target_id: " + target_id)
 			if feature.memory_tag != "":
-				if debug: print(GameState.script_name_tag(self, _fname) + "      🏷️  Memory tag: " + feature.memory_tag)
+				if debug: DebugManager.print_debug_auto(self, "      🏷️  Memory tag: " + feature.memory_tag)
 			if feature.description != "":
-				if debug: print(GameState.script_name_tag(self, _fname) + "      📝 Description: " + feature.description)
+				if debug: DebugManager.print_debug_auto(self, "      📝 Description: " + feature.description)
 	
 	if unmatched_count == 0:
-		if debug: print(GameState.script_name_tag(self, _fname) + "   ✅ All observable features have matching LOOK_AT targets")
+		if debug: DebugManager.print_debug_auto(self, "   ✅ All observable features have matching LOOK_AT targets")
 	else:
-		if debug: print(GameState.script_name_tag(self, _fname) + "   Total: " + str(unmatched_count) + " unmatched features")
+		if debug: DebugManager.print_debug_auto(self, "   Total: " + str(unmatched_count) + " unmatched features")
 
 func _report_summary():
-	var _fname = "_report_summary"
-	if debug: print(GameState.script_name_tag(self, _fname) + "\n📈 SUMMARY")
-	if debug: print(GameState.script_name_tag(self, _fname) + "-".repeat(30))
-	if debug: print(GameState.script_name_tag(self, _fname) + "   Memory tags defined: " + str(memory_tags.size()))
-	if debug: print(GameState.script_name_tag(self, _fname) + "   Tags checked in dialogue: " + str(dialogue_tag_checks.size()))
-	if debug: print(GameState.script_name_tag(self, _fname) + "   Tags set in dialogue: " + str(dialogue_tag_sets.size()))
-	if debug: print(GameState.script_name_tag(self, _fname) + "   Observable features: " + str(character_features.size()))
-	if debug: print(GameState.script_name_tag(self, _fname) + "   LOOK_AT targets: " + str(look_at_targets.size()))
+	if debug: DebugManager.print_debug_auto(self, "\n📈 SUMMARY")
+	if debug: DebugManager.print_debug_auto(self, "-".repeat(30))
+	if debug: DebugManager.print_debug_auto(self, "   Memory tags defined: " + str(memory_tags.size()))
+	if debug: DebugManager.print_debug_auto(self, "   Tags checked in dialogue: " + str(dialogue_tag_checks.size()))
+	if debug: DebugManager.print_debug_auto(self, "   Tags set in dialogue: " + str(dialogue_tag_sets.size()))
+	if debug: DebugManager.print_debug_auto(self, "   Observable features: " + str(character_features.size()))
+	if debug: DebugManager.print_debug_auto(self, "   LOOK_AT targets: " + str(look_at_targets.size()))
 	
 	# Calculate health metrics
 	var all_dialogue_tags = {}
@@ -534,20 +517,20 @@ func _report_summary():
 		if not all_dialogue_tags.has(tag):
 			unused_tags += 1
 	
-	if debug: print(GameState.script_name_tag(self, _fname) + "\n🎯 HEALTH METRICS")
-	if debug: print(GameState.script_name_tag(self, _fname) + "-".repeat(30))
+	if debug: DebugManager.print_debug_auto(self, "\n🎯 HEALTH METRICS")
+	if debug: DebugManager.print_debug_auto(self, "-".repeat(30))
 	if all_dialogue_tags.size() > 0:
 		var health_percentage = (valid_tags * 100) / all_dialogue_tags.size()
-		if debug: print(GameState.script_name_tag(self, _fname) + "   Tag consistency: " + str(health_percentage) + "%")
+		if debug: DebugManager.print_debug_auto(self, "   Tag consistency: " + str(health_percentage) + "%")
 	
 	if missing_tags == 0 and unused_tags == 0:
-		if debug: print(GameState.script_name_tag(self, _fname) + "   🎉 Perfect! All tags are properly defined and used.")
+		if debug: DebugManager.print_debug_auto(self, "   🎉 Perfect! All tags are properly defined and used.")
 	elif missing_tags == 0:
-		if debug: print(GameState.script_name_tag(self, _fname) + "   ✅ All dialogue tags are properly defined")
+		if debug: DebugManager.print_debug_auto(self, "   ✅ All dialogue tags are properly defined")
 	elif unused_tags == 0:
-		if debug: print(GameState.script_name_tag(self, _fname) + "   ✅ All memory tags are being used")
+		if debug: DebugManager.print_debug_auto(self, "   ✅ All memory tags are being used")
 	
 	if missing_tags > 0:
-		if debug: print(GameState.script_name_tag(self, _fname) + "   ⚠️  " + str(missing_tags) + " tags need memory definitions")
+		if debug: DebugManager.print_debug_auto(self, "   ⚠️  " + str(missing_tags) + " tags need memory definitions")
 	if unused_tags > 0:
-		if debug: print(GameState.script_name_tag(self, _fname) + "   ℹ️  " + str(unused_tags) + " tags could be cleaned up (unused)")
+		if debug: DebugManager.print_debug_auto(self, "   ℹ️  " + str(unused_tags) + " tags could be cleaned up (unused)")
