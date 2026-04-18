@@ -55,6 +55,12 @@ var dialogue_skip_enabled : bool = true
 func set_dialogue_skip_enabled(enabled: bool) -> void:
 	dialogue_skip_enabled = enabled
 
+## When false, player input (movement, interaction) is disabled.
+var player_input_enabled : bool = true
+
+func set_player_input_enabled(enabled: bool) -> void:
+	player_input_enabled = enabled
+
 # NEW: Memory data storage (loaded at startup, persisted in saves)
 var memory_definitions: Dictionary = {}
 var memory_chains: Dictionary = {}
