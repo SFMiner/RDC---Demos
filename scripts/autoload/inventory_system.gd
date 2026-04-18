@@ -41,9 +41,6 @@ func _ready():
 	# Debug: Check if any items are in inventory at startup
 	DebugManager.print_debug(self, "_ready", "Initial inventory count: " + str(inventory.size()))
 
-	# Register with DialogueManager
-	DialogueManager.register_variable("InventorySystem", self)
-
 # Load item templates from JSON file
 func _load_item_templates():
 	if item_templates_loaded:
