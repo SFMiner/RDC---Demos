@@ -236,10 +236,10 @@ func get_save_data() -> Dictionary:
 	}
 
 	if debug:
-		print(GameState.script_name_tag(self, _fname) + "Collected navigation data: ", 
-			"navigation_instances=",  str(navigation_instances), 
-			", current_scene_path=", str(current_scene_path), 
-			", current_navigation=", str(current_navigation))
+		DebugManager.print_debug_auto(self, "Collected navigation data: " +  
+			"navigation_instances=" +   str(navigation_instances) +  
+			", current_scene_path=" +  str(current_scene_path) +  
+			", current_navigation=" +  str(current_navigation))
 	return save_data
 
 # Legacy compatibility wrapper
@@ -260,15 +260,14 @@ func load_save_data(data: Dictionary) -> bool:
 		current_navigation = data.current_navigation
 
 
-	if debug:
-		print(GameState.script_name_tag(self, _fname) + "Navigation system restoration complete: ",
-			"navigation_instances=",  str(navigation_instances), 
-			", current_scene_path=", str(current_scene_path), 
-			", current_navigation=", str(current_navigation))
+		if debug: DebugManager.print_debug_auto(self, "Navigation system restoration complete: " +
+				"navigation_instances=" + str(navigation_instances) +
+				", current_scene_path=" + str(current_scene_path) +
+				", current_navigation=" + str(current_navigation))
 
-	# If necessary, re-validate or reset agent behaviors
-	call_deferred("_reinitialize_navigation_agents")
-	return true
+		# If necessary, re-validate or reset agent behaviors
+		call_deferred("_reinitialize_navigation_agents")
+		return true
 
 # Legacy compatibility wrapper
 func load_navigation(data: Dictionary) -> bool:
