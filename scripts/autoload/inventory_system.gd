@@ -333,31 +333,29 @@ func clear_inventory():
 
 # Save/Load System Integration
 func get_save_data():
-	var _fname = "get_save_data"
 	var save_data = {
 		"inventory": inventory.duplicate(true),
 		"item_tags": item_tags.duplicate(true),
 		"item_templates_loaded": item_templates_loaded
 	}
 
-	DebugManager.print_debug(self, _fname, "Collected inventory data: " + str(inventory.size()) + " items, " + str(item_tags.size()) + " tag categories")
+	DebugManager.print_debug_auto(self, "Collected inventory data: " + str(inventory.size()) + " items, " + str(item_tags.size()) + " tag categories")
 	return save_data
 
 func load_save_data(data):
-	var _fname = "load_save_data"
 	if typeof(data) != TYPE_DICTIONARY:
-		DebugManager.print_debug(self, _fname, "ERROR: Invalid data type for inventory load")
+		DebugManager.print_debug_auto(self, "ERROR: Invalid data type for inventory load")
 		return false
 
 	# Restore inventory items
 	if data.has("inventory"):
 		inventory = data.inventory.duplicate(true)
-		DebugManager.print_debug(self, _fname, "Restored " + str(inventory.size()) + " inventory items")
+		DebugManager.print_debug_auto(self, "Restored " + str(inventory.size()) + " inventory items")
 
 	# Restore item tags organization
 	if data.has("item_tags"):
 		item_tags = data.item_tags.duplicate(true)
-		DebugManager.print_debug(self, _fname, "Restored " + str(item_tags.size()) + " item tag categories")
+		DebugManager.print_debug_auto(self, "Restored " + str(item_tags.size()) + " item tag categories")
 
 	# Restore template loading state
 	if data.has("item_templates_loaded"):
@@ -368,5 +366,5 @@ func load_save_data(data):
 		var item_data = inventory[item_id]
 		item_added.emit(item_id, item_data)
 
-	DebugManager.print_debug(self, _fname, "Inventory restoration complete")
+	DebugManager.print_debug_auto(self, "Inventory restoration complete")
 	return true

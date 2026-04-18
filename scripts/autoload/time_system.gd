@@ -36,10 +36,10 @@ var debug
 func _ready() -> void:
 	debug = scr_debug or GameController.sys_debug 
 
-	if debug: print(GameState.script_name_tag(self) + "TimeSystem initialized on " + get_formatted_date())
+	if debug: DebugManager.print_debug_auto(self, "TimeSystem initialized on " + get_formatted_date())
 
 	var result = format_game_time("mm/dd - h:nn", "-3h -20n")
-	if debug: print(GameState.script_name_tag(self) + """format_game_time("mm/dd - h:nn", "-3h -20n") = """ + result)
+	if debug: DebugManager.print_debug_auto(self, """format_game_time("mm/dd - h:nn", "-3h -20n") = """ + result)
 
 func _process(delta: float) -> void:
 	time_accumulator += delta * time_scale
@@ -165,8 +165,6 @@ func get_formatted_date() -> String:
 	]
 
 func format_game_time(format_string: String, offset_string: String = "") -> String:
-	var _fname = "format_game_time"
-
 	# 1. Convert current game time into total minutes
 	var total_minutes := (
 		current_year * 12 * 30 * 24 * 60 +
@@ -174,33 +172,33 @@ func format_game_time(format_string: String, offset_string: String = "") -> Stri
 		(current_day - 1) * 24 * 60 +
 		time_accumulator
 	)
-	
+
 # 2. Parse offset string like "-1d 3h 2n"
 	if offset_string != "":
 		var regex := RegEx.new()
 		regex.compile("^([+-]?)(\\d+)([hdnmy])$")
 
 		var offset_tokens := offset_string.strip_edges().split(" ")
-		if debug: print(GameState.script_name_tag(self) + "offset_tokens = " + str(offset_tokens))
+		if debug: DebugManager.print_debug_auto(self, "offset_tokens = " + str(offset_tokens))
 		for token in offset_tokens:
 			if token == "":
-				if debug: print(GameState.script_name_tag(self) + "tonken == '': continuing")
+				if debug: DebugManager.print_debug_auto(self, "tonken == '': continuing")
 				continue
 			var result := regex.search(token)
-			
+
 			if result:
 
-				if debug: print(GameState.script_name_tag(self) + "result.get_string(1) = " + result.get_string(1))
-				if debug: print(GameState.script_name_tag(self) + "result.get_string(2) = " + result.get_string(2))
-				if debug: print(GameState.script_name_tag(self) + "result.get_string(3) = " + result.get_string(3))
-				
+				if debug: DebugManager.print_debug_auto(self, "result.get_string(1) = " + result.get_string(1))
+				if debug: DebugManager.print_debug_auto(self, "result.get_string(2) = " + result.get_string(2))
+				if debug: DebugManager.print_debug_auto(self, "result.get_string(3) = " + result.get_string(3))
+
 				var sign := -1 if result.get_string(1) == "-" else 1
 				sign
 				var value := int(result.get_string(2)) * sign
-				if debug: print(GameState.script_name_tag(self) + "value = " + str(value))
+				if debug: DebugManager.print_debug_auto(self, "value = " + str(value))
 				var unit := result.get_string(3)
-				if debug: print(GameState.script_name_tag(self) + "unit = " + unit)
-				
+				if debug: DebugManager.print_debug_auto(self, "unit = " + unit)
+
 				match unit:
 					"n":
 						total_minutes += value
@@ -212,27 +210,27 @@ func format_game_time(format_string: String, offset_string: String = "") -> Stri
 						total_minutes += value * 30 * 24 * 60
 					"y":
 						total_minutes += value * 12 * 30 * 24 * 60
-				if debug: print(GameState.script_name_tag(self) + "total_minutes based on result: " + str(total_minutes))
+				if debug: DebugManager.print_debug_auto(self, "total_minutes based on result: " + str(total_minutes))
 			else:
 				push_warning("Unrecognized time offset token: %s" % token)
 	else:
-		if debug: print(GameState.script_name_tag(self) + "Formatting current date.")
+		if debug: DebugManager.print_debug_auto(self, "Formatting current date.")
 
 	# 3. Convert total minutes back to Y/M/D/h/m
 	var minutes := int(total_minutes) % 60
-	if debug: print(GameState.script_name_tag(self) + "minutes = " + str(minutes))
+	if debug: DebugManager.print_debug_auto(self, "minutes = " + str(minutes))
 	var hours := int(total_minutes / 60) % 24
-	if debug: print(GameState.script_name_tag(self) + "hours = " + str(hours))
+	if debug: DebugManager.print_debug_auto(self, "hours = " + str(hours))
 	var days_total := int(total_minutes / (24 * 60))
-	if debug: print(GameState.script_name_tag(self) + "days_total = " + str(days_total))
+	if debug: DebugManager.print_debug_auto(self, "days_total = " + str(days_total))
 	var day := (days_total % 30) + 1
-	if debug: print(GameState.script_name_tag(self) + "day = " + str(day))
+	if debug: DebugManager.print_debug_auto(self, "day = " + str(day))
 	var months_total := int(days_total / 30)
-	if debug: print(GameState.script_name_tag(self) + "months_total = " + str(months_total))
+	if debug: DebugManager.print_debug_auto(self, "months_total = " + str(months_total))
 	var month := (months_total % 12) + 1
-	if debug: print(GameState.script_name_tag(self) + "month = " + str(month))
+	if debug: DebugManager.print_debug_auto(self, "month = " + str(month))
 	var year := int(months_total / 12)
-	if debug: print(GameState.script_name_tag(self) + "year = " + str(year))
+	if debug: DebugManager.print_debug_auto(self, "year = " + str(year))
 
 # "Mmm dd, 'yy - hh:mm"
 
@@ -243,8 +241,8 @@ func format_game_time(format_string: String, offset_string: String = "") -> Stri
 	var month_name: String = month_names[month - 1]
 	var month_abbr: String = month_name.substr(0, 3)
 
-	if debug: print(GameState.script_name_tag(self) + "str(month) " + str(month))
-	if debug: print(GameState.script_name_tag(self) + "str(month).pad_zeros(2) " + str(month).pad_zeros(2))
+	if debug: DebugManager.print_debug_auto(self, "str(month) " + str(month))
+	if debug: DebugManager.print_debug_auto(self, "str(month).pad_zeros(2) " + str(month).pad_zeros(2))
 	
 	# 4. Replace formatting tokens
 	var replacements := {
@@ -271,7 +269,7 @@ func format_game_time(format_string: String, offset_string: String = "") -> Stri
 		"nn": str(minutes).pad_zeros(2),
 		"n": str(minutes),
 	}
-	if debug: print(GameState.script_name_tag(self) + "format_string = Mmm dd, 'yy - hh:mm, -1d 3h 2n")
+	if debug: DebugManager.print_debug_auto(self, "format_string = Mmm dd, 'yy - hh:mm, -1d 3h 2n")
 	
 
 	# Sort by length descending to prioritize longer tokens first
@@ -283,7 +281,7 @@ func format_game_time(format_string: String, offset_string: String = "") -> Stri
 		var regex := RegEx.new()
 		regex.compile("\\b" + key + "\\b")  # Match full token only
 		format_string = regex.sub(format_string, replacements[key])
-		if debug: print(GameState.script_name_tag(self) + "   format_string [" + key + "] = " + format_string)
+		if debug: DebugManager.print_debug_auto(self, "   format_string [" + key + "] = " + format_string)
 
 	return format_string
 

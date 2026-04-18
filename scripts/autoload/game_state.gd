@@ -97,12 +97,10 @@ const scr_debug : bool = true
 var debug 
 
 func _ready():
-	var _fname = "_ready"
 	debug = scr_debug or GameController.sys_debug
 
 # SIMPLIFIED: Load only the registry
 func _load_memory_registry():
-	var _fname = "_load_memory_registry"
 	var file := FileAccess.open("res://data/generated/memory_tag_registry.json", FileAccess.READ)
 	if file:
 		var json_string := file.get_as_text()
@@ -110,11 +108,11 @@ func _load_memory_registry():
 		var json_result := JSON.new()
 		if json_result.parse(json_string) == OK:
 			memory_registry = json_result.get_data()
-			if debug: print(script_name_tag(self, _fname) + "Loaded ", memory_registry.size(), " memory tags from registry")
+			if debug: DebugManager.print_debug_auto(self, "Loaded ", memory_registry.size(), " memory tags from registry")
 		else:
-			if debug: print(script_name_tag(self, _fname) + "ERROR: Failed to parse memory registry JSON")
+			if debug: DebugManager.print_debug_auto(self, "ERROR: Failed to parse memory registry JSON")
 	else:
-		if debug: print(script_name_tag(self, _fname) + "ERROR: Could not load memory registry file")
+		if debug: DebugManager.print_debug_auto(self, "ERROR: Could not load memory registry file")
 
 # NEW: Core registry access functions
 func get_memory_metadata(tag_name: String) -> Dictionary:
@@ -145,7 +143,6 @@ func can_unlock_memory(tag_name: String) -> bool:
 
 func discover_memory_from_registry(tag_name: String, discovery_method: String = "") -> bool:
 	"""Discover a memory using registry metadata"""
-	var _fname = "discover_memory_from_registry"
 	
 	if not can_unlock_memory(tag_name):
 		return false
@@ -164,7 +161,7 @@ func discover_memory_from_registry(tag_name: String, discovery_method: String = 
 	# Emit discovery signal
 	memory_discovered.emit(tag_name, description)
 	
-	if debug: print(script_name_tag(self, _fname) + "Memory discovered: ", tag_name, " - ", description)
+	if debug: DebugManager.print_debug_auto(self, "Memory discovered: ", tag_name, " - ", description)
 	return true
 
 # NEW: Get memories by trigger type using registry
@@ -193,7 +190,6 @@ func get_memories_for_trigger_type(trigger_type: int, target_id: String) -> Arra
 # NEW: Get available dialogue options using registry
 func get_dialogue_options_from_registry(character_id: String) -> Array:
 	"""Get available dialogue options for a character using registry"""
-	var _fname = "get_dialogue_options_from_registry"
 	var available_options = []
 	
 	for tag_name in memory_registry.keys():
@@ -210,7 +206,7 @@ func get_dialogue_options_from_registry(character_id: String) -> Array:
 					"description": metadata.get("description", "")
 				}
 				available_options.append(option)
-				if debug: print(script_name_tag(self, _fname) + "Added dialogue option: ", option)
+				if debug: DebugManager.print_debug_auto(self, "Added dialogue option: ", option)
 	
 	return available_options
 
@@ -257,16 +253,14 @@ func has_tag(tag: String) -> bool:
 	return tags.has(tag)
 
 func set_tag(tag: String, value: Variant = true) -> void:
-	var _fname = "set_tag"
 	
 	tags[tag] = value
 	tag_added.emit(tag)
-	if debug: print(script_name_tag(self, _fname) + "Set tag '", tag, "' = ", value)
+	if debug: DebugManager.print_debug_auto(self, "Set tag '", tag, "' = ", value)
 
 # NEW: Load all memory definitions into GameState
 func _load_memory_definitions():
-	var _fname = "_load_memory_definitions"
-	if debug: print(script_name_tag(self, _fname) + "Loading memory definitions into GameState...")
+	if debug: DebugManager.print_debug_auto(self, "Loading memory definitions into GameState...")
 	
 	# Load individual memories
 	_load_individual_memories()
@@ -280,7 +274,7 @@ func _load_memory_definitions():
 	# Organize by trigger type for fast lookup
 	_organize_memories_by_trigger()
 	
-	if debug: print(script_name_tag(self, _fname) + "Loaded ", memory_definitions.size(), " memory definitions")
+	if debug: DebugManager.print_debug_auto(self, "Loaded ", memory_definitions.size(), " memory definitions")
 	
 	# Debug the loaded data
 	call_deferred("debug_memory_definitions")
@@ -288,50 +282,49 @@ func _load_memory_definitions():
 	memory_data_loaded.emit()
 
 func _load_individual_memories():
-	var _fname = "_load_individual_memories"
 	var path = "res://data/memories/individual_memories.json"
 	if not FileAccess.file_exists(path):
-		if debug: print(script_name_tag(self, _fname) + "No individual memories file found at: ", path)
+		if debug: DebugManager.print_debug_auto(self, "No individual memories file found at: ", path)
 		return
 	
 	var file = FileAccess.open(path, FileAccess.READ)
 	var json_string = file.get_as_text()
 	file.close()
 	
-	if debug: print(script_name_tag(self, _fname) + "Loaded JSON text length: ", json_string.length())
-	if debug: print(script_name_tag(self, _fname) + "Full JSON content:")
-	if debug: print(script_name_tag(self, _fname) + json_string)
+	if debug: DebugManager.print_debug_auto(self, "Loaded JSON text length: ", json_string.length())
+	if debug: DebugManager.print_debug_auto(self, "Full JSON content:")
+	if debug: DebugManager.print_debug_auto(self, json_string)
 	
 	var json = JSON.new()
 	var parse_result = json.parse(json_string)
 	if parse_result != OK:
-		if debug: print(script_name_tag(self, _fname) + "ERROR: Failed to parse individual memories JSON: ", json.get_error_message())
+		if debug: DebugManager.print_debug_auto(self, "ERROR: Failed to parse individual memories JSON: ", json.get_error_message())
 		return
 	
 	var data = json.data
 	if typeof(data) != TYPE_DICTIONARY:
-		if debug: print(script_name_tag(self, _fname) + "ERROR: Individual memories JSON is not a dictionary")
+		if debug: DebugManager.print_debug_auto(self, "ERROR: Individual memories JSON is not a dictionary")
 		return
 	
-	if debug: print(script_name_tag(self, _fname) + "Successfully parsed JSON with ", data.size(), " entries")
-	if debug: print(script_name_tag(self, _fname) + "JSON keys: ", data.keys())
+	if debug: DebugManager.print_debug_auto(self, "Successfully parsed JSON with ", data.size(), " entries")
+	if debug: DebugManager.print_debug_auto(self, "JSON keys: ", data.keys())
 	
 	# Process each memory, skipping comments and metadata
 	for memory_id in data:
 		# SKIP COMMENTS AND METADATA
 		if memory_id.begins_with("_"):
-			if debug: print(script_name_tag(self, _fname) + "Skipping metadata entry: ", memory_id)
+			if debug: DebugManager.print_debug_auto(self, "Skipping metadata entry: ", memory_id)
 			continue
 		
 		var memory_data = data[memory_id]
 		
-		if debug: print(script_name_tag(self, _fname) + "Processing memory: ", memory_id)
-		if debug: print(script_name_tag(self, _fname) + "  Raw data: ", memory_data)
-		if debug: print(script_name_tag(self, _fname) + "  Data type: ", typeof(memory_data))
+		if debug: DebugManager.print_debug_auto(self, "Processing memory: ", memory_id)
+		if debug: DebugManager.print_debug_auto(self, "  Raw data: ", memory_data)
+		if debug: DebugManager.print_debug_auto(self, "  Data type: ", typeof(memory_data))
 		
 		# Ensure memory_data is a dictionary
 		if typeof(memory_data) != TYPE_DICTIONARY:
-			if debug: print(script_name_tag(self, _fname) + "ERROR: Memory data for ", memory_id, " is not a dictionary: ", typeof(memory_data))
+			if debug: DebugManager.print_debug_auto(self, "ERROR: Memory data for ", memory_id, " is not a dictionary: ", typeof(memory_data))
 			continue
 		
 		# FIX TYPE CONVERSION: Ensure trigger_type is integer
@@ -339,18 +332,17 @@ func _load_individual_memories():
 			var trigger_type = memory_data["trigger_type"]
 			if typeof(trigger_type) == TYPE_FLOAT:
 				memory_data["trigger_type"] = int(trigger_type)
-				if debug: print(script_name_tag(self, _fname) + "Converted trigger_type from float to int for: ", memory_id)
+				if debug: DebugManager.print_debug_auto(self, "Converted trigger_type from float to int for: ", memory_id)
 		
 		# Store in memory_definitions
 		memory_definitions[memory_id] = memory_data
-		if debug: print(script_name_tag(self, _fname) + "Stored memory: ", memory_id, " with data: ", memory_data)
+		if debug: DebugManager.print_debug_auto(self, "Stored memory: ", memory_id, " with data: ", memory_data)
 		
 
 func _load_memory_chains():
-	var _fname = "_load_memory_chains"
 	var dir = DirAccess.open("res://data/memories/")
 	if not dir:
-		if debug: print(script_name_tag(self, _fname) + "No memories directory found")
+		if debug: DebugManager.print_debug_auto(self, "No memories directory found")
 		return
 	
 	dir.list_dir_begin()
@@ -363,7 +355,6 @@ func _load_memory_chains():
 		file_name = dir.get_next()
 
 func _load_memory_chain_file(path: String):
-	var _fname = "_load_memory_chain_file"
 	var file = FileAccess.open(path, FileAccess.READ)
 	var json_text = file.get_as_text()
 	file.close()
@@ -376,10 +367,9 @@ func _load_memory_chain_file(path: String):
 				var chain_id = chain_data.get("id", "")
 				if not chain_id.is_empty():
 					memory_chains[chain_id] = chain_data
-					if debug: print(script_name_tag(self, _fname) + "Loaded memory chain: ", chain_id)
+					if debug: DebugManager.print_debug_auto(self, "Loaded memory chain: ", chain_id)
 
 func _load_character_memory_data():
-	var _fname = "_load_character_memory_data()"
 	var character_loader = get_node_or_null("/root/CharacterDataLoader")
 	if not character_loader:
 		return
@@ -397,22 +387,21 @@ func _load_character_memory_data():
 					memory_definitions[memory_id] = memory
 
 func _organize_memories_by_trigger():
-	var _fname = "_organize_memories_by_trigger"
-	print(script_name_tag(self, _fname) + "=== ORGANIZE MEMORIES BY TRIGGER DEBUG ===")
-	print(script_name_tag(self, _fname) + "Total memory_definitions: ", memory_definitions.size())
-	print(script_name_tag(self, _fname) + "memory_definitions keys: ", memory_definitions.keys())
+	print(script_name_tag(self) + "=== ORGANIZE MEMORIES BY TRIGGER DEBUG ===")
+	print(script_name_tag(self) + "Total memory_definitions: ", memory_definitions.size())
+	print(script_name_tag(self) + "memory_definitions keys: ", memory_definitions.keys())
 	
 	# Organize memories by trigger type for O(1) lookup during gameplay
 	for memory_id in memory_definitions:
 		var memory = memory_definitions[memory_id]
 		
-		print("\n" + script_name_tag(self, _fname) + "--- Processing memory: ", memory_id, " ---")
-		print(script_name_tag(self, _fname) + "Memory type: ", typeof(memory))
-		print(script_name_tag(self, _fname) + "Memory contents: ", memory)
+		print("\n" + script_name_tag(self) + "--- Processing memory: ", memory_id, " ---")
+		print(script_name_tag(self) + "Memory type: ", typeof(memory))
+		print(script_name_tag(self) + "Memory contents: ", memory)
 		
 		# Debug: Check if memory is the right type
 		if typeof(memory) != TYPE_DICTIONARY:
-			print(script_name_tag(self, _fname) + "ERROR: Memory ", memory_id, " is not a dictionary, it's a ", typeof(memory))
+			print(script_name_tag(self) + "ERROR: Memory ", memory_id, " is not a dictionary, it's a ", typeof(memory))
 			continue
 		
 		# ENSURE INTEGER TRIGGER TYPE
@@ -425,14 +414,14 @@ func _organize_memories_by_trigger():
 		var character_id = memory.get("character_id", "")
 		var dialogue_title = memory.get("dialogue_title", "")
 		
-		print(script_name_tag(self, _fname) + "  trigger_type: ", trigger_type)
-		print(script_name_tag(self, _fname) + "  target_id: '", target_id, "'")
-		print(script_name_tag(self, _fname) + "  unlock_tag: '", unlock_tag, "'")
-		print(script_name_tag(self, _fname) + "  character_id: '", character_id, "'")
-		print(script_name_tag(self, _fname) + "  dialogue_title: '", dialogue_title, "'")
+		print(script_name_tag(self) + "  trigger_type: ", trigger_type)
+		print(script_name_tag(self) + "  target_id: '", target_id, "'")
+		print(script_name_tag(self) + "  unlock_tag: '", unlock_tag, "'")
+		print(script_name_tag(self) + "  character_id: '", character_id, "'")
+		print(script_name_tag(self) + "  dialogue_title: '", dialogue_title, "'")
 		
 		if target_id == "":
-			print(script_name_tag(self, _fname) + "WARNING: Memory ", memory_id, " has no target_id")
+			print(script_name_tag(self) + "WARNING: Memory ", memory_id, " has no target_id")
 			continue
 		
 		# Initialize trigger type if not exists
@@ -453,57 +442,55 @@ func _organize_memories_by_trigger():
 			"dialogue_title": dialogue_title
 		})
 		
-		print(script_name_tag(self, _fname) + "  Stored in memories_by_trigger[", trigger_type, "][", target_id, "]")
+		print(script_name_tag(self) + "  Stored in memories_by_trigger[", trigger_type, "][", target_id, "]")
 		
 		# CREATE DIALOGUE MAPPING if this memory has dialogue_title
 		if dialogue_title != "" and character_id != "" and unlock_tag != "":
-			print(script_name_tag(self, _fname) + "  Creating dialogue mapping: ", unlock_tag, " -> ", character_id, ":", dialogue_title)
+			print(script_name_tag(self) + "  Creating dialogue mapping: ", unlock_tag, " -> ", character_id, ":", dialogue_title)
 			
 			dialogue_mapping[unlock_tag] = {
 				"character_id": character_id,
 				"dialogue_title": dialogue_title
 			}
-			print(script_name_tag(self, _fname) + "  Dialogue mapping created successfully")
+			print(script_name_tag(self) + "  Dialogue mapping created successfully")
 		else:
-			print(script_name_tag(self, _fname) + "  No dialogue mapping created:")
-			print(script_name_tag(self, _fname) + "    dialogue_title empty: ", dialogue_title == "")
-			print(script_name_tag(self, _fname) + "    character_id empty: ", character_id == "")
-			print(script_name_tag(self, _fname) + "    unlock_tag empty: ", unlock_tag == "")
+			print(script_name_tag(self) + "  No dialogue mapping created:")
+			print(script_name_tag(self) + "    dialogue_title empty: ", dialogue_title == "")
+			print(script_name_tag(self) + "    character_id empty: ", character_id == "")
+			print(script_name_tag(self) + "    unlock_tag empty: ", unlock_tag == "")
 		
-		print(script_name_tag(self, _fname) + "--- End processing ", memory_id, " ---")
+		print(script_name_tag(self) + "--- End processing ", memory_id, " ---")
 	
 	# Debug the final dialogue mappings
-	print("\n" + script_name_tag(self, _fname) + "=== FINAL DIALOGUE MAPPING RESULTS ===")
-	print(script_name_tag(self, _fname) + "dialogue_mapping size: ", dialogue_mapping.size())
-	print(script_name_tag(self, _fname) + "Created dialogue mappings:")
+	print("\n" + script_name_tag(self) + "=== FINAL DIALOGUE MAPPING RESULTS ===")
+	print(script_name_tag(self) + "dialogue_mapping size: ", dialogue_mapping.size())
+	print(script_name_tag(self) + "Created dialogue mappings:")
 	for memory_tag in dialogue_mapping:
 		var mapping = dialogue_mapping[memory_tag]
-		print(script_name_tag(self, _fname) + "  ", memory_tag, " -> ", mapping)
-	print(script_name_tag(self, _fname) + "=== END ORGANIZE MEMORIES DEBUG ===")
+		print(script_name_tag(self) + "  ", memory_tag, " -> ", mapping)
+	print(script_name_tag(self) + "=== END ORGANIZE MEMORIES DEBUG ===")
 
 # Also fix the debug function
 func debug_memory_organization():
-	var _fname = "debug_memory_organization"
 	if not debug:
 		return
 	
-	print("\n" + script_name_tag(self, _fname) + "=== MEMORY ORGANIZATION DEBUG ===")
-	print(script_name_tag(self, _fname) + "memories_by_trigger structure:")
+	print("\n" + script_name_tag(self) + "=== MEMORY ORGANIZATION DEBUG ===")
+	print(script_name_tag(self) + "memories_by_trigger structure:")
 	
 	for trigger_type in memories_by_trigger:
-		print(script_name_tag(self, _fname) + "Trigger type ", trigger_type, " (", typeof(trigger_type), "):")
+		print(script_name_tag(self) + "Trigger type ", trigger_type, " (", typeof(trigger_type), "):")
 		var targets = memories_by_trigger[trigger_type]
 		for target_id in targets:
 			var memories = targets[target_id]
-			print(script_name_tag(self, _fname) + "  Target '", target_id, "': ", memories.size(), " memories")
+			print(script_name_tag(self) + "  Target '", target_id, "': ", memories.size(), " memories")
 			for memory in memories:
-				print(script_name_tag(self, _fname) + "    - ", memory.memory_id, " (", memory.unlock_tag, ")")
+				print(script_name_tag(self) + "    - ", memory.memory_id, " (", memory.unlock_tag, ")")
 	
-	print(script_name_tag(self, _fname) + "===================================\n")
+	print(script_name_tag(self) + "===================================\n")
 
 # NEW: Fast memory lookup functions for MemorySystem
 func get_memories_for_trigger(trigger_type: int, target_id: String) -> Array:
-	var _fname = "get_memories_for_trigger"
 	var memories = []
 	
 	# Direct lookup
@@ -519,36 +506,29 @@ func get_memories_for_trigger(trigger_type: int, target_id: String) -> Array:
 	return memories
 
 func gs_print(string):
-	var _fname = "gs_print"
-	print(script_name_tag(self, _fname) + string) 
+	print(script_name_tag(self) + string) 
 
 func has_memory_definition(memory_id: String) -> bool:
-	var _fname = "has_memory_definition"
 	return memory_definitions.has(memory_id)
 
 func get_memory_definition(memory_id: String) -> Dictionary:
-	var _fname = "get_memory_definition"
 	return memory_definitions.get(memory_id, {})
 
 func get_memory_chain(chain_id: String) -> Dictionary:
-	var _fname = "get_memory_chain"
 	return memory_chains.get(chain_id, {})
 	
 func remove_tag(tag: String) -> void:
-	var _fname = "remove_tag"
 	if tags.has(tag):
 		tags.erase(tag)
 		tag_removed.emit(tag)
 		
 func get_tag_value(tag: String, default_value: Variant = null) -> Variant:
-	var _fname = "get_tag_value"
 	if tags.has(tag):
 		return tags[tag]
 	return default_value
 
 # Generate a unique ID for this game session
 func _generate_game_id():
-	var _fname = "_generate_game_id"
 	var time = Time.get_unix_time_from_system()
 	var rng = RandomNumberGenerator.new()
 	rng.randomize()
@@ -558,14 +538,12 @@ func _generate_game_id():
 
 # Turn completion handlers
 func _on_turn_completed():
-	var _fname = "_on_turn_completed"
 	# Emit signal from GameController
 	var game_controller = get_node_or_null("/root/GameController")
 	if game_controller and game_controller.has_signal("turn_completed"):
 		game_controller.turn_completed.emit()
 
 func _on_day_advanced():
-	var _fname = "_on_day_advanced"
 	# Emit signal from GameController
 	var game_controller = get_node_or_null("/root/GameController")
 	if game_controller and game_controller.has_signal("day_advanced"):
@@ -583,9 +561,8 @@ func get_player():
 
 # Knowledge system functions (updated to avoid duplicate declarations)
 func add_knowledge(tag):
-	var _fname = "add_knowledge"
 	if is_known(tag):
-		if debug: print(script_name_tag(self, _fname) + tag + " is already known.")
+		if debug: DebugManager.print_debug_auto(self, tag + " is already known.")
 	else:
 		knowledge.append(tag)
 
@@ -596,9 +573,8 @@ func is_known(tag: String):
 
 # Scene and NPC management (updated to avoid duplicate declarations)
 func set_current_scene(scene):
-	var _fname = "set_current_scene"
 	current_scene = scene
-	if debug: print(script_name_tag(self, _fname) + "GameState: Set current scene to ", scene.name)
+	if debug: DebugManager.print_debug_auto(self, "GameState: Set current scene to ", scene.name)
 	
 	# Update NPC and marker lists immediately
 	set_current_npcs()
@@ -615,40 +591,36 @@ func scene_visited(scene_name):
 	
 
 func set_current_npcs():
-	var _fname = "set_current_npcs"
 	current_npc_list = get_tree().get_nodes_in_group("npc")
-	if debug: print(script_name_tag(self, _fname) + "GameState: Updated NPC list with ", current_npc_list.size(), " NPCs")
+	if debug: DebugManager.print_debug_auto(self, "GameState: Updated NPC list with ", current_npc_list.size(), " NPCs")
 	return current_npc_list
 
 func get_current_npcs():
 	return current_npc_list
 
 func set_current_markers():
-	var _fname = "set_current_markers"
 	current_marker_list = get_tree().get_nodes_in_group("marker")
-	if debug: print(script_name_tag(self, _fname) + "GameState: Updated marker list with ", current_marker_list.size(), " markers")
+	if debug: DebugManager.print_debug_auto(self, "GameState: Updated marker list with ", current_marker_list.size(), " markers")
 	return current_marker_list
 
 func get_npc_by_id(npc_id):
-	var _fname = "get_npc_by_id"
 	# First update the list to make sure it's current
 	if current_npc_list.size() == 0:
 		set_current_npcs()
 	
 	# Try to find an NPC with matching name or character_id
 	for npc in current_npc_list:
-		print(script_name_tag(self, _fname) + "found character " + npc.name)
+		print(script_name_tag(self) + "found character " + npc.name)
 		if npc.name.to_lower() == npc_id.to_lower(): 
 			return npc
 			
 		if npc.get("character_id") and npc.character_id.to_lower() == npc_id.to_lower():
 			return npc
 	
-	if debug: print(script_name_tag(self, _fname) + "GameState: Could not find NPC with ID: ", npc_id)
+	if debug: DebugManager.print_debug_auto(self, "GameState: Could not find NPC with ID: ", npc_id)
 	return null
 
 func get_marker_by_id(marker_id):
-	var _fname = "get_marker_by_id"
 	# First update the list to make sure it's current
 	if current_marker_list.size() == 0:
 		set_current_markers()
@@ -663,7 +635,7 @@ func get_marker_by_id(marker_id):
 		elif marker.get("marker_id") and marker.marker_id == marker_id:
 			return marker
 	
-	if debug: print(script_name_tag(self, _fname) + "GameState: Could not find marker with ID: ", marker_id)
+	if debug: DebugManager.print_debug_auto(self, "GameState: Could not find marker with ID: ", marker_id)
 	return null
 
 # Additional state functions (updated to avoid duplicate declarations)
@@ -677,7 +649,6 @@ func has_in_it(array : Array, tag : String):
 
 # NEW: Memory discovery tracking
 func discover_memory(memory_tag: String, description: String, discovery_method: String = "", character_id: String = ""):
-	var _fname = "discover_memory"
 	if memory_tag in discovered_memories:
 		return false  # Already discovered
 	
@@ -703,7 +674,7 @@ func discover_memory(memory_tag: String, description: String, discovery_method: 
 	# Emit discovery signal
 	memory_discovered.emit(memory_tag, description)
 	
-	if debug: print(script_name_tag(self, _fname) + "Memory discovered: ", memory_tag, " - ", description)
+	if debug: DebugManager.print_debug_auto(self, "Memory discovered: ", memory_tag, " - ", description)
 	return true
 
 func has_discovered_memory(memory_tag: String) -> bool:
@@ -832,8 +803,7 @@ func load_game(slot):
 
 # Enhanced save/load to include memory data
 func _collect_save_data():
-	var _fname = "_collect_save_data"
-	if debug: print(script_name_tag(self, _fname) + "Collecting save data from all systems")
+	if debug: DebugManager.print_debug_auto(self, "Collecting save data from all systems")
 	
 	# Update play time before saving
 	if start_time > 0:
@@ -857,48 +827,47 @@ func _collect_save_data():
 	var inventory_system = get_node_or_null("/root/InventorySystem")
 	if inventory_system and inventory_system.has_method("get_save_data"):
 		save_data["inventory_system"] = inventory_system.get_save_data()
-		if debug: print(script_name_tag(self, _fname) + "Collected inventory data")
+		if debug: DebugManager.print_debug_auto(self, "Collected inventory data")
 	
 	# Quest System  
 	var quest_system = get_node_or_null("/root/QuestSystem")
 	if quest_system and quest_system.has_method("get_save_data"):
 		save_data["quest_system"] = quest_system.get_save_data()
-		if debug: print(script_name_tag(self, _fname) + "Collected quest data")
+		if debug: DebugManager.print_debug_auto(self, "Collected quest data")
 	
 	# Pickup System
 	var pickup_system = get_node_or_null("/root/PickupSystem")
 	if pickup_system and pickup_system.has_method("get_save_data"):
 		save_data["pickup_system"] = pickup_system.get_save_data()
-		if debug: print(script_name_tag(self, _fname) + "Collected pickup system data")
+		if debug: DebugManager.print_debug_auto(self, "Collected pickup system data")
 		
 	# Relationship System
 	var relationship_system = get_node_or_null("/root/RelationshipSystem")
 	if relationship_system and relationship_system.has_method("get_save_data"):
 		save_data["relationship_system"] = relationship_system.get_save_data()
-		if debug: print(script_name_tag(self, _fname) + "Collected relationship data")
+		if debug: DebugManager.print_debug_auto(self, "Collected relationship data")
 	
 	# Time System
 	var time_system = get_node_or_null("/root/TimeSystem")
 	if time_system and time_system.has_method("save_data"):
 		save_data["time_system"] = time_system.save_data()
-		if debug: print(script_name_tag(self, _fname) + "Collected time data")
+		if debug: DebugManager.print_debug_auto(self, "Collected time data")
 	
 	# Memory System
 	var memory_system = get_node_or_null("/root/MemorySystem")
 	if memory_system and memory_system.has_method("get_save_data"):
 		save_data["memory_system"] = memory_system.get_save_data()
-		if debug: print(script_name_tag(self, _fname) + "Collected memory system data")
+		if debug: DebugManager.print_debug_auto(self, "Collected memory system data")
 	
-	if debug: print(script_name_tag(self, _fname) + "Save data collection complete. Keys: ", save_data.keys())
+	if debug: DebugManager.print_debug_auto(self, "Save data collection complete. Keys: ", save_data.keys())
 	return save_data
 
 func _apply_save_data(save_data):
-	var _fname = "_apply_save_data"
 	if typeof(save_data) != TYPE_DICTIONARY:
-		if debug: print(script_name_tag(self, _fname) + "ERROR: Save data is not a dictionary")
+		if debug: DebugManager.print_debug_auto(self, "ERROR: Save data is not a dictionary")
 		return false
 	
-	if debug: print(script_name_tag(self, _fname) + "Applying save data to all systems")
+	if debug: DebugManager.print_debug_auto(self, "Applying save data to all systems")
 	
 	# Core GameState data
 	if save_data.has("game_id"):
@@ -923,52 +892,51 @@ func _apply_save_data(save_data):
 		var inventory_system = get_node_or_null("/root/InventorySystem")
 		if inventory_system and inventory_system.has_method("load_save_data"):
 			inventory_system.load_save_data(save_data.inventory_system)
-			if debug: print(script_name_tag(self, _fname) + "Applied inventory data")
+			if debug: DebugManager.print_debug_auto(self, "Applied inventory data")
 	
 	# Quest System
 	if save_data.has("quest_system"):
 		var quest_system = get_node_or_null("/root/QuestSystem")
 		if quest_system and quest_system.has_method("load_save_data"):
 			quest_system.load_save_data(save_data.quest_system)
-			if debug: print(script_name_tag(self, _fname) + "Applied quest data")
+			if debug: DebugManager.print_debug_auto(self, "Applied quest data")
 	
 	# Pickup System
 	if save_data.has("pickup_system"):
 		var pickup_system = get_node_or_null("/root/PickupSystem")
 		if pickup_system and pickup_system.has_method("load_save_data"):
 			pickup_system.load_save_data(save_data.pickup_system)
-			if debug: print(script_name_tag(self, _fname) + "Applied pickup system data")
+			if debug: DebugManager.print_debug_auto(self, "Applied pickup system data")
 	
 	# Relationship System
 	if save_data.has("relationship_system"):
 		var relationship_system = get_node_or_null("/root/RelationshipSystem")
 		if relationship_system and relationship_system.has_method("load_save_data"):
 			relationship_system.load_save_data(save_data.relationship_system)
-			if debug: print(script_name_tag(self, _fname) + "Applied relationship data")
+			if debug: DebugManager.print_debug_auto(self, "Applied relationship data")
 	
 	# Time System
 	if save_data.has("time_system"):
 		var time_system = get_node_or_null("/root/TimeSystem")
 		if time_system and time_system.has_method("load_data"):
 			time_system.load_data(save_data.time_system)
-			if debug: print(script_name_tag(self, _fname) + "Applied time data")
+			if debug: DebugManager.print_debug_auto(self, "Applied time data")
 	
 	# Memory System
 	if save_data.has("memory_system"):
 		var memory_system = get_node_or_null("/root/MemorySystem")
 		if memory_system and memory_system.has_method("load_save_data"):
 			memory_system.load_save_data(save_data.memory_system)
-			if debug: print(script_name_tag(self, _fname) + "Applied memory system data")
+			if debug: DebugManager.print_debug_auto(self, "Applied memory system data")
 	
 	# Reset start time to now
 	start_time = Time.get_unix_time_from_system()
 	
-	if debug: print(script_name_tag(self, _fname) + "Save data application complete")
+	if debug: DebugManager.print_debug_auto(self, "Save data application complete")
 	return true
 
 # Enhanced reset for new games
 func reset_all_systems():
-	var _fname = "reset_all_systems"
 	# Clear all tags
 	tags.clear()
 	
@@ -998,7 +966,7 @@ func reset_all_systems():
 		elif system_name == "PickupSystem" and system:
 			if system.has_method("reset"):
 				system.reset()
-				if debug: print(script_name_tag(self, _fname) + "Reset pickup system")
+				if debug: DebugManager.print_debug_auto(self, "Reset pickup system")
 
 func get_layer(layer_name : String):
 	const _fname : String = "get_layer"
@@ -1011,15 +979,14 @@ func get_layer(layer_name : String):
 		for child in Node_2D.get_node_or_null("Backgrounds").get_children():
 			layers.append(child)
 
-	if debug: print(script_name_tag(self, _fname) + "layers = " + str(layers))
+	if debug: DebugManager.print_debug_auto(self, "layers = " + str(layers))
 
 	for layer in layers:
 		if layer.name.to_lower() ==  layer_name.to_lower():
-			if debug: print(script_name_tag(self, _fname) + "layer = " + layer.name)
+			if debug: DebugManager.print_debug_auto(self, "layer = " + layer.name)
 			return layer
 	
 func get_pickups():
-	var _fname = "get_pickups"
 	return get_tree().get_nodes_in_group("pickup")
 
 func clear_pickups():
@@ -1028,28 +995,25 @@ func clear_pickups():
 		pickup.die()
 
 func print_pickups(called_from : String):
-	var _fname = "print_pickups"
 	var current_scene = get_current_scene()
 	var pickup_names : String = ""
 	if current_scene:
 		if "location_scene" in current_scene: 
 			for pickup in scenes[current_scene.name]["pickups"]:
 				pickup_names += pickup["item_name"] + " at " + str(pickup["position"]) + ", "
-			print(script_name_tag(self, _fname) + "Pickups stored for scene " + current_scene.name+ " = " + pickup_names.left(pickup_names.length()-2))
+			print(script_name_tag(self) + "Pickups stored for scene " + current_scene.name+ " = " + pickup_names.left(pickup_names.length()-2))
 			#str(scenes[current_scene.name]["pickups"].size()))
 		else:
-			print(script_name_tag(self, _fname) + "No pickups stored for scene " + current_scene.name)
+			print(script_name_tag(self) + "No pickups stored for scene " + current_scene.name)
 		
 
 func clear_pickups_save_data():
-	var _fname = "clear_pickups_save_data"
 	var current_scene = get_current_scene()
 	if current_scene:
 		if "location_scene" in current_scene: 
 			scenes[get_current_scene().name]["pickups"].clear()
 		
 func load_pickups_save_data():
-	var _fname = "load_pickups_save_data"
 	var current_scene = get_current_scene()
 	if current_scene:
 		if "location_scene" in current_scene: 
@@ -1058,61 +1022,58 @@ func load_pickups_save_data():
 			if pickups:
 				for pickup in pickups:
 					scenes[current_scene.name]["pickups"].append(pickup.get_pickup_save_data()) 
-				if debug: print(script_name_tag(self, _fname) + "Pickups for scene " + current_scene.name + " = " + str(scenes[current_scene.name]["pickups"].size()))
+				if debug: DebugManager.print_debug_auto(self, "Pickups for scene " + current_scene.name + " = " + str(scenes[current_scene.name]["pickups"].size()))
 	
 
 func get_scene_pickups_save_data():
-	var _fname = "get_scene_pickups_save_data"
 	var current_scene = get_current_scene()
 	return scenes[get_current_scene().name]["pickups"]
 
 # Debug function
 func debug_memory_state():
-	var _fname = "debug_memory_state"
 	if not debug:
 		return
 	
-	print("\n" + script_name_tag(self, _fname) + "=== GAMESTATE MEMORY DEBUG ===")
-	print(script_name_tag(self, _fname) + "Memory definitions loaded: ", memory_definitions.size())
-	print(script_name_tag(self, _fname) + "Memory chains loaded: ", memory_chains.size())
-	print(script_name_tag(self, _fname) + "Discovered memories: ", discovered_memories.size())
-	print(script_name_tag(self, _fname) + "Discovery history entries: ", memory_discovery_history.size())
+	print("\n" + script_name_tag(self) + "=== GAMESTATE MEMORY DEBUG ===")
+	print(script_name_tag(self) + "Memory definitions loaded: ", memory_definitions.size())
+	print(script_name_tag(self) + "Memory chains loaded: ", memory_chains.size())
+	print(script_name_tag(self) + "Discovered memories: ", discovered_memories.size())
+	print(script_name_tag(self) + "Discovery history entries: ", memory_discovery_history.size())
 	
-	print("\n" + script_name_tag(self, _fname) + "Memories by trigger type:")
+	print("\n" + script_name_tag(self) + "Memories by trigger type:")
 	for trigger_type in memories_by_trigger:
 		var count = 0
 		for target_id in memories_by_trigger[trigger_type]:
 			count += memories_by_trigger[trigger_type][target_id].size()
-		print(script_name_tag(self, _fname) + "  Type ", trigger_type, ": ", count, " memories")
+		print(script_name_tag(self) + "  Type ", trigger_type, ": ", count, " memories")
 	
-	print(script_name_tag(self, _fname) + "============================\n")
+	print(script_name_tag(self) + "============================\n")
 
 # Debug function to check memory data structure
 func debug_memory_definitions():
-	var _fname = "debug_memory_definitions"
 	if not debug:
 		return
 	
-	if debug: print("\n" + script_name_tag(self, _fname) + "=== MEMORY DEFINITIONS DEBUG ===")
-	if debug: print(script_name_tag(self, _fname) + "Total memory definitions: ", memory_definitions.size())
+	if debug: print("\n" + script_name_tag(self) + "=== MEMORY DEFINITIONS DEBUG ===")
+	if debug: DebugManager.print_debug_auto(self, "Total memory definitions: ", memory_definitions.size())
 	
 	for memory_id in memory_definitions:
 		var memory = memory_definitions[memory_id]
-		if debug: print(script_name_tag(self, _fname) + "Memory ID: ", memory_id)
-		if debug: print(script_name_tag(self, _fname) + "  Type: ", typeof(memory))
+		if debug: DebugManager.print_debug_auto(self, "Memory ID: ", memory_id)
+		if debug: DebugManager.print_debug_auto(self, "  Type: ", typeof(memory))
 		if typeof(memory) == TYPE_DICTIONARY:
-			if debug: print(script_name_tag(self, _fname) + "  Keys: ", memory.keys())
-			if debug: print(script_name_tag(self, _fname) + "  Trigger type: ", memory.get("trigger_type", "MISSING"))
-			if debug: print(script_name_tag(self, _fname) + "  Target ID: ", memory.get("target_id", "MISSING"))
+			if debug: DebugManager.print_debug_auto(self, "  Keys: ", memory.keys())
+			if debug: DebugManager.print_debug_auto(self, "  Trigger type: ", memory.get("trigger_type", "MISSING"))
+			if debug: DebugManager.print_debug_auto(self, "  Target ID: ", memory.get("target_id", "MISSING"))
 		else:
-			print(script_name_tag(self, _fname) + "  Value: ", memory)
-		print(script_name_tag(self, _fname) + "---")
+			print(script_name_tag(self) + "  Value: ", memory)
+		print(script_name_tag(self) + "---")
 	
-	if debug: print(script_name_tag(self, _fname) + "Memories by trigger:")
+	if debug: DebugManager.print_debug_auto(self, "Memories by trigger:")
 	for trigger_type in memories_by_trigger:
-		if debug: print(script_name_tag(self, _fname) + "  Type ", trigger_type, ": ", memories_by_trigger[trigger_type].size(), " targets")
+		if debug: DebugManager.print_debug_auto(self, "  Type ", trigger_type, ": ", memories_by_trigger[trigger_type].size(), " targets")
 	
-	if debug: print(script_name_tag(self, _fname) + "===============================\n")
+	if debug: DebugManager.print_debug_auto(self, "===============================\n")
 	
 func script_name(node):
 	var path_string = str(node.get_script().get_path())
@@ -1121,14 +1082,21 @@ func script_name(node):
 	return path_string.right(name_length)
 	#return(path_string.right(path_string.length() - 14))
 
+# Extract caller's function name from the call stack (Godot 4 feature)
+# Allows automatic function name detection without manual _fname strings
+func _get_caller_function_name(depth: int = 2) -> String:
+	var stack = get_stack()
+	if stack.size() > depth:
+		return stack[depth].get("function", "unknown")
+	return "unknown"
+
 func script_name_tag(node, function_name = null):
-	var _fname = "script_name_tag"
 	var this_tag : String
 	var tracker_str = "%04d" % tracker_id
-	if function_name:
-		this_tag = tracker_str + ". " + script_name(node) + "." + function_name + ": "
-	else:
-		this_tag = tracker_str + ". " + script_name(node) + ": "
+	# If no function_name provided, extract from call stack (skip 1 extra frame for this wrapper)
+	if not function_name:
+		function_name = _get_caller_function_name(2)
+	this_tag = tracker_str + ". " + script_name(node) + "." + function_name + ": "
 	tracker_id += 1
 	return this_tag
 

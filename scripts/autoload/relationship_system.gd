@@ -126,31 +126,29 @@ func get_flag(character_id, flag_name):
 	
 # Save/Load System Integration
 func get_save_data():
-	var _fname = "get_save_data"
 	var save_data = {
 		"relationships": relationships.duplicate(true)
 	}
-	
-	if debug: print(GameState.script_name_tag(self, _fname) + "Collected relationship data for ", relationships.size(), " characters")
+
+	if debug: DebugManager.print_debug_auto(self, "Collected relationship data for " + str(relationships.size()) + " characters")
 	return save_data
 
 func load_save_data(data):
-	var _fname = "load_save_data"
 	if typeof(data) != TYPE_DICTIONARY:
-		if debug: print(GameState.script_name_tag(self, _fname) + "ERROR: Invalid data type for relationship system load")
+		if debug: DebugManager.print_debug_auto(self, "ERROR: Invalid data type for relationship system load")
 		return false
-	
+
 	# Restore all relationship data
 	if data.has("relationships"):
 		relationships = data.relationships.duplicate(true)
-		
+
 		# Emit relationship change signals for any relationships that exist
 		for character_id in relationships:
 			var relationship = relationships[character_id]
 			var level = relationship.get("level", RelationshipLevel.STRANGER)
 			relationship_changed.emit(character_id, RelationshipLevel.STRANGER, level)
-		
-		if debug: print(GameState.script_name_tag(self, _fname) + "Restored relationships for ", relationships.size(), " characters")
-	
-	if debug: print(GameState.script_name_tag(self, _fname) + "Relationship system restoration complete")
+
+		if debug: DebugManager.print_debug_auto(self, "Restored relationships for " + str(relationships.size()) + " characters")
+
+	if debug: DebugManager.print_debug_auto(self, "Relationship system restoration complete")
 	return true
