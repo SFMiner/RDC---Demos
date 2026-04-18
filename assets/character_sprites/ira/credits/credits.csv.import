@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://blkelescutaly"
+
+[deps]
+
+files=["res://assets/character_sprites/ira/credits/credits.notes.translation", "res://assets/character_sprites/ira/credits/credits.authors.translation", "res://assets/character_sprites/ira/credits/credits.licenses.translation", "res://assets/character_sprites/ira/credits/credits.urls.translation"]
+
+source_file="res://assets/character_sprites/ira/credits/credits.csv"
+dest_files=["res://assets/character_sprites/ira/credits/credits.notes.translation", "res://assets/character_sprites/ira/credits/credits.authors.translation", "res://assets/character_sprites/ira/credits/credits.licenses.translation", "res://assets/character_sprites/ira/credits/credits.urls.translation"]
+
+[params]
+
+compress=true
+delimiter=0
