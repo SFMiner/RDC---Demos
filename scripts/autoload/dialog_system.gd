@@ -22,6 +22,7 @@ var dialogue_resources = {}
 var balloon_scene
 var memory_system = null
 var game_state
+var memory_extension: Node  # Helper component for dialogue-memory integration
 
 # Add this to dialog_system.gd - replace the existing _ready() function
 
@@ -48,13 +49,15 @@ func _ready():
 		else:
 			if debug: print(GameState.script_name_tag(self, _fname) + "ERROR: Could not find any dialogue balloon scene")
 	
-	if not has_node("DialogMemoryExtension"):
-		var extension_script = load("res://scripts/autoload/dialog_memory_extension.gd")
-		if extension_script:
-			var extension = extension_script.new()
-			extension.name = "DialogMemoryExtension"
-			add_child(extension)
-			if debug: print(GameState.script_name_tag(self, _fname) + "Added DialogMemoryExtension")
+	# Initialize DialogMemoryExtension: a child component handling dialogue-memory integration
+	# This component needs to be in the scene tree for its lifecycle and get_tree() calls
+	# It's kept as an explicit property for clarity and easier testing/introspection
+	var extension_script = load("res://scripts/autoload/dialog_memory_extension.gd")
+	if extension_script:
+		memory_extension = extension_script.new()
+		memory_extension.name = "DialogMemoryExtension"
+		add_child(memory_extension)
+		if debug: print(GameState.script_name_tag(self, _fname) + "Added DialogMemoryExtension as child component")
 
 	# Connect to DialogueManager signals
 	if DialogueManager.has_signal("dialogue_started"):
