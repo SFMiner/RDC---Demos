@@ -358,21 +358,6 @@ func end_dialog():
 	get_tree().paused = false
 	if debug: print(GameState.script_name_tag(self, _fname) + "Dialog ended manually - control released")
 	
-func get_dialog_options():
-	var _fname = "get_dialog_options"
-	if debug: print(GameState.script_name_tag(self, _fname) + "DEPRECATED: get_dialog_options() - Using DialogueManager directly instead")
-	return []
-	
-func make_choice(choice_id):
-	var _fname = "make_choice"
-	if debug: print(GameState.script_name_tag(self, _fname) + "Choice made: " + choice_id)
-	dialog_choice_made.emit(choice_id)
-	
-	# If memory system exists, trigger the dialogue choice event
-	if memory_system:
-		memory_system.trigger_dialogue_choice(choice_id)
-	
-	return ""
 
 # Starts a custom dialog from a string
 func start_custom_dialog(dialog_content: String, title: String = "start"):
