@@ -4,7 +4,7 @@ extends Node
 # Respects both global sys_debug and individual scr_debug settings
 
 # Print debug message if debugging is enabled
-static func print_debug(source: Object, method: String, message: String) -> void:
+func print_debug(source: Object, method: String, message: String) -> void:
 	var should_print = false
 
 	# Check global debug setting
@@ -19,15 +19,15 @@ static func print_debug(source: Object, method: String, message: String) -> void
 		print(GameState.script_name_tag(source, method) + message)
 
 # Print warning (always shows)
-static func print_warning(source: Object, method: String, message: String) -> void:
+func print_warning(source: Object, method: String, message: String) -> void:
 	push_warning(GameState.script_name_tag(source, method) + message)
 
 # Print error (always shows)
-static func print_error(source: Object, method: String, message: String) -> void:
+func print_error(source: Object, method: String, message: String) -> void:
 	push_error(GameState.script_name_tag(source, method) + message)
 
 # Convenience methods that auto-detect caller function name
-static func print_debug_auto(source: Object, message: String) -> void:
+func print_debug_auto(source: Object, message: String) -> void:
 	var should_print = false
 	if "sys_debug" in GameController and GameController.sys_debug:
 		should_print = true
@@ -36,8 +36,8 @@ static func print_debug_auto(source: Object, message: String) -> void:
 	if should_print:
 		print(GameState.script_name_tag(source) + message)
 
-static func print_warning_auto(source: Object, message: String) -> void:
+func print_warning_auto(source: Object, message: String) -> void:
 	push_warning(GameState.script_name_tag(source) + message)
 
-static func print_error_auto(source: Object, message: String) -> void:
+func print_error_auto(source: Object, message: String) -> void:
 	push_error(GameState.script_name_tag(source) + message)
