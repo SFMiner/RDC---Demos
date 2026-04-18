@@ -56,16 +56,12 @@ func _ready():
 			add_child(extension)
 			if debug: print(GameState.script_name_tag(self, _fname) + "Added DialogMemoryExtension")
 
-	# SIMPLIFIED: Just try to connect to DialogueManager signals
-	if Engine.has_singleton("DialogueManager"):
-		var dialogue_manager = Engine.get_singleton("DialogueManager")
-		if dialogue_manager.has_signal("dialogue_started"):
-			GameState.safe_connect(dialogue_manager, "dialogue_started", Callable(self, "_on_dialogue_started"))
-		if dialogue_manager.has_signal("dialogue_ended"):
-			GameState.safe_connect(dialogue_manager, "dialogue_ended", Callable(self, "_on_dialogue_ended"))
-		if debug: print(GameState.script_name_tag(self, _fname) + "Connected to DialogueManager signals")
-	else:
-		if debug: print(GameState.script_name_tag(self, _fname) + "ERROR: DialogueManager singleton not found!")
+	# Connect to DialogueManager signals
+	if DialogueManager.has_signal("dialogue_started"):
+		GameState.safe_connect(DialogueManager, "dialogue_started", Callable(self, "_on_dialogue_started"))
+	if DialogueManager.has_signal("dialogue_ended"):
+		GameState.safe_connect(DialogueManager, "dialogue_ended", Callable(self, "_on_dialogue_ended"))
+	if debug: print(GameState.script_name_tag(self, _fname) + "Connected to DialogueManager signals")
 
 	# Get references to other systems
 	await get_tree().process_frame

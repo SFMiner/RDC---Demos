@@ -65,7 +65,7 @@ func _ready() -> void:
 	var _fname = "_ready"
 	debug = scr_debug or GameController.sys_debug
 	balloon.hide()
-	Engine.get_singleton("DialogueManager").mutated.connect(_on_mutated)
+	DialogueManager.mutated.connect(_on_mutated)
 
 	# If the responses menu doesn't have a next action set, use this one
 	if responses_menu.next_action.is_empty():

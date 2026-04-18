@@ -42,9 +42,7 @@ func _ready():
 	DebugManager.print_debug(self, "_ready", "Initial inventory count: " + str(inventory.size()))
 
 	# Register with DialogueManager
-	if Engine.has_singleton("DialogueManager"):
-		var dialogue_manager = Engine.get_singleton("DialogueManager")
-		dialogue_manager.register_variable("InventorySystem", self)
+	DialogueManager.register_variable("InventorySystem", self)
 
 # Load item templates from JSON file
 func _load_item_templates():
