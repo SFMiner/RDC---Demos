@@ -24,22 +24,15 @@ DialogSystem="*res://scripts/autoload/dialog_system.gd"
 GameController="*res://scripts/autoload/game_controller.gd"
 InventorySystem="*res://scripts/autoload/inventory_system.gd"
 SaveLoadSystem="*res://scripts/autoload/save_load_system.gd"
-RelationshipSystem="*res://scripts/autoload/relationship_system.gd"
-FastTravelSystem="*res://scripts/autoload/fast_travel_system.gd"
 DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
-ItemEffectsSystem="*res://scripts/autoload/item_effects_system.gd"
-IconSystem="*res://scripts/autoload/icon_system.gd"
-QuestSystem="*res://scripts/autoload/quest_system.gd"
 SoundManager="*res://addons/sound_manager/sound_manager.gd"
 MemorySystem="*res://scripts/autoload/memory_system.gd"
 LookAtSystem="*res://scripts/autoload/look_at_system.gd"
-TimeSystem="*res://scripts/autoload/time_system.gd"
 CutsceneManager="*res://scripts/autoload/cutscene_manager.gd"
 NavigationManager="*res://scripts/autoload/navigation_manager.gd"
-PickupSystem="*res://scripts/autoload/pickup_system.gd"
 DebugManager="*res://scripts/autoload/debug_manager.gd"
 Paths="*res://scripts/autoload/paths.gd"
-MCPGameBridge="res://addons/godot_mcp/game_bridge/mcp_game_bridge.gd"
+MCPGameBridge="*res://addons/godot_mcp/game_bridge/mcp_game_bridge.gd"
 
 [dialogue_manager]
 
@@ -158,7 +151,7 @@ npc_jump={
 
 [internationalization]
 
-locale/translations_pot_files=PackedStringArray("res://message_board.dialogue", "res://data/dialogues/father_matthew.dialogue", "res://untitled.dialogue", "res://data/dialogues/bailey.dialogue")
+locale/translations_pot_files=PackedStringArray("res://data/dialogues/father_matthew.dialogue", "res://data/dialogues/bailey.dialogue")
 
 [layer_names]
 

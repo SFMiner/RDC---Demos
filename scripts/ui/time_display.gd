@@ -2,7 +2,7 @@
 extends Control
 
 # assumes your TimeSystem is autoloaded as "TimeSystem"
-@onready var ts = get_node("/root/TimeSystem")
+@onready var ts = get_node_or_null("/root/TimeSystem")
 
 @onready var day_label    = $VBoxContainer/DayLabel
 @onready var time_label   = $VBoxContainer/TimeLabel
@@ -11,18 +11,19 @@ extends Control
 
 func _ready() -> void:
 	# connect using Callables
-	ts.connect("day_changed",          Callable(self, "_on_day_changed"))
-	ts.connect("time_of_day_changed",  Callable(self, "_on_time_changed"))
-	ts.connect("month_changed",        Callable(self, "_on_date_changed"))
-	ts.connect("year_changed",         Callable(self, "_on_date_changed"))
+	if ts:
+		ts.connect("day_changed",          Callable(self, "_on_day_changed"))
+		ts.connect("time_of_day_changed",  Callable(self, "_on_time_changed"))
+		ts.connect("month_changed",        Callable(self, "_on_date_changed"))
+		ts.connect("year_changed",         Callable(self, "_on_date_changed"))
 
 	# initialize display
-	day_label.text  = "Day %d (%s)" % [ts.current_day, ts.get_day_name()]
-	time_label.text = ts.get_time_name()
-	date_label.text = ts.get_formatted_date()
+		day_label.text  = "Day %d (%s)" % [ts.current_day, ts.get_day_name()]
+		time_label.text = ts.get_time_name()
+		date_label.text = ts.get_formatted_date()
 
-	# set slider to current scale
-	speed_slider.value = ts.get_time_scale()
+		# set slider to current scale
+		speed_slider.value = ts.get_time_scale()
 
 func _on_day_changed(old_day: int, new_day: int) -> void:
 	day_label.text = "Day %d (%s)" % [new_day, ts.get_day_name()]

@@ -912,7 +912,7 @@ func _on_drop_button_pressed():
 			"position": player.get_position()
 		}
 
-		PickupSystem.drop_item_in_world(item_data_copy) # item_id: String, amount: int, position: Vector2) 
+#		PickupSystem.drop_item_in_world(item_data_copy) # item_id: String, amount: int, position: Vector2) 
 		refresh_inventory()
 
 		
