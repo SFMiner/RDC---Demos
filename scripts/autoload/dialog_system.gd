@@ -67,11 +67,11 @@ func _ready():
 	await get_tree().process_frame
 
 # Signal handlers for DialogueManager
-func _on_dialogue_started():
+func _on_dialogue_started(_balloon) -> void:
 	var _fname = "_on_dialogue_started"
 	if debug: print(GameState.script_name_tag(self, _fname) + "DialogueManager started dialogue with character: '", current_character_id, "'")
 
-func _on_dialogue_ended():
+func _on_dialogue_ended(_balloon) -> void:
 	var _fname = "_on_dialogue_ended"
 	if debug: print(GameState.script_name_tag(self, _fname) + "=== ORIGINAL DIALOGUE_ENDED SIGNAL ===")
 	if debug: print(GameState.script_name_tag(self, _fname) + "DialogueManager ended dialogue")
