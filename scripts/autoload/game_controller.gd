@@ -53,7 +53,7 @@ var knowledge_base = {}
 func _ready():
 	debug = sys_debug or scr_debug
 	if debug: DebugManager.print_debug_auto(self, "Game Controller initialized")
-	quest_system = QuestSystem
+#	quest_system = QuestSystem
 	var time_system = get_node_or_null("/root/TimeSystem")
 	if time_system:
 		GameState.safe_connect(time_system, "day_changed", Callable(self, "_on_day_changed"))
@@ -106,9 +106,9 @@ func _ready():
 	call_deferred("change_scene", Paths.get_scene("main_menu"))
 	player = GameState.get_player()
 
-func _on_day_changed(old_day, new_day):
-	if debug: DebugManager.print_debug_auto(self, str("Day changed from %d to %d" % [old_day) + str(new_day]))
-	day_advanced.emit()
+#func _on_day_changed(old_day, new_day):
+#	if debug: DebugManager.print_debug_auto(self, str("Day changed from %d to %d" % [old_day) + str(new_day]))
+#	day_advanced.emit()
 
 	# Additional day change logic here
 
@@ -396,7 +396,7 @@ func change_scene(new_scene_path):
 			current_scene_path = new_scene_path
 			if debug: DebugManager.print_debug_auto(self, "Scene changed to: " + new_scene_path)
 			GameState.set_current_scene(scene_instance)
-			if debug: DebugManager.print_debug_auto(self, "location_scene in scene_instance)" + str("location_scene" in scene_instance))
+			if debug: DebugManager.print_debug_auto(self, "location_scene in scene_instance: " + str("location_scene" in scene_instance))
 		else:
 			if debug: DebugManager.print_debug_auto(self, "Failed to load scene: " + new_scene_path)
 	else:
