@@ -1,0 +1,91 @@
+~ sermon_start
+do GameState.set_player_input_enabled(false)
+do CutsceneManager.stop_npc_follow("bailey")
+do CutsceneManager.camera_move_to("FM0", 1.5)
+do CutsceneManager.move_to("father_matthew", "FM0", "walk", true)
+do CutsceneManager.play_animation("father_matthew", "idle_down") 
+do CutsceneManager.move_group("player,bailey,ira", "A0,B0,I0", "walk")
+do CutsceneManager.play_animation("player", "idle_up", true)
+do CutsceneManager.play_animation("bailey", "idle_up", true)
+do CutsceneManager.play_animation("ira", "idle_up", true)
+
+Father Matthew: Today is the Blessing of Flowers.
+do CutsceneManager.play_animation("father_matthew", "emote_down", true)
+do CutsceneManager.play_animation("father_matthew", "idle_down")
+Father Matthew: It is one of the oldest holy days... at least, one of the oldest that the Church still observes.
+Father Matthew: There are of course others that the Church has changed its mind about...
+Father Matthew: We don't hear about the Month of Mercy or think up questions for the Celebration of Reason.
+Father Matthew: We no longer chant the Litany of Liberation, or sit fast throughout the Month of Revelation.
+Father Matthew: And of course we never, EVER talk about the Festival of Libido! 
+Father Matthew: Those things are gone now. Heresies. 
+Father Matthew: We do still have the Week of Wrath. Once just a single day of atonement.
+do CutsceneManager.move_to("malachai", "IM0", "walk", true)
+do CutsceneManager.play_animation("malachai", "idle_left", true)
+do CutsceneManager.play_animation("father_matthew", "idle_right",true)
+do CutsceneManager.wait(1.5)
+do CutsceneManager.play_animation("father_matthew", "idle_down", true)
+Father Matthew: And we still have the Blessing of Flowers. 
+Father Matthew: The day when we contemplate our sins, and plant flowers for them, that their ugliness may bring forth beauty in the world.
+do CutsceneManager.play_animation("father_matthew", "idle_right",true)
+do CutsceneManager.wait(1.5)
+do GameState.set_dialogue_skip_enabled(false)
+do CutsceneManager.play_animation("father_matthew", "swipe_down", true)
+do CutsceneManager.wait(2.0)
+do GameState.set_dialogue_skip_enabled(true)
+do CutsceneManager.play_animation("father_matthew", "idle_down", true)
+Father Matthew: My... friends. I have been guilty of sin.
+Crowd: ::sudden muttering::
+Father Matthew: It's only now that I realize that I have been guilty of pride.
+Father Matthew: I had... forgotten what faith is. But today I am reminded.
+Father Matthew: I have spent weeks trying to write a sermon for today's celebration.
+Father Matthew: I sat at my desk, pen in hand, over a sheet of paper...  
+Father Matthew: Not always the same sheet. Often I wrote a few words, then crossed them out. I went through many pages that way. 
+Father Matthew: I kept trying to make the words come. I prayed for the words to come. I read past sermons, trying to make the words come.
+Father Matthew: Last night, I finally forced words onto the page. They looked wrong there... 
+Father Matthew: ...but we have to do, what we have to do. That is duty. Right? 
+Father Matthew: But it was not. 
+Father Matthew: It was not my duty, as your priest, to make... the words... come. 
+Father Matthew: My duty is to open myself to the sprirt, and let it speak through me. 
+Father Matthew: The spirit has shown me. The spirit speaks through me now.
+Father Matthew: You've heard it said that, without love, our works, however noble, are nothing.
+Father Matthew: You may have even heard it said that, without love, WE are nothing.
+Father Matthew: But the spirit says more. 
+Father Matthew: Without love... GOD is nothing.
+Crowd: ::gasps::
+Father Matthew: For what would such a god be? What is a god who controls...
+Father Matthew: ...who commands us...  
+Father Matthew: ...who condemns our sins... 
+Father Matthew: ...if that god sets one person's love above another's?
+Father Matthew: The only thing worse is a god... who forbids love.
+Father Matthew: THAT is true heresy. 
+Father Matthew: Without love, we are not worthy of God...
+Father Matthew: ...but without love, God would not be worthy of US.
+do CutsceneManager.play_animation("malachai", "emote_left", true)
+do CutsceneManager.play_animation("malachai", "idle_left")
+Inquisitor: ENOUGH!
+do CutsceneManager.move_to("malachai", "IM1", "walk", true)
+do CutsceneManager.play_animation("malachai", "point_left", true)
+Inquisitor: Seize him!
+do CutsceneManager.play_animation("malachai", "idle_left")
+do CutsceneManager.move_group("guard1,guard2", "GA0,GB0", "walk")
+do CutsceneManager.move_group("guard1,guard2", "GA1,GB1", "walk")
+do CutsceneManager.play_animation("guard1", "idle_down", false)
+do CutsceneManager.play_animation("guard2", "idle_down", false)
+Aiden: !!!
+Bailey: ::whispers:: Wait.
+do CutsceneManager.play_animation("malachai", "idle_down")
+Inquisitor: I am Knight Inquisitor Malachai. I have been sent to this place by the Holy Church to investigate rumors of heresy. Rumors that I now see are well founded. 
+Inquisitor Malachai: I am taking the position of head priest of this church, effective immediately. During my investigation, this church will remain open from dawn until dusk, that all may come an make confession.
+Inquisitor Malachai: I foresee the need for many confessions.
+Inquisitor Malachai: This mass is ended. Go now, and serve the Lord.
+do CutsceneManager.move_group("guard1,guard2,malachai,father_matthew", "GA2,GB2,IM2,FM2", "walk")
+do GameState.set_tag("after_sermon")
+do CutsceneManager.camera_restore(1.0)
+do GameState.set_player_input_enabled(true)
+
+=> END
+
+
+
+
+
