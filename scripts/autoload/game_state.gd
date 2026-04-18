@@ -749,7 +749,12 @@ func start_new_game():
 	var inventory_system = get_node_or_null("/root/InventorySystem")
 	if inventory_system:
 		inventory_system.add_item("energy_drink", 2)
-	
+
+	# Load first scene
+	var game_controller = get_node_or_null("/root/GameController")
+	if game_controller:
+		game_controller.change_scene(Paths.get_scene("church_interior"))
+
 	# Emit signal
 	game_started.emit(current_game_id)
 
