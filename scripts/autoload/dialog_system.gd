@@ -36,28 +36,27 @@ var character_memory_states: Dictionary = {}
 # Add this to dialog_system.gd - replace the existing _ready() function
 
 func _ready():
-	var _fname = "_ready"
 	debug = scr_debug or GameController.sys_debug
-	if debug: print(GameState.script_name_tag(self, _fname) + "Dialog System initialized")
+	if debug: DebugManager.print_debug_auto(self, "Dialog System initialized")
 	game_state = GameState
 	memory_system = MemorySystem
-	if debug: print(GameState.script_name_tag(self, _fname) + "Memory system reference obtained: ", memory_system != null)
-	
+	if debug: DebugManager.print_debug_auto(self, "Memory system reference obtained: " + str(memory_system != null))
+
 	# Load our custom balloon scene
 	if ResourceLoader.exists(Paths.get_ui("encounter_dialogue_balloon")):
 		balloon_scene = load(Paths.get_ui("encounter_dialogue_balloon"))
-		if debug: print(GameState.script_name_tag(self, _fname) + "Loaded enhanced dialogue balloon scene")
+		if debug: DebugManager.print_debug_auto(self, "Loaded enhanced dialogue balloon scene")
 	elif ResourceLoader.exists(Paths.get_ui("custom_dialogue_balloon")):
 		balloon_scene = load(Paths.get_ui("custom_dialogue_balloon"))
-		if debug: print(GameState.script_name_tag(self, _fname) + "Loaded custom dialogue balloon scene")
+		if debug: DebugManager.print_debug_auto(self, "Loaded custom dialogue balloon scene")
 	else:
 		# Load the example balloon scene as fallback
 		if ResourceLoader.exists(Paths.get_ui("example_balloon")):
 			balloon_scene = load(Paths.get_ui("example_balloon"))
-			if debug: print(GameState.script_name_tag(self, _fname) + "Loaded example balloon scene as fallback")
+			if debug: DebugManager.print_debug_auto(self, "Loaded example balloon scene as fallback")
 		else:
-			if debug: print(GameState.script_name_tag(self, _fname) + "ERROR: Could not find any dialogue balloon scene")
-	
+			if debug: DebugManager.print_debug_auto(self, "ERROR: Could not find any dialogue balloon scene")
+
 	# Connect to other game systems (memory extension integration)
 	relationship_system = get_node_or_null("/root/RelationshipSystem")
 	quest_system = get_node_or_null("/root/QuestSystem")
@@ -68,7 +67,7 @@ func _ready():
 			memory_system.memory_discovered.connect(_on_memory_discovered)
 		if memory_system.has_signal("dialogue_option_unlocked"):
 			memory_system.dialogue_option_unlocked.connect(_on_dialogue_option_unlocked)
-		if debug: print(GameState.script_name_tag(self, _fname) + "Connected to memory system signals")
+		if debug: DebugManager.print_debug_auto(self, "Connected to memory system signals")
 
 	# Connect to relationship system
 	if relationship_system:
@@ -83,44 +82,42 @@ func _ready():
 		GameState.safe_connect(DialogueManager, "dialogue_started", Callable(self, "_on_dialogue_started"))
 	if DialogueManager.has_signal("dialogue_ended"):
 		GameState.safe_connect(DialogueManager, "dialogue_ended", Callable(self, "_on_dialogue_ended"))
-	if debug: print(GameState.script_name_tag(self, _fname) + "Connected to DialogueManager signals")
+	if debug: DebugManager.print_debug_auto(self, "Connected to DialogueManager signals")
 
 	# Get references to other systems
 	await get_tree().process_frame
 
 # Signal handlers for DialogueManager
 func _on_dialogue_started(_balloon) -> void:
-	var _fname = "_on_dialogue_started"
-	if debug: print(GameState.script_name_tag(self, _fname) + "DialogueManager started dialogue with character: '", current_character_id, "'")
+	if debug: DebugManager.print_debug_auto(self, "DialogueManager started dialogue with character: '" + current_character_id + "'")
 
 func _on_dialogue_ended(_balloon) -> void:
-	var _fname = "_on_dialogue_ended"
-	if debug: print(GameState.script_name_tag(self, _fname) + "=== ORIGINAL DIALOGUE_ENDED SIGNAL ===")
-	if debug: print(GameState.script_name_tag(self, _fname) + "DialogueManager ended dialogue")
-	if debug: print(GameState.script_name_tag(self, _fname) + "Current character ID: '", current_character_id, "'")
-	
+	if debug: DebugManager.print_debug_auto(self, "=== ORIGINAL DIALOGUE_ENDED SIGNAL ===")
+	if debug: DebugManager.print_debug_auto(self, "DialogueManager ended dialogue")
+	if debug: DebugManager.print_debug_auto(self, "Current character ID: '" + current_character_id + "'")
+
 	# Get the current balloons and force cleanup if any remain
 	var balloons = get_tree().get_nodes_in_group("dialogue_balloon")
 	if balloons.size() > 0:
-		if debug: print(GameState.script_name_tag(self, _fname) + "Found " + str(balloons.size()) + " dialogue balloons to force cleanup")
+		if debug: DebugManager.print_debug_auto(self, "Found " + str(balloons.size()) + " dialogue balloons to force cleanup")
 		for balloon in balloons:
 			if balloon.has_method("queue_free"):
 				balloon.queue_free()
-	
+
 	# Emit the signal with the character ID
-	if debug: print(GameState.script_name_tag(self, _fname) + "Emitting dialog_ended signal with character: '", current_character_id, "'")
+	if debug: DebugManager.print_debug_auto(self, "Emitting dialog_ended signal with character: '" + current_character_id + "'")
 	dialog_ended.emit(current_character_id)
-	if debug: print(GameState.script_name_tag(self, _fname) + "Dialog ended with " + current_character_id)
-	
+	if debug: DebugManager.print_debug_auto(self, "Dialog ended with " + current_character_id)
+
 	# Clear the current character ID AFTER emitting the signal
 	var ended_character_id = current_character_id
 	current_character_id = ""
-	
+
 	# Make sure to properly "release" the dialogue control mode
 	Engine.time_scale = 1.0
 	get_tree().paused = false
-	if debug: print(GameState.script_name_tag(self, _fname) + "Dialog ended with character '", ended_character_id, "' - control released")
-	if debug: print(GameState.script_name_tag(self, _fname) + "=== END ORIGINAL DIALOGUE_ENDED SIGNAL ===")
+	if debug: DebugManager.print_debug_auto(self, "Dialog ended with character '" + ended_character_id + "' - control released")
+	if debug: DebugManager.print_debug_auto(self, "=== END ORIGINAL DIALOGUE_ENDED SIGNAL ===")
 
 #SIMPLIFIED: Memory-based dialogue functions using registry
 func unlock_memory(tag: String) -> void:
@@ -277,25 +274,22 @@ func start_dialog(character_id, title = "start"):
 
 # Record that a dialog has been seen
 func record_seen_dialog(character_id, dialog_title):
-	var _fname = "record_seen_dialog"
 	if not seen_dialogs.has(character_id):
 		seen_dialogs[character_id] = []
-		
+
 	if not dialog_title in seen_dialogs[character_id]:
 		seen_dialogs[character_id].append(dialog_title)
-		if debug: print(GameState.script_name_tag(self, _fname) + "Recorded seen dialog: ", character_id, " - ", dialog_title)
+		if debug: DebugManager.print_debug_auto(self, "Recorded seen dialog: " + character_id + " - " + dialog_title)
 
 # Check if a dialog has been seen
 func has_seen_dialog(character_id, dialog_title):
-	var _fname = "has_seen_dialog"
 	if not seen_dialogs.has(character_id):
 		return false
-		
+
 	return dialog_title in seen_dialogs[character_id]
 	
 # Check if dialog is currently active
 func is_dialog_active():
-	var _fname = "is_dialog_active"
 	# First check our internal state
 	if current_character_id != "":
 		# Do a sanity check - is the actual balloon present?
@@ -303,7 +297,7 @@ func is_dialog_active():
 		if balloons.size() == 0:
 			# No actual balloon found, but we think we're in dialog
 			# This means our state is out of sync - fix it
-			if debug: print(GameState.script_name_tag(self, _fname) + "Dialog state mismatch detected - resetting state")
+			if debug: DebugManager.print_debug_auto(self, "Dialog state mismatch detected - resetting state")
 			current_character_id = ""
 			return false
 		return true
@@ -323,40 +317,38 @@ func set_seen_dialogs(data):
 
 # Preload a dialogue resource
 func preload_dialogue(character_id):
-	var _fname = "preload_dialogue"
 	var file_path = "res://data/dialogues/" + character_id + ".dialogue"
-	
+
 	if ResourceLoader.exists(file_path):
 		dialogue_resources[character_id] = load(file_path)
-		if debug: print(GameState.script_name_tag(self, _fname) + "Preloaded dialogue for: ", character_id)
+		if debug: DebugManager.print_debug_auto(self, "Preloaded dialogue for: " + character_id)
 		return true
 	else:
-		if debug: print(GameState.script_name_tag(self, _fname) + "ERROR: Could not find dialogue file: ", file_path)
+		if debug: DebugManager.print_debug_auto(self, "ERROR: Could not find dialogue file: " + file_path)
 		return false
 
 # For backwards compatibility with existing code
 func end_dialog():
-	var _fname = "end_dialog"
-	if debug: print(GameState.script_name_tag(self, _fname) + "Dialog ended manually")
-	
+	if debug: DebugManager.print_debug_auto(self, "Dialog ended manually")
+
 	# Get the current balloons and force cleanup if any remain
 	var balloons = get_tree().get_nodes_in_group("dialogue_balloon")
 	if balloons.size() > 0:
-		if debug: print(GameState.script_name_tag(self, _fname) + "Found " + str(balloons.size()) + " dialogue balloons to force cleanup")
+		if debug: DebugManager.print_debug_auto(self, "Found " + str(balloons.size()) + " dialogue balloons to force cleanup")
 		for balloon in balloons:
 			if balloon.has_method("queue_free"):
 				balloon.queue_free()
-	
+
 	dialog_ended.emit(current_character_id)
-	
+
 	# Clear the current character ID to indicate dialogue is no longer active
 	current_character_id = ""
-	
+
 	# Make sure to properly "release" the dialogue control mode
 	# This ensures the game knows we're no longer in dialogue
 	Engine.time_scale = 1.0
 	get_tree().paused = false
-	if debug: print(GameState.script_name_tag(self, _fname) + "Dialog ended manually - control released")
+	if debug: DebugManager.print_debug_auto(self, "Dialog ended manually - control released")
 	
 
 # Starts a custom dialog from a string

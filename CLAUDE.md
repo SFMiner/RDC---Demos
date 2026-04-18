@@ -34,10 +34,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - This prevents duplicate connections and validates signals before connecting
 
 ### Debug Output
-- ✅ Use: `DebugManager.print_debug(self, "_function_name", "message")`
-- ✅ Use: `DebugManager.print_warning(self, "_function_name", "message")`
-- ✅ Use: `DebugManager.print_error(self, "_function_name", "message")`
-- This provides consistent, controllable debug output respecting both `sys_debug` and `scr_debug` settings
+- ✅ **Recommended**: `DebugManager.print_debug_auto(self, "message")` — auto-detects function name
+- ✅ **Recommended**: `DebugManager.print_warning_auto(self, "message")` — auto-detects function name
+- ✅ **Recommended**: `DebugManager.print_error_auto(self, "message")` — auto-detects function name
+- ✅ **Legacy**: `DebugManager.print_debug(self, "_function_name", "message")` — if you need explicit function names
+- This provides consistent, controllable debug output respecting both `sys_debug` and `scr_debug` settings (auto methods always respect both)
 
 ### Error Handling
 - ✅ Use: `ErrorHandler.log_error(level, source, message)` for structured error logging
@@ -109,9 +110,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Function Structure
 - Order: properties → signals → constants → ready → public methods → private methods
-- Tre first line of each function should be `var _fname = [function name]` so debug can output the script and funtion name for each line.
 - Prefix private helper functions with underscore: `_load_memory_file()`
 - Signal callbacks prefixed with `_on_`: `_on_memory_chain_completed()`
+- ℹ️ Function names are now auto-detected via Godot's `get_stack()` API — manual `var _fname` declarations are no longer required
 
 ### Error Handling
 - Use null checks with `get_node_or_null()` for node references
@@ -128,8 +129,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Set a debug flag at class level: 
 	- `const scr_debug: bool = true`
 	- `var debug` 
-	- first line of _ready function (after `var _fname = "_ready"`) is: 	`debug = scr_debug or GameController.sys_debug`
-- Conditionally print debug info: `if debug: print(GameState.script_name_tag(self, _fname) + "Debug message")`
+	- first line of _ready function: `debug = scr_debug or GameController.sys_debug`
+- **Recommended (auto-detection)**: Use convenience methods that auto-detect the calling function:
+	- `DebugManager.print_debug_auto(self, "message")` — auto-detects function name
+	- `DebugManager.print_warning_auto(self, "message")` — always shows, auto-detects function name
+	- `DebugManager.print_error_auto(self, "message")` — always shows, auto-detects function name
+- **Legacy (explicit)**: If you need to specify function name explicitly:
+	- `DebugManager.print_debug(self, "function_name", "message")`
+	- `DebugManager.print_warning(self, "function_name", "message")`
+	- `DebugManager.print_error(self, "function_name", "message")`
+- ℹ️ Function names are now automatically extracted from the call stack using Godot 4's `get_stack()` API. No need for manual `var _fname` declarations.
 - Use await/yield for asynchronous operations
 
 ## Memory Management
@@ -228,8 +237,11 @@ Options without `=>` jumps followed by more content auto-link to that content (i
 - Quest debugging with `debug_complete_quest_objective`
 - Improved debugging output with script and function names in debug messages
 
-## Recent Updates (as of March 2026)
+## Recent Updates (as of April 2026)
 
+- **Auto-Detected Function Names**: Debug output now automatically detects calling function names via Godot's `get_stack()` API. Use `DebugManager.print_debug_auto()` / `print_warning_auto()` / `print_error_auto()` — no manual `var _fname` declarations needed.
+- **DialogSystem Consolidation**: DialogMemoryExtension merged directly into DialogSystem to eliminate implicit child node anti-pattern
+- **Cleaned Orphaned Code**: Removed combat UI (opponent_entry), old dialog_panel UI, and dead code from Love & Lichens story framework
 - **Phone Conversation Trees**: Data-driven branching phone text conversations with JSON node graphs, `.dialogue` source format, and `tools/conv_dialogue_to_json.py` converter
 - Dialog system now correctly displays character-specific font styles
 - Memory tag system fully operational with observable features working as expected
