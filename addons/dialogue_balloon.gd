@@ -120,7 +120,10 @@ func apply_font_for_character(character_name: String):
 
 	var character_id = character_name.to_lower().replace(" ","_")
 
-		
+	# Handle character name aliases
+	if character_id == "inquisitor":
+		character_id = "malachai"
+
 	if debug: print(GameState.script_name_tag(self, _fname) + "Applying font for character: '", character_name, "' with character_id '" + character_id + "'")
 
 	var character = GameState.get_npc_by_id(character_id)
