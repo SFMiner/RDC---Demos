@@ -28,7 +28,6 @@ func _ready():
 	const _fname = "_ready"
 	debug = scr_debug or GameController.sys_debug
 
-	GameState.set_current_scene(self)
 	if debug: print(GameState.script_name_tag(self, _fname) + "Church Interior scene initialized")
 	
 	setup_player()
