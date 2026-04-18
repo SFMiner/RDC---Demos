@@ -60,7 +60,7 @@ func _ready():
 		print(GameState.script_name_tag(self) + "  dialog_id: ", dialog_id)
 		print(GameState.script_name_tag(self) + "  dialog_tit: ", dialog_title)
 		print(GameState.script_name_tag(self) + "  has interact method: ", has_method("interact"))
-		print(GameState.script_name_tag(self) + "  collision shape: ", $CollisionShape2D if has_node("CollisionShape2D") else "None")
+		print(GameState.script_name_tag(self) + "  collision shape: " + (str($CollisionShape2D) if has_node("CollisionShape2D") else "None"))
 
 # Direct input event handler in case inheritance is causing issues
 func _input_fallback(viewport, event, shape_idx):
