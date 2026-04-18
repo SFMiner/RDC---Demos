@@ -429,9 +429,7 @@ func check_for_interactable():
 	
 	# Set the closest interactable as our current keypress interactable
 	update_closest_interactable()
-	
-#	if debug:
-if debug: DebugManager.print_debug_auto(self, "Found ", interactables_in_range.size(), " interactables in range")
+	if debug: DebugManager.print_debug_auto(self, "Found " + str(interactables_in_range.size()) + " interactables in range")
 
 func update_closest_interactable():
 	# Find the closest interactable in range for key-based interaction
@@ -761,7 +759,7 @@ func _input(event):
 			if debug: DebugManager.print_debug_auto(self, "DEBUG: No interactable object in range")
 
 #func _on_sprite_2d_frame_changed() -> void:
-if debug: DebugManager.print_debug_auto(self, str(sprite.texture) + " frame " + str(sprite.frame))
+#	if debug: DebugManager.print_debug_auto(self, str(sprite.texture) + " frame " + str(sprite.frame))
 
 func sleep():
 	if sleep_interface_scene and not is_instance_valid(sleep_interface):
