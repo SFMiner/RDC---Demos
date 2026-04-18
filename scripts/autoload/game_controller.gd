@@ -69,7 +69,7 @@ func _ready():
 	# Get references to other systems
 	# These should be added as autoloads in the project settings
 	inventory_system = InventorySystem
-	relationship_system = RelationshipSystem
+#	relationship_system = RelationshipSystem
 	dialog_system = DialogSystem
 	save_load_system = SaveLoadSystem
 	notification_system = get_node_or_null("/root/NotificationSystem")
@@ -100,7 +100,7 @@ func _ready():
 #		InputMap.add_action("toggle_quest_panel")
 #		event.keycode = KEY_J
 #		InputMap.action_add_event("toggle_quest_panel", e#Avent)
-if debug: DebugManager.print_debug_auto(self, "Added 'toggle_quest_panel' action with J key")
+#		if debug: DebugManager.print_debug_auto(self, "Added 'toggle_quest_panel' action with J key")
 	GameState.get_current_npcs()
 	# By default, go to main menu
 	call_deferred("change_scene", Paths.get_scene("main_menu"))
@@ -119,7 +119,6 @@ func _on_time_of_day_changed(old_time, new_time):
 
 # Modified _unhandled_input function for game_controller.gd
 func _ensure_input_actions():
-
 	# Define all required actions with default keys
 	var required_actions = {
 		"interact": [KEY_E, KEY_SPACE],
@@ -205,7 +204,7 @@ func _unhandled_input(event):
 				# Check for other panels that might be open
 				for child in layer.get_children():
 					if child is Control and child.visible and child.name.ends_with("Panel"):
-						if debug: DebugManager.print_debug_auto(self, "UI panel found: ", child.name, ", closing it")
+						if debug: DebugManager.print_debug_auto(self, "UI panel found: " + child.name + ", closing it")
 						child.visible = false
 						get_tree().paused = false
 						panel_closed = true
@@ -256,7 +255,7 @@ func load_game(slot):
 			save_load_system.load_game(slot)
 	player = get_tree().get_first_node_in_group("player")
 
-	
+
 # Save a game
 func save_game(slot):
 	var game_state = get_node_or_null("/root/GameState")
@@ -283,7 +282,7 @@ func toggle_pause_menu():
 		return
 
 	# Debug info to check current path
-	if debug: DebugManager.print_debug_auto(self, "Current scene path: ", current_scene_path)
+	if debug: DebugManager.print_debug_auto(self, "Current scene path: " + current_scene_path)
 
 	# Check if we're in a gameplay scene (not the main menu)
 	# We need to be more careful with how we determine this
@@ -305,7 +304,7 @@ func toggle_pause_menu():
 		# Menu exists, just toggle visibility
 		pause_menu.visible = !pause_menu.visible
 		get_tree().paused = pause_menu.visible
-		if debug: DebugManager.print_debug_auto(self, "Toggling pause menu visibility: ", pause_menu.visible)
+		if debug: DebugManager.print_debug_auto(self, "Toggling pause menu visibility: " + str(pause_menu.visible))
 	else:
 		# Create the pause menu
 		if pause_menu_scene:
@@ -361,7 +360,7 @@ func _on_quit_to_menu():
 
 
 func change_scene(new_scene_path):
-	if debug: DebugManager.print_debug_auto(self, "Changing scene to: ", new_scene_path)
+	if debug: DebugManager.print_debug_auto(self, "Changing scene to: " + new_scene_path)
 	var current_scene = GameState.get_current_scene()
 
 	var old_location = current_location
@@ -371,8 +370,8 @@ func change_scene(new_scene_path):
 	# Show loading label if needed
 	var loading_label
 	if get_node_or_null("/root/Game"):
-		loading_label = get_node_or_null("/root/Game/LoadingLabel")  
-	else: 
+		loading_label = get_node_or_null("/root/Game/LoadingLabel")
+	else:
 		loading_label = null
 
 	if loading_label:
@@ -387,7 +386,7 @@ func change_scene(new_scene_path):
 			for child in current_scene_container.get_children():
 				current_scene_container.remove_child(child)
 				child.queue_free()
-		
+
 		# Load the new scene
 		var scene_resource = load(new_scene_path)
 		if scene_resource:
@@ -395,19 +394,19 @@ func change_scene(new_scene_path):
 			current_scene_container.add_child(scene_instance)
 			active_scene = scene_instance
 			current_scene_path = new_scene_path
-			if debug: DebugManager.print_debug_auto(self, "Scene changed to: ", new_scene_path)
+			if debug: DebugManager.print_debug_auto(self, "Scene changed to: " + new_scene_path)
 			GameState.set_current_scene(scene_instance)
 			if debug: DebugManager.print_debug_auto(self, "location_scene in scene_instance)" + str("location_scene" in scene_instance))
 		else:
-			if debug: DebugManager.print_debug_auto(self, "Failed to load scene: ", new_scene_path)
+			if debug: DebugManager.print_debug_auto(self, "Failed to load scene: " + new_scene_path)
 	else:
 		# Use the standard Godot scene changing approach
 		var error = get_tree().change_scene_to_file(new_scene_path)
 		if error == OK:
 			current_scene_path = new_scene_path
-			if debug: DebugManager.print_debug_auto(self, "Scene changed to: ", new_scene_path)
+			if debug: DebugManager.print_debug_auto(self, "Scene changed to: " + new_scene_path)
 		else:
-			if debug: DebugManager.print_debug_auto(self, "Failed to load scene: ", new_scene_path, " Error code: ", error)
+			if debug: DebugManager.print_debug_auto(self, "Failed to load scene: " + new_scene_path + " Error code: " + str(error))
 
 	# Hide loading label
 	if loading_label:
@@ -432,7 +431,7 @@ func change_scene(new_scene_path):
 	
 # Enhanced scene change method that preserves player state and handles spawn points
 func change_location(new_scene_path, spawn_point="default"):
-	if debug: DebugManager.print_debug_auto(self, "DEBUG: Changing location to: ", new_scene_path, " with spawn point: ", spawn_point)
+	if debug: DebugManager.print_debug_auto(self, "DEBUG: Changing location to: " + new_scene_path + " with spawn point: " + spawn_point)
 
 	# Save current player state if available
 	var current_player = get_tree().get_first_node_in_group("player")
@@ -442,12 +441,12 @@ func change_location(new_scene_path, spawn_point="default"):
 		var player_health
 		if "health" in current_player:
 			player_health = current_player.get("health")
-		else: 
+		else:
 			player_health= null
 		var player_last_direction
 		if "last_direction" in current_player:
 			player_last_direction = current_player.get("last_direction")
-		else: 
+		else:
 			player_last_direction = null
 		# Save core player properties
 		player_state = {
@@ -456,13 +455,13 @@ func change_location(new_scene_path, spawn_point="default"):
 			"last_direction": player_last_direction
 		}
 
-		if debug: DebugManager.print_debug_auto(self, "DEBUG: Saved player state: ", player_state)
+		if debug: DebugManager.print_debug_auto(self, "DEBUG: Saved player state: " + str(player_state))
 	else:
 		if debug: DebugManager.print_debug_auto(self, "DEBUG: No player found in current scene to save state")
 
 	# Extract location name for debugging
 	var location_name = new_scene_path.get_file().get_basename()
-	if debug: DebugManager.print_debug_auto(self, "DEBUG: Transitioning to location: ", location_name)
+	if debug: DebugManager.print_debug_auto(self, "DEBUG: Transitioning to location: " + location_name)
 
 	# Use basic scene change
 	change_scene(new_scene_path)
@@ -478,32 +477,32 @@ func change_location(new_scene_path, spawn_point="default"):
 		if debug: DebugManager.print_debug_auto(self, "DEBUG: ERROR: Could not find player in new scene!")
 		return
 	else:
-		if debug: DebugManager.print_debug_auto(self, "DEBUG: Found new player at position: ", new_player.position)
+		if debug: DebugManager.print_debug_auto(self, "DEBUG: Found new player at position: " + str(new_player.position))
 
 	# Find spawn point in new scene
-	if debug: DebugManager.print_debug_auto(self, "DEBUG: Looking for spawn point: ", spawn_point)
+	if debug: DebugManager.print_debug_auto(self, "DEBUG: Looking for spawn point: " + spawn_point)
 	var spawn_position = _find_spawn_point(spawn_point)
-	if debug: DebugManager.print_debug_auto(self, "DEBUG: Spawn position result: ", spawn_position)
+	if debug: DebugManager.print_debug_auto(self, "DEBUG: Spawn position result: " + str(spawn_position))
 
 	# Apply saved player state
 	if spawn_position != Vector2.ZERO:
 		# Use spawn point if found and valid
-		if debug: DebugManager.print_debug_auto(self, "DEBUG: Moving player to spawn position: ", spawn_position)
+		if debug: DebugManager.print_debug_auto(self, "DEBUG: Moving player to spawn position: " + str(spawn_position))
 		new_player.global_position = spawn_position  # Using global_position instead of position
-		if debug: DebugManager.print_debug_auto(self, "DEBUG: Player position after setting: ", new_player.global_position)
+		if debug: DebugManager.print_debug_auto(self, "DEBUG: Player position after setting: " + str(new_player.global_position))
 	elif not player_state.is_empty():
 		# Transfer player properties
 		if debug: DebugManager.print_debug_auto(self, "DEBUG: No spawn point found. Using saved player state to position player")
 		new_player.position = player_state.position
-		if debug: DebugManager.print_debug_auto(self, "DEBUG: Player position after setting from saved state: ", new_player.position)
+		if debug: DebugManager.print_debug_auto(self, "DEBUG: Player position after setting from saved state: " + str(new_player.position))
 
 		if player_state.last_direction != null:
 			new_player.last_direction = player_state.last_direction
-			if debug: DebugManager.print_debug_auto(self, "DEBUG: Restored player direction: ", new_player.last_direction)
+			if debug: DebugManager.print_debug_auto(self, "DEBUG: Restored player direction: " + str(new_player.last_direction))
 
 		if player_state.health != null and "health" in new_player:
 			new_player.health = player_state.health
-			if debug: DebugManager.print_debug_auto(self, "DEBUG: Restored player health: ", new_player.health)
+			if debug: DebugManager.print_debug_auto(self, "DEBUG: Restored player health: " + str(new_player.health))
 	else:
 		if debug: DebugManager.print_debug_auto(self, "DEBUG: WARNING: No spawn point found and no player state to restore!")
 
@@ -522,30 +521,30 @@ func change_location(new_scene_path, spawn_point="default"):
 
 # Helper function to find a spawn point in the current scene
 func _find_spawn_point(spawn_point_name):
-	if debug: DebugManager.print_debug_auto(self, "DEBUG: Looking for spawn point: ", spawn_point_name)
+	if debug: DebugManager.print_debug_auto(self, "DEBUG: Looking for spawn point: " + spawn_point_name)
 
 	# Print current scene path for debugging
-	if debug: DebugManager.print_debug_auto(self, "DEBUG: Current scene path: ", current_scene_path)
+	if debug: DebugManager.print_debug_auto(self, "DEBUG: Current scene path: " + current_scene_path)
 
 	# First look for a dedicated spawn point node
 	var spawn_points = get_tree().get_nodes_in_group("spawn_point")
-	if debug: DebugManager.print_debug_auto(self, "DEBUG: Found ", spawn_points.size(), " spawn points in the scene")
+	if debug: DebugManager.print_debug_auto(self, "DEBUG: Found " + str(spawn_points.size()) + " spawn points in the scene")
 
 	# Debug: print all spawn points
 	for i in range(spawn_points.size()):
 		var point = spawn_points[i]
-		if debug: DebugManager.print_debug_auto(self, "DEBUG: Spawn point ", i, ": name=", point.name, ", position=", point.global_position)
+		if debug: DebugManager.print_debug_auto(self, "DEBUG: Spawn point " + str(i) + ": name=" + point.name + ", position=" + str(point.global_position))
 
 		# Handle properties if they exist
 		if point.get("spawn_id") != null:
-			if debug: DebugManager.print_debug_auto(self, "DEBUG: ... has spawn_id property: ", point.get("spawn_id"))
+			if debug: DebugManager.print_debug_auto(self, "DEBUG: ... has spawn_id property: " + str(point.get("spawn_id")))
 		if point.get("is_default") != null:
-			DebugManager.print_debug_auto(self, "DEBUG: ... is_default: ", point.get("is_default"))
+			DebugManager.print_debug_auto(self, "DEBUG: ... is_default: " + str(point.get("is_default")))
 
 	# Look for matching spawn point by name first
 	for point in spawn_points:
 		if point.name == spawn_point_name:
-			if debug: DebugManager.print_debug_auto(self, "DEBUG: Found spawn point by name: ", point.name, " at position ", point.global_position)
+			if debug: DebugManager.print_debug_auto(self, "DEBUG: Found spawn point by name: " + point.name + " at position " + str(point.global_position))
 			return point.global_position
 
 	# Then look for matching spawn point by spawn_id
@@ -553,7 +552,7 @@ func _find_spawn_point(spawn_point_name):
 		# Try to get the spawn_id property safely
 		var id = point.get("spawn_id")
 		if id != null and id == spawn_point_name:
-			if debug: DebugManager.print_debug_auto(self, "DEBUG: Found spawn point by spawn_id: ", id, " at position ", point.global_position)
+			if debug: DebugManager.print_debug_auto(self, "DEBUG: Found spawn point by spawn_id: " + str(id) + " at position " + str(point.global_position))
 			return point.global_position
 
 	# Look for default spawn point if we're looking for "default"
@@ -561,30 +560,30 @@ func _find_spawn_point(spawn_point_name):
 		for point in spawn_points:
 			# Try to get the is_default property safely
 			if point.get("is_default") == true:
-				if debug: DebugManager.print_debug_auto(self, "DEBUG: Found default spawn point: ", point.name, " at position ", point.global_position)
+				if debug: DebugManager.print_debug_auto(self, "DEBUG: Found default spawn point: " + point.name + " at position " + str(point.global_position))
 				return point.global_position
 
 	# If no dedicated spawn point is found, look for a location transition with this name
 	var transitions = get_tree().get_nodes_in_group("interactable")
-	if debug: DebugManager.print_debug_auto(self, "DEBUG: Found ", transitions.size(), " interactable objects that could be transitions")
+	if debug: DebugManager.print_debug_auto(self, "DEBUG: Found " + str(transitions.size()) + " interactable objects that could be transitions")
 
 	# Debug: print all transitions
 	for i in range(transitions.size()):
 		var transition = transitions[i]
-		if debug: DebugManager.print_debug_auto(self, "DEBUG: Transition ", i, ": name=", transition.name)
+		if debug: DebugManager.print_debug_auto(self, "DEBUG: Transition " + str(i) + ": name=" + transition.name)
 
 	# Check for matching transition
 	for transition in transitions:
 		if transition.name == spawn_point_name:
-			if debug: DebugManager.print_debug_auto(self, "DEBUG: Found transition point with matching name: ", transition.name, " at position ", transition.global_position)
+			if debug: DebugManager.print_debug_auto(self, "DEBUG: Found transition point with matching name: " + transition.name + " at position " + str(transition.global_position))
 			return transition.global_position
 
 	# Return zero vector if no spawn point is found
-	if debug: DebugManager.print_debug_auto(self, "DEBUG: Could not find any spawn point matching: ", spawn_point_name)
+	if debug: DebugManager.print_debug_auto(self, "DEBUG: Could not find any spawn point matching: " + spawn_point_name)
 
 	# If there are any spawn points, use the first one as fallback
 	if spawn_points.size() > 0:
-		if debug: DebugManager.print_debug_auto(self, "DEBUG: Using first available spawn point as fallback: ", spawn_points[0].name, " at position ", spawn_points[0].global_position)
+		if debug: DebugManager.print_debug_auto(self, "DEBUG: Using first available spawn point as fallback: " + spawn_points[0].name + " at position " + str(spawn_points[0].global_position))
 		return spawn_points[0].global_position
 
 	if debug: DebugManager.print_debug_auto(self, "DEBUG: No fallback spawn points available, returning Vector2.ZERO")
@@ -633,7 +632,7 @@ func unlock_area(area_id):
 
 	# Unlock the area
 	unlocked_areas[area_id] = true
-	if debug: DebugManager.print_debug_auto(self, "Area unlocked: ", area_id)
+	if debug: DebugManager.print_debug_auto(self, "Area unlocked: " + area_id)
 
 	# You might want to update UI or trigger other events here
 	# For example, show a notification to the player
@@ -646,7 +645,7 @@ func add_knowledge(knowledge_id):
 
 	# Add knowledge to the knowledge base
 	knowledge_base[knowledge_id] = true
-	if debug: DebugManager.print_debug_auto(self, "Knowledge added: ", knowledge_id)
+	if debug: DebugManager.print_debug_auto(self, "Knowledge added: " + knowledge_id)
 
 	# You might want to update UI or trigger other events here
 	# For example, show a notification to the player
@@ -674,8 +673,8 @@ func create_test_items():
 	for item in items:
 		# Create a minimal custom_data with just amount
 		if "amount" in item:
-			custom_data = { "amount": item.amount } 
-		else: 
+			custom_data = { "amount": item.amount }
+		else:
 			custom_data = null
 
 		# Now we don't need to pass full item data - it will be loaded from templates
@@ -728,7 +727,7 @@ func toggle_inventory():
 				if debug: DebugManager.print_debug_auto(self, "Failed to load inventory panel scene")
 				return
 		else:
-			if debug: DebugManager.print_debug_auto(self, "Inventory panel scene not found at path: ", scene_path)
+			if debug: DebugManager.print_debug_auto(self, "Inventory panel scene not found at path: " + scene_path)
 			return
 
 	# Toggle visibility through the panel's function
@@ -739,7 +738,7 @@ func toggle_inventory():
 		# Fallback to direct property toggle
 		inventory_panel.visible = !inventory_panel.visible
 		get_tree().paused = inventory_panel.visible
-		if debug: DebugManager.print_debug_auto(self, "Directly toggled inventory panel visibility: ", inventory_panel.visible)
+		if debug: DebugManager.print_debug_auto(self, "Directly toggled inventory panel visibility: " + str(inventory_panel.visible))
 
 
 
@@ -747,21 +746,21 @@ func toggle_inventory():
 func on_location_entered(location_id):
 	if quest_system:
 		quest_system.on_location_entered(location_id)
-		if debug: DebugManager.print_debug_auto(self, "Location entered: ", location_id)
+		if debug: DebugManager.print_debug_auto(self, "Location entered: " + location_id)
 
 func debug_complete_quest_objective(quest_id, objective_type, target_id):
 	if quest_system:
 		if objective_type == "visit":
 			quest_system.on_location_entered(target_id)
-			if debug: DebugManager.print_debug_auto(self, "DEBUG: Triggered location objective: ", target_id)
+			if debug: DebugManager.print_debug_auto(self, "DEBUG: Triggered location objective: " + target_id)
 		elif objective_type == "talk":
 			quest_system._check_talk_objectives(target_id)
-			if debug: DebugManager.print_debug_auto(self, "DEBUG: Triggered talk objective with: ", target_id)
+			if debug: DebugManager.print_debug_auto(self, "DEBUG: Triggered talk objective with: " + target_id)
 		elif objective_type == "custom":
 			quest_system.complete_custom_objective(quest_id, target_id)
-			if debug: DebugManager.print_debug_auto(self, "DEBUG: Completed custom objective: ", target_id)
+			if debug: DebugManager.print_debug_auto(self, "DEBUG: Completed custom objective: " + target_id)
 		else:
-			if debug: DebugManager.print_debug_auto(self, "DEBUG: Unknown objective type: ", objective_type)
+			if debug: DebugManager.print_debug_auto(self, "DEBUG: Unknown objective type: " + objective_type)
 	else:
 		if debug: DebugManager.print_debug_auto(self, "ERROR: QuestSystem not found")
 	
@@ -854,4 +853,4 @@ func waiting():
 		# Fallback to direct property toggle
 		quest_panel.visible = !quest_panel.visible
 		get_tree().paused = quest_panel.visible
-		if debug: DebugManager.print_debug_auto(self, "Directly toggled quest panel visibility: ", quest_panel.visible)
+		if debug: DebugManager.print_debug_auto(self, "Directly toggled quest panel visibility: " + str(quest_panel.visible))
