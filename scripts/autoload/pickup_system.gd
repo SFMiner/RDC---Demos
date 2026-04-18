@@ -20,7 +20,7 @@ var active_pickups = {}
 
 func _ready():
 	debug = scr_debug or GameController.sys_debug if Engine.has_singleton("GameController") else scr_debug
-	if debug: print(GameState.script_name_tag(self) + "Pickup System initialized")
+	if debug: DebugManager.print_debug_auto(self, "Pickup System initialized")
 	
 	# Connect to scene changes to manage pickups
 	var game_controller = get_node_or_null("/root/GameController")
@@ -28,7 +28,7 @@ func _ready():
 		game_controller.location_changed.connect(_on_location_changed)
 
 func _on_location_changed(old_location, new_location):
-	if debug: DebugManager.print_debug_auto(self, "Location changed from ", old_location, " to ", new_location)
+	if debug: DebugManager.print_debug_auto(self, "Location changed from " + old_location + " to " + new_location)
 	
 	# Save state of previous scene before switching
 	if not old_location.is_empty():
@@ -42,19 +42,19 @@ func _on_location_changed(old_location, new_location):
 func save_current_scene_pickup_state():
 	var scene_path = get_tree().current_scene.scene_file_path
 	
-	if debug: DebugManager.print_debug_auto(self, "Saving pickup state for scene: ", scene_path)
+	if debug: DebugManager.print_debug_auto(self, "Saving pickup state for scene: " + scene_path)
 
 func manage_scene_pickups():
 	var scene_path = get_tree().current_scene.scene_file_path
 	
-	if debug: DebugManager.print_debug_auto(self, "Managing pickups for scene: ", scene_path)
+	if debug: DebugManager.print_debug_auto(self, "Managing pickups for scene: " + scene_path)
 	
 	GameState.clear_pickups_save_data()
-	if debug: GameState.print_pickups(GameState.script_name_tag(self, _fname))
+	if debug: DebugManager.print_debug_auto(self, "Pickups: " + str(GameState.pickups))
 	GameState.load_pickups_save_data()
-	if debug: GameState.print_pickups(GameState.script_name_tag(self, _fname))
+	if debug: DebugManager.print_debug_auto(self, "Pickups: " + str(GameState.pickups))
 	GameState.clear_pickups()
-	if debug: GameState.print_pickups(GameState.script_name_tag(self, _fname))
+	if debug: DebugManager.print_debug_auto(self, "Pickups: " + str(GameState.pickups))
 
 	restore_scene_from_saved_state()
 
@@ -82,7 +82,7 @@ func initialize_scene_pickups_from_scene_file(scene_path: String):
 	
 	# Get all pickup nodes that were created by the scene file
 	var pickups = get_tree().get_nodes_in_group("pickup")
-	if debug: DebugManager.print_debug_auto(self, "Found ", pickups.size(), " pickups in scene file")
+	if debug: DebugManager.print_debug_auto(self, "Found " + str(pickups.size()) + " pickups in scene file")
 	
 	var pickup_states = {}
 	
@@ -105,24 +105,24 @@ func initialize_scene_pickups_from_scene_file(scene_path: String):
 				"data": pickup_data
 			}
 			
-			if debug: DebugManager.print_debug_auto(self, "Initialized pickup: ", pickup_id)
+			if debug: DebugManager.print_debug_auto(self, "Initialized pickup: " + pickup_id)
 	
 	# Store initial state for this scene
 	scene_pickup_states[scene_path] = pickup_states
-	if debug: DebugManager.print_debug_auto(self, "Created initial state with ", pickup_states.size(), " pickups")
+	if debug: DebugManager.print_debug_auto(self, "Created initial state with " + str(pickup_states.size()) + " pickups")
 
 func remove_all_scene_pickups():
 	
 	# Remove all pickup items that were instantiated by the scene file
 	var pickups = get_tree().get_nodes_in_group("pickup")
-	if debug: DebugManager.print_debug_auto(self, "Removing ", pickups.size(), " scene pickups")
+	if debug: DebugManager.print_debug_auto(self, "Removing " + str(pickups.size()) + " scene pickups")
 	
 	for pickup in pickups:
-		if debug: DebugManager.print_debug_auto(self, "Removing pickup: ", pickup.name)
+		if debug: DebugManager.print_debug_auto(self, "Removing pickup: " + pickup.name)
 		pickup.queue_free()
 
 func create_pickup_from_data(pickup_data: Dictionary):
-	DebugManager.print_debug_auto(self, " called")
+	if debug: DebugManager.print_debug_auto(self, "create_pickup_from_data called")
 	# Create the pickup item
 	var player : Player = GameState.get_player()
 	var current_scene = GameState.get_current_scene()
@@ -138,7 +138,7 @@ func create_pickup_from_data(pickup_data: Dictionary):
 	pickup_instance.item_amount = pickup_data.item_amount
 	pickup_instance.auto_pickup = pickup_data.auto_pickup
 	pickup_instance.scale = pickup_data.scale
-	if debug: DebugManager.print_debug_auto(self, "pickup scale = ", str(pickup_instance.scale))
+	if debug: DebugManager.print_debug_auto(self, "pickup scale = " + str(pickup_instance.scale))
 	pickup_instance.pickup_range = pickup_data.pickup_range
 	pickup_instance.pickup_instance_id = pickup_data.pickup_instance_id
 	if pickup_data.has("position"):
@@ -146,7 +146,7 @@ func create_pickup_from_data(pickup_data: Dictionary):
 	
 	active_pickups[pickup_data.pickup_instance_id] = pickup_instance
 	
-	if debug: DebugManager.print_debug_auto(self, "Created pickup: ", pickup_data.pickup_instance_id)
+	if debug: DebugManager.print_debug_auto(self, "Created pickup: " + pickup_data.pickup_instance_id)
 
 	return pickup_instance
 	
@@ -160,7 +160,7 @@ func mark_pickup_collected(pickup_id: String):
 	var scene_path = get_tree().current_scene.scene_file_path
 	if scene_pickup_states.has(scene_path) and scene_pickup_states[scene_path].has(pickup_id):
 		scene_pickup_states[scene_path][pickup_id].collected = true
-		if debug: DebugManager.print_debug_auto(self, "Marked pickup as collected: ", pickup_id)
+		if debug: DebugManager.print_debug_auto(self, "Marked pickup as collected: " + pickup_id)
 	
 	pickup_collected.emit(pickup_id, "")
 
@@ -172,12 +172,12 @@ func register_pickup(pickup_node):
 	var pickup_id = pickup_node.pickup_instance_id
 	active_pickups[pickup_id] = pickup_node
 	
-	if debug: DebugManager.print_debug_auto(self, "Registered pickup: ", pickup_id)
+	if debug: DebugManager.print_debug_auto(self, "Registered pickup: " + pickup_id)
 
 
 
 func drop_item_in_world(pickup_data : Dictionary) -> void:
-	if debug: DebugManager.print_debug_auto(self, " function called")
+	if debug: DebugManager.print_debug_auto(self, "drop_item_in_world called")
 	var current_scene = GameState.get_current_scene()
 	var scene_path = current_scene.scene_file_path
 	
@@ -211,7 +211,7 @@ func get_save_data() -> Dictionary:
 		"scene_pickup_states": GameState.scenes# cene_pickup_states.duplicate(true)
 	}
 	
-	if debug: DebugManager.print_debug_auto(self, "Collected pickup data for ", scene_pickup_states.size(), " scenes")
+	if debug: DebugManager.print_debug_auto(self, "Collected pickup data for " + str(scene_pickup_states.size()) + " scenes")
 	return save_data
 
 func load_save_data(data: Dictionary) -> bool:

@@ -96,7 +96,7 @@ const scr_debug : bool = false
 
 func _ready():
 	debug = scr_debug or GameController.sys_debug 
-	if debug: DebugManager.print_debug_auto(self, "NPC initialized: ", character_id)
+	if debug: DebugManager.print_debug_auto(self, "NPC initialized: " + str(character_id))
 	#label.text = str(z_index)
 	#label_z.text = str(sprite.z_index)
 	#label3.text = str(z_index)
@@ -156,7 +156,7 @@ func _sync_to_character_data():
 	# Then, load and merge additional data from JSON file if it exists
 	_load_additional_data_from_json()
 	
-	if debug: DebugManager.print_debug_auto(self, "Synced character data for: ", character_id)
+	if debug: DebugManager.print_debug_auto(self, "Synced character data for: " + str(character_id))
 
 func _load_additional_data_from_json():
 	"""Load additional character data from JSON file to supplement @export variables"""
@@ -166,7 +166,7 @@ func _load_additional_data_from_json():
 	
 	var data_path = "res://data/characters/" + character_id + ".json"
 	if not FileAccess.file_exists(data_path):
-		if debug: DebugManager.print_debug_auto(self, "No JSON file found for: ", character_id)
+		if debug: DebugManager.print_debug_auto(self, "No JSON file found for: " + str(character_id))
 		return
 	
 	var file = FileAccess.open(data_path, FileAccess.READ)
@@ -175,7 +175,7 @@ func _load_additional_data_from_json():
 	
 	var json = JSON.new()
 	if json.parse(json_text) != OK:
-		if debug: DebugManager.print_debug_auto(self, "Failed to parse JSON for: ", character_id)
+		if debug: DebugManager.print_debug_auto(self, "Failed to parse JSON for: " + str(character_id))
 		return
 	
 	
@@ -215,7 +215,7 @@ func _load_additional_data_from_json():
 		if not character_data.has(key):
 			character_data[key] = json_data[key]
 	
-	if debug: DebugManager.print_debug_auto(self, "Merged JSON data for: ", character_id)
+	if debug: DebugManager.print_debug_auto(self, "Merged JSON data for: " + str(character_id))
 
 func _setup_character_specific_features():
 	"""Load observable features from character data files, not hardcoded"""
@@ -231,10 +231,10 @@ func _load_observable_features_from_data():
 		return
 	
 	var data_path = "res://data/characters/" + character_id + ".json"
-	if debug: DebugManager.print_debug_auto(self, "Loading features from: ", data_path)
+	if debug: DebugManager.print_debug_auto(self, "Loading features from: " + str(data_path))
 	
 	if not FileAccess.file_exists(data_path):
-		if debug: DebugManager.print_debug_auto(self, "No data file found for: ", character_id)
+		if debug: DebugManager.print_debug_auto(self, "No data file found for: " + str(character_id))
 		return
 	
 	var file = FileAccess.open(data_path, FileAccess.READ)
@@ -243,16 +243,16 @@ func _load_observable_features_from_data():
 	
 	var json = JSON.new()
 	if json.parse(json_text) != OK:
-		if debug: DebugManager.print_debug_auto(self, "Failed to parse JSON for: ", character_id)
+		if debug: DebugManager.print_debug_auto(self, "Failed to parse JSON for: " + str(character_id))
 		return
 	
 	var data = json.data
 	if not data.has("observable_features"):
-		if debug: DebugManager.print_debug_auto(self, "No observable_features in data for: ", character_id)
+		if debug: DebugManager.print_debug_auto(self, "No observable_features in data for: " + str(character_id))
 		return
 	
 	var features_data = data["observable_features"]
-	if debug: DebugManager.print_debug_auto(self, "Loading ", features_data.size(), " features for ", character_id)
+	if debug: DebugManager.print_debug_auto(self, "Loading " + str(features_data.size()) + " features for " + str(character_id))
 	
 	# Load each feature from the data
 	for feature_id in features_data.keys():
@@ -260,10 +260,10 @@ func _load_observable_features_from_data():
 		var description = feature_data.get("description", "")
 		var memory_tag = feature_data.get("memory_tag", "")
 		
-		if debug: DebugManager.print_debug_auto(self, "Adding feature: ", feature_id, " -> ", memory_tag)
+		if debug: DebugManager.print_debug_auto(self, "Adding feature: " + str(feature_id) + " -> " + str(memory_tag))
 		add_observable_feature(feature_id, description, memory_tag)
 	
-	if debug: DebugManager.print_debug_auto(self, "Successfully loaded features: ", observable_features.keys())
+	if debug: DebugManager.print_debug_auto(self, "Successfully loaded features: " + str(observable_features.keys()))
 
 func _initialize_game_behavior():
 	"""Initialize game behavior systems"""
@@ -336,7 +336,7 @@ func set_character_data(data: Dictionary):
 	# Re-sync to character_data dictionary
 	_sync_to_character_data()
 	
-	if debug: DebugManager.print_debug_auto(self, "Updated character data for: ", character_id)
+	if debug: DebugManager.print_debug_auto(self, "Updated character data for: " + str(character_id))
 
 # Legacy compatibility function
 func get_character_property(property_name: String):
@@ -399,7 +399,7 @@ func add_observable_feature(feature_id: String, description: String, memory_tag:
 		"short_description": "You notice the " + feature_id + " again."
 	}
 	
-	if debug: DebugManager.print_debug_auto(self, "Added observable feature: ", feature_id, " with tag: ", memory_tag)
+	if debug: DebugManager.print_debug_auto(self, "Added observable feature: " + str(feature_id) + " with tag: " + str(memory_tag))
 
 func has_observable_feature(feature_id: String) -> bool:
 	return observable_features.has(feature_id)
@@ -466,10 +466,10 @@ func interact():
 	if debug: DebugManager.print_debug_auto(self, "Interaction pressed")
 	"""Handle player interaction with this NPC"""
 	if not interactable:
-		if debug: DebugManager.print_debug_auto(self, character_name, " is not interactable")
+		if debug: DebugManager.print_debug_auto(self, str(character_name) + " is not interactable")
 		return
 		
-	if debug: DebugManager.print_debug_auto(self, "Interacting with: ", character_name)
+	if debug: DebugManager.print_debug_auto(self, "Interacting with: " + str(character_name))
 	interaction_started.emit(character_id)
 	
 	var player = GameState.get_player()
@@ -673,7 +673,7 @@ func _fire_scene_animation(anim_name: String) -> void:
 
 func change_facing(dir: String) -> void:
 	const _fname : String = "change_facing"
-	if debug: DebugManager.print_debug_auto(self, "Changing facing toward: ", dir)
+	if debug: DebugManager.print_debug_auto(self, "Changing facing toward: " + str(dir))
 	if debug: DebugManager.print_debug_auto(self, character_id + " was facing: " + last_animation)
 	if animator and animator.has_method("set_animation"):
 		animator.set_animation(last_animation, dir, character_id)
@@ -685,10 +685,10 @@ func change_facing(dir: String) -> void:
 func test_all_animations():
 	"""Test all character animations (debug function)"""
 	if not has_method("get") or not get("animator"):
-		if debug: DebugManager.print_debug_auto(self, "No animator found for NPC: ", character_id)
+		if debug: DebugManager.print_debug_auto(self, "No animator found for NPC: " + str(character_id))
 		return
 	
-	if debug: DebugManager.print_debug_auto(self, "Testing all animations for NPC: ", character_id)
+	if debug: DebugManager.print_debug_auto(self, "Testing all animations for NPC: " + str(character_id))
 	
 	# Test sequence of animations with different directions
 	var test_sequence = [
@@ -707,7 +707,7 @@ func test_all_animations():
 		var anim_name = test.anim
 		var direction = test.dir
 		
-		if debug: DebugManager.print_debug_auto(self, "Testing animation: ", anim_name, "_", direction)
+		if debug: DebugManager.print_debug_auto(self, "Testing animation: " + str(anim_name) + "_" + str(direction))
 		
 		# Play the animation
 		if get("animator").has_method("set_animation"):
@@ -745,7 +745,7 @@ func update_relationship(new_level: int):
 	var relationship_system = get_node_or_null("/root/RelationshipSystem")
 	if relationship_system:
 		relationship_system.set_relationship_score(character_id, new_level)
-		if debug: DebugManager.print_debug_auto(self, character_name, " relationship updated to level ", new_level)
+		if debug: DebugManager.print_debug_auto(self, str(character_name) + " relationship updated to level " + str(new_level))
 		
 		# Notify memory system of relationship change
 		if memory_system:

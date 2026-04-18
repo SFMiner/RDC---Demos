@@ -62,7 +62,7 @@ func _ready():
 	calculate_speed()
 	current_speed = base_speed * current_scene_speed_mod
 	debug = scr_debug or GameController.sys_debug 
-	if debug: DebugManager.print_debug_auto(self, "Player initialized: ", character_name)
+	if debug: DebugManager.print_debug_auto(self, "Player initialized: " + str(character_name))
 	#label.text = str(z_index)
 	#label_z.text = str(sprite.z_index`)
 	#label3.text = str(z_index)
@@ -84,7 +84,7 @@ func _ready():
 		area.area_entered.connect(_on_interaction_area_area_entered)
 		area.area_exited.connect(_on_interaction_area_area_exited)
 		
-		if debug: DebugManager.print_debug_auto(self, "Created InteractionArea with collision mask: ", area.collision_mask)
+		if debug: DebugManager.print_debug_auto(self, "Created InteractionArea with collision mask: " + str(area.collision_mask))
 	else:
 		if debug: DebugManager.print_debug_auto(self, "InteractionArea already exists")
 	
@@ -168,7 +168,7 @@ func get_character_id():
 
 func _physics_process(delta):
 	$Camera2D/Label.text = str($Camera2D/Label.global_position)
-	if debug: DebugManager.print_debug_auto(self, "Frame: ", Engine.get_process_frames(), " - is_navigating: ", is_navigating)
+	if debug: DebugManager.print_debug_auto(self, "Frame: " + str(Engine.get_process_frames()) + " - is_navigating: " + str(is_navigating))
 	
 	if keyboard_override_timeout > 0:
 		keyboard_override_timeout -= delta
@@ -324,7 +324,7 @@ func handle_dialogue_state():
 			
 		# Periodic debug check
 		if Engine.get_process_frames() % 60 == 0 and debug:  # Check once a second
-			if debug: DebugManager.print_debug_auto(self, "DEBUG: Still in dialog mode with character: ", dialog_system.current_character_id)
+			if debug: DebugManager.print_debug_auto(self, "DEBUG: Still in dialog mode with character: " + str(dialog_system.current_character_id))
 
 func get_movement_input():
 	var input_vector = Vector2.ZERO
@@ -449,7 +449,7 @@ func update_closest_interactable():
 	# Debug output for object change
 	if debug and interactable_object != previous_interactable:
 		if interactable_object:
-			if debug: DebugManager.print_debug_auto(self, "Updated closest interactable to: ", interactable_object.name)
+			if debug: DebugManager.print_debug_auto(self, "Updated closest interactable to: " + str(interactable_object.name))
 		else:
 			if debug: DebugManager.print_debug_auto(self, "No interactable objects in range")
 
@@ -520,7 +520,7 @@ func _unhandled_input(event):
 			
 	if event is InputEventKey and event.keycode == KEY_CAPSLOCK and event.pressed:
 		run_toggle = !run_toggle
-		if debug: DebugManager.print_debug_auto(self, "Run toggle is now: ", run_toggle)
+		if debug: DebugManager.print_debug_auto(self, "Run toggle is now: " + str(run_toggle))
 
 	# Add sleep key (press H to sleep/rest)
 	if event is InputEventKey and event.keycode == KEY_H and event.pressed and not in_dialog:
@@ -543,7 +543,7 @@ func _unhandled_input(event):
 		query.collide_with_bodies = false
 		
 		var results = space.intersect_point(query)
-		if debug: DebugManager.print_debug_auto(self, "Click detected " + str(results.size()) + " objects at position " + str(query.position), " out of ", str(30 * scale.y))
+		if debug: DebugManager.print_debug_auto(self, "Click detected " + str(results.size()) + " objects at position " + str(query.position) + " out of " + str(30 * scale.y))
 		
 		# Process clicked objects
 		var closest_obj = null
@@ -567,7 +567,7 @@ func _unhandled_input(event):
 			if closest_dist <= max_interaction_distance:
 				if debug: DebugManager.print_debug_auto(self, "Object in range, interacting with: " + closest_obj.name)
 				if global_position.distance_to(closest_obj.global_position) <= 30 * scale.y:	
-					if debug: DebugManager.print_debug_auto(self, "Distance to interactable = " + str(global_position.distance_to(closest_obj.global_position)), " out of ", str(30 * scale.y))
+					if debug: DebugManager.print_debug_auto(self, "Distance to interactable = " + str(global_position.distance_to(closest_obj.global_position)) + " out of " + str(30 * scale.y))
 					closest_obj.interact()
 			else:
 				if debug: DebugManager.print_debug_auto(self, "Object too far away: " + closest_obj.name + " (" + str(closest_dist) + " > " + str(max_interaction_distance) + ")")
@@ -593,20 +593,20 @@ func _unhandled_input(event):
 			in_dialog = false
 			
 		if interactable_object and !in_dialog:
-			if debug: DebugManager.print_debug_auto(self, "Interacting with: ", interactable_object.name)
+			if debug: DebugManager.print_debug_auto(self, "Interacting with: " + str(interactable_object.name))
 			if global_position.distance_to(interactable_object.global_position) <= 30 * scale.y:
-				if debug: DebugManager.print_debug_auto(self, "Distance to interactable = " + str(global_position.distance_to(interactable_object.global_position)), " out of ", str(30 * scale.y))
+				if debug: DebugManager.print_debug_auto(self, "Distance to interactable = " + str(global_position.distance_to(interactable_object.global_position)) + " out of " + str(30 * scale.y))
 				interaction_requested.emit(interactable_object)
 				interactable_object.interact()
 		else:
 			if debug: DebugManager.print_debug_auto(self, "No interactable object in range or dialog active")
-			if debug: DebugManager.print_debug_auto(self, "In dialog: ", in_dialog)
+			if debug: DebugManager.print_debug_auto(self, "In dialog: " + str(in_dialog))
 			
 			# Print all nearby interactable objects for debugging
 			var areas = get_tree().get_nodes_in_group("interactable")
-			if debug: DebugManager.print_debug_auto(self, "Interactable objects in scene: ", areas.size())
+			if debug: DebugManager.print_debug_auto(self, "Interactable objects in scene: " + str(areas.size()))
 			for area in areas:
-				if debug: DebugManager.print_debug_auto(self, "- ", area.name, " at distance ", global_position.distance_to(area.global_position))
+				if debug: DebugManager.print_debug_auto(self, "- " + str(area.name) + " at distance " + str(global_position.distance_to(area.global_position)))
 
 	elif event.is_action_pressed("look_at"):
 	 # Get the LookAtSystem singleton
@@ -625,7 +625,7 @@ func _unhandled_input(event):
 
 			  # Look at the nearest object if found
 			if nearest_obj:
-				if debug: DebugManager.print_debug_auto(self, "Looking at: ", nearest_obj.name)
+				if debug: DebugManager.print_debug_auto(self, "Looking at: " + str(nearest_obj.name))
 				look_at_system.look_at(nearest_obj)
 			else:
 				if debug: DebugManager.print_debug_auto(self, "No interactable objects in range to look at")
@@ -655,7 +655,7 @@ func begin_jump():
 
 
 func _on_dialog_started(character_id):
-	if debug: DebugManager.print_debug_auto(self, "Dialog started with: ", character_id)
+	if debug: DebugManager.print_debug_auto(self, "Dialog started with: " + str(character_id))
 	in_dialog = true
 	
 	# Make sure we're not stuck in an intermediate state
@@ -665,7 +665,7 @@ func _on_dialog_started(character_id):
 	play_animation("idle")
 	
 func _on_dialog_ended(character_id):
-	if debug: DebugManager.print_debug_auto(self, "Dialog ended with: ", character_id)
+	if debug: DebugManager.print_debug_auto(self, "Dialog ended with: " + str(character_id))
 	in_dialog = false
 	
 	# Force input processing to resume
@@ -685,7 +685,7 @@ func connect_to_pickup_signals():
 			pickup.item_picked_up.connect(_on_item_picked_up)
 
 func _on_item_picked_up(item_id: String, item_data: Dictionary):
-	if debug: DebugManager.print_debug_auto(self, "Player picked up item: ", item_id)
+	if debug: DebugManager.print_debug_auto(self, "Player picked up item: " + str(item_id))
 	
 	# Trigger memory system
 	var memory_system = get_node_or_null("/root/MemorySystem")
@@ -696,29 +696,29 @@ func _on_item_picked_up(item_id: String, item_data: Dictionary):
 func handle_interaction():
 	if interactable_object and interactable_object.has_method("interact"):
 		if global_position.distance_to(interactable_object.global_position) <= 30 * scale.y:
-			if debug: DebugManager.print_debug_auto(self, "distance to interacable object = ", str(global_position.distance_to(interactable_object.global_position)))
+			if debug: DebugManager.print_debug_auto(self, "distance to interacable object = " + str(global_position.distance_to(interactable_object.global_position)))
 			interactable_object.interact()
 			interaction_triggered.emit(interactable_object)
 
 func _on_interaction_area_body_entered(body):
 	if body.is_in_group("interactable"):
 		interactable_object = body
-		if debug: DebugManager.print_debug_auto(self, "Entered interaction range with: ", body.name)
+		if debug: DebugManager.print_debug_auto(self, "Entered interaction range with: " + str(body.name))
 
 func _on_interaction_area_area_entered(area):
 	if area.is_in_group("interactable"):
 		interactable_object = area
-		if debug: DebugManager.print_debug_auto(self, "Entered interaction range with area: ", area.name)
+		if debug: DebugManager.print_debug_auto(self, "Entered interaction range with area: " + str(area.name))
 
 func _on_interaction_area_body_exited(body):
 	if body == interactable_object:
 		interactable_object = null
-		if debug: DebugManager.print_debug_auto(self, "Left interaction range with: ", body.name)
+		if debug: DebugManager.print_debug_auto(self, "Left interaction range with: " + str(body.name))
 
 func _on_interaction_area_area_exited(area):
 	if area == interactable_object:
 		interactable_object = null
-		if debug: DebugManager.print_debug_auto(self, "Left interaction range with area: ", area.name)
+		if debug: DebugManager.print_debug_auto(self, "Left interaction range with area: " + str(area.name))
 
 # Function to be called when dialog starts/ends
 func set_dialog_mode(active):
@@ -743,16 +743,16 @@ func _input(event):
 		
 		# List all interactable objects and their distances
 		var all_interactables = get_tree().get_nodes_in_group("interactable")
-		if debug: DebugManager.print_debug_auto(self, "Found ", all_interactables.size(), " total interactable objects")
+		if debug: DebugManager.print_debug_auto(self, "Found " + str(all_interactables.size()) + " total interactable objects")
 		
 		for obj in all_interactables:
 			var dist = global_position.distance_to(obj.global_position)
 			var in_range = dist <= interaction_range
-			if debug: DebugManager.print_debug_auto(self, "- ", obj.name, " (distance: ", dist, ", in range: ", in_range, ")")
+			if debug: DebugManager.print_debug_auto(self, "- " + str(obj.name) + " (distance: " + str(dist) + ", in range: " + str(in_range) + ")")
 		
 		# Force interaction with closest object
 		if interactable_object:
-			if debug: DebugManager.print_debug_auto(self, "DEBUG: Force interacting with closest object: ", interactable_object.name)
+			if debug: DebugManager.print_debug_auto(self, "DEBUG: Force interacting with closest object: " + str(interactable_object.name))
 			if global_position.distance_to(interactable_object.global_position) <= 30 * scale.y:
 				interactable_object.interact()
 		else:
@@ -828,7 +828,7 @@ func _check_navigation_region():
 	var navigation_region = get_tree().current_scene.find_child("NavigationRegion2D", true, false)
 	
 	if navigation_region:
-		if debug: DebugManager.print_debug_auto(self, "Found NavigationRegion2D for navigation: ", navigation_region.name)
+		if debug: DebugManager.print_debug_auto(self, "Found NavigationRegion2D for navigation: " + str(navigation_region.name))
 		
 		# Make sure the navigation map is active
 		var map_rid = navigation_region.get_navigation_map()
@@ -837,7 +837,7 @@ func _check_navigation_region():
 		# Verify the navigation mesh is valid
 		var regions = NavigationServer2D.map_get_regions(map_rid)
 		if regions.size() > 0:
-			if debug: DebugManager.print_debug_auto(self, "Navigation mesh has ", regions.size(), " regions")
+			if debug: DebugManager.print_debug_auto(self, "Navigation mesh has " + str(regions.size()) + " regions")
 		else:
 			if debug: DebugManager.print_debug_auto(self, "WARNING: Navigation mesh has no regions!")
 	else:

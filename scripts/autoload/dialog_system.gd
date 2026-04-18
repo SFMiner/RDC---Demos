@@ -125,12 +125,12 @@ func unlock_memory(tag: String) -> void:
 	
 	# Validate that this is a real memory tag
 	if not GameState.is_valid_memory_tag(tag):
-		if debug: DebugManager.print_debug_auto(self, "WARNING: Attempting to unlock invalid memory tag: ", tag)
+		if debug: DebugManager.print_debug_auto(self, "WARNING: Attempting to unlock invalid memory tag: " + str(tag))
 		return
 	
 	# Check if conditions are met
 	if not GameState.can_unlock_memory(tag):
-		if debug: DebugManager.print_debug_auto(self, "Cannot unlock memory tag (conditions not met): ", tag)
+		if debug: DebugManager.print_debug_auto(self, "Cannot unlock memory tag (conditions not met): " + str(tag))
 		return
 	
 	# Discover the memory using registry
@@ -141,7 +141,7 @@ func unlock_memory(tag: String) -> void:
 		if memory_system and memory_system.has_method("_on_memory_unlocked"):
 			memory_system._on_memory_unlocked(tag)
 		
-		if debug: DebugManager.print_debug_auto(self, "Successfully unlocked memory: ", tag)
+		if debug: DebugManager.print_debug_auto(self, "Successfully unlocked memory: " + str(tag))
 
 # SIMPLIFIED: Check if a tag can be unlocked using registry
 func can_unlock(tag: String) -> bool:
@@ -170,12 +170,12 @@ func select_memory_dialogue(character_id: String, dialogue_title: String) -> boo
 	var memory_tag = GameState.get_memory_tag_for_dialogue_from_registry(character_id, dialogue_title)
 	
 	if memory_tag.is_empty():
-		if debug: DebugManager.print_debug_auto(self, "No memory tag found for dialogue: ", character_id, " -> ", dialogue_title)
+		if debug: DebugManager.print_debug_auto(self, "No memory tag found for dialogue: " + str(character_id) + " -> " + str(dialogue_title))
 		return false
 	
 	# Check if the memory is unlocked
 	if not GameState.has_tag(memory_tag):
-		if debug: DebugManager.print_debug_auto(self, "Memory tag not unlocked: ", memory_tag)
+		if debug: DebugManager.print_debug_auto(self, "Memory tag not unlocked: " + str(memory_tag))
 		return false
 	
 	# Emit signal and start dialogue
@@ -196,7 +196,7 @@ func check_dialogue_conditions(character_id: String, dialogue_title: String) -> 
 	# Get metadata from registry
 	var metadata = GameState.get_memory_metadata(memory_tag)
 	if metadata.is_empty():
-		if debug: DebugManager.print_debug_auto(self, "No metadata found for memory tag: ", memory_tag)
+		if debug: DebugManager.print_debug_auto(self, "No metadata found for memory tag: " + str(memory_tag))
 		return false
 	
 	# Check if memory is unlocked
@@ -207,7 +207,7 @@ func check_dialogue_conditions(character_id: String, dialogue_title: String) -> 
 	var condition_tags = metadata.get("condition_tags", [])
 	for condition_tag in condition_tags:
 		if not GameState.has_tag(condition_tag):
-			if debug: DebugManager.print_debug_auto(self, "Condition not met: ", condition_tag)
+			if debug: DebugManager.print_debug_auto(self, "Condition not met: " + str(condition_tag))
 			return false
 	
 	return true
@@ -217,37 +217,37 @@ func validate_memory_operation(tag_name: String, operation: String) -> bool:
 	"""Validate that a memory operation is valid using registry"""
 	
 	if not GameState.is_valid_memory_tag(tag_name):
-		if debug: DebugManager.print_debug_auto(self, "Invalid memory tag for ", operation, ": ", tag_name)
+		if debug: DebugManager.print_debug_auto(self, "Invalid memory tag for " + str(operation) + ": " + str(tag_name))
 		return false
 	
 	var metadata = GameState.get_memory_metadata(tag_name)
 	if metadata.is_empty():
-		if debug: DebugManager.print_debug_auto(self, "No metadata found for ", operation, ": ", tag_name)
+		if debug: DebugManager.print_debug_auto(self, "No metadata found for " + str(operation) + ": " + str(tag_name))
 		return false
 	
 	return true
 
 # UPDATED: Enhanced start_dialog function with registry support
 func start_dialog(character_id, title = "start"):
-	if debug: DebugManager.print_debug_auto(self, "Starting dialog with: ", character_id, " at title: ", title)
+	if debug: DebugManager.print_debug_auto(self, "Starting dialog with: " + str(character_id) + " at title: " + str(title))
 	
 	record_seen_dialog(character_id, title)
 	current_character_id = character_id
 	
-	if debug: DebugManager.print_debug_auto(self, "DIALOG: Checking memory options for ", character_id)
+	if debug: DebugManager.print_debug_auto(self, "DIALOG: Checking memory options for " + str(character_id))
 	
 	# Get memory-unlocked dialogue options using registry
 	var memory_options = GameState.get_dialogue_options_from_registry(character_id)
-	if debug: DebugManager.print_debug_auto(self, "DIALOG: Found ", memory_options.size(), " memory-unlocked options from registry")
+	if debug: DebugManager.print_debug_auto(self, "DIALOG: Found " + str(memory_options.size()) + " memory-unlocked options from registry")
 	
 	for option in memory_options:
-		if debug: DebugManager.print_debug_auto(self, "DIALOG: Memory option available: ", option.dialogue_title, " (tag: ", option.tag, ")")
+		if debug: DebugManager.print_debug_auto(self, "DIALOG: Memory option available: " + str(option.dialogue_title) + " (tag: " + str(option.tag) + ")")
 		memory_dialogue_added.emit(character_id, option.dialogue_title)
 	
 	# Load the dialogue resource if not already loaded
 	if not dialogue_resources.has(character_id):
 		if not preload_dialogue(character_id):
-			if debug: DebugManager.print_debug_auto(self, "ERROR: Failed to load dialogue for: ", character_id)
+			if debug: DebugManager.print_debug_auto(self, "ERROR: Failed to load dialogue for: " + str(character_id))
 			return false
 	
 	# Emit our own signal before DialogueManager does
@@ -260,7 +260,7 @@ func start_dialog(character_id, title = "start"):
 			dialogue_resources[character_id], 
 			title
 		)
-		if debug: DebugManager.print_debug_auto(self, "Started dialogue with: ", character_id, " at title: ", title)
+		if debug: DebugManager.print_debug_auto(self, "Started dialogue with: " + str(character_id) + " at title: " + str(title))
 		return true
 	else:
 		if debug: DebugManager.print_debug_auto(self, "ERROR: No balloon scene available!")
@@ -347,7 +347,7 @@ func end_dialog():
 
 # Starts a custom dialog from a string
 func start_custom_dialog(dialog_content: String, title: String = "start"):
-	if debug: DebugManager.print_debug_auto(self, "Starting custom dialog at ", title)
+	if debug: DebugManager.print_debug_auto(self, "Starting custom dialog at " + str(title))
 	
 	# Use the Dialogue Manager to parse and start the dialogue
 	var dialogue_resource = DialogueManager.create_resource_from_text(dialog_content)
@@ -382,7 +382,7 @@ func add_conditional_choice(choices: Array, condition_tag: String, text: String,
 
 # Add to dialog_system.gd
 func _on_mutated(mutation):
-	if debug: DebugManager.print_debug_auto(self, "Handling mutation: ", mutation.name)
+	if debug: DebugManager.print_debug_auto(self, "Handling mutation: " + str(mutation.name))
 	
 	if mutation.name == "move_character":
 		# Forward the call directly to CutsceneManager
@@ -538,7 +538,7 @@ func has_memory(memory_tag: String) -> bool:
 
 	# Validate tag exists in registry
 	if not GameState.is_valid_memory_tag(memory_tag):
-		if debug: DebugManager.print_debug_auto(self, "Invalid memory tag: ", memory_tag)
+		if debug: DebugManager.print_debug_auto(self, "Invalid memory tag: " + str(memory_tag))
 		return false
 
 	return GameState.has_tag(memory_tag)
@@ -548,7 +548,7 @@ func get_memory_value(memory_tag: String, default_value = null):
 
 	# Validate tag exists in registry
 	if not GameState.is_valid_memory_tag(memory_tag):
-		if debug: DebugManager.print_debug_auto(self, "Invalid memory tag: ", memory_tag)
+		if debug: DebugManager.print_debug_auto(self, "Invalid memory tag: " + str(memory_tag))
 		return default_value
 
 	return GameState.get_tag_value(memory_tag, default_value)
@@ -558,7 +558,7 @@ func set_memory(memory_tag: String, value = true):
 
 	# Validate tag exists in registry
 	if not GameState.is_valid_memory_tag(memory_tag):
-		if debug: DebugManager.print_debug_auto(self, "Cannot set invalid memory tag: ", memory_tag)
+		if debug: DebugManager.print_debug_auto(self, "Cannot set invalid memory tag: " + str(memory_tag))
 		return
 
 	# Use registry-based discovery if this is a new memory
@@ -591,7 +591,7 @@ func _initialize_dialogue_memory_cache():
 				var memory_tag = option.tag
 				dialogue_memory_cache[character_id][dialogue_title] = memory_tag
 
-				if debug: DebugManager.print_debug_auto(self, "Cached dialogue mapping: ", character_id, " -> ", dialogue_title, " = ", memory_tag)
+				if debug: DebugManager.print_debug_auto(self, "Cached dialogue mapping: " + str(character_id) + " -> " + str(dialogue_title) + " = " + str(memory_tag))
 
 # Core dialogue-memory functions for use in .dialogue files
 
@@ -634,7 +634,7 @@ func check_memory_condition(condition: String) -> bool:
 		if parts.size() == 2:
 			var memory_tag = parts[0].strip_edges()
 			if not GameState.is_valid_memory_tag(memory_tag):
-				if debug: DebugManager.print_debug_auto(self, "Invalid memory tag in condition: ", memory_tag)
+				if debug: DebugManager.print_debug_auto(self, "Invalid memory tag in condition: " + str(memory_tag))
 				return false
 			var memory_value = get_memory_value(memory_tag)
 			var compare_value = _parse_value(parts[1].strip_edges())
@@ -642,7 +642,7 @@ func check_memory_condition(condition: String) -> bool:
 
 	# Simple boolean check with validation
 	if not GameState.is_valid_memory_tag(condition):
-		if debug: DebugManager.print_debug_auto(self, "Invalid memory tag in condition: ", condition)
+		if debug: DebugManager.print_debug_auto(self, "Invalid memory tag in condition: " + str(condition))
 		return false
 
 	return has_memory(condition)
@@ -744,7 +744,7 @@ func trigger_memory_discovery(character_id: String, memory_tag: String, descript
 
 	# Validate memory tag
 	if not GameState.is_valid_memory_tag(memory_tag):
-		if debug: DebugManager.print_debug_auto(self, "Cannot trigger invalid memory tag: ", memory_tag)
+		if debug: DebugManager.print_debug_auto(self, "Cannot trigger invalid memory tag: " + str(memory_tag))
 		return
 
 	# Use description from registry if not provided
@@ -978,14 +978,14 @@ func get_cached_dialogue_condition(character_id: String, dialogue_title: String)
 
 # Signal handlers for memory integration
 func _on_memory_discovered(memory_tag: String, description: String):
-	if debug: DebugManager.print_debug_auto(self, "Memory discovered - ", memory_tag)
+	if debug: DebugManager.print_debug_auto(self, "Memory discovered - " + str(memory_tag))
 
 	# Clear relevant caches
 	conditional_dialogue_cache.clear()
 	character_memory_states.clear()
 
 func _on_dialogue_option_unlocked(character_id: String, dialogue_title: String, memory_tag: String):
-	if debug: DebugManager.print_debug_auto(self, "Dialogue option unlocked - ", character_id, " -> ", dialogue_title)
+	if debug: DebugManager.print_debug_auto(self, "Dialogue option unlocked - " + str(character_id) + " -> " + str(dialogue_title))
 
 	# Update cache
 	if not dialogue_memory_cache.has(character_id):
@@ -998,7 +998,7 @@ func _on_dialogue_option_unlocked(character_id: String, dialogue_title: String, 
 		character_memory_states.erase(character_id)
 
 func _on_relationship_changed(character_id: String, old_level: int, new_level: int):
-	if debug: DebugManager.print_debug_auto(self, "Relationship changed - ", character_id, " (", old_level, " -> ", new_level, ")")
+	if debug: DebugManager.print_debug_auto(self, "Relationship changed - " + str(character_id) + " (" + str(old_level) + " -> " + str(new_level) + ")")
 
 	# Clear caches for this character
 	if conditional_dialogue_cache.has(character_id):

@@ -60,25 +60,25 @@ func debug_quest_state():
 		return
 		
 	print("\n" + GameState.script_name_tag(self, _fname) + "=== QUEST SYSTEM DEBUG STATE ===")
-	DebugManager.print_debug_auto(self, "Active quests: ", active_quests.size())
-	DebugManager.print_debug_auto(self, "Available quests: ", available_quests.size())
-	DebugManager.print_debug_auto(self, "Completed quests: ", completed_quests.size())
-	DebugManager.print_debug_auto(self, "Quest templates loaded: ", quest_templates.size())
+	DebugManager.print_debug_auto(self, "Active quests: " + str(active_quests.size()))
+	DebugManager.print_debug_auto(self, "Available quests: " + str(available_quests.size()))
+	DebugManager.print_debug_auto(self, "Completed quests: " + str(completed_quests.size()))
+	DebugManager.print_debug_auto(self, "Quest templates loaded: " + str(quest_templates.size()))
 	
 	# Check intro quest specifically
 	if active_quests.has("intro_quest"):
 		var intro_quest = active_quests["intro_quest"]
 		DebugManager.print_debug_auto(self, "INTRO QUEST FOUND:")
-		DebugManager.print_debug_auto(self, "  Title: ", intro_quest.get("title", "N/A"))
-		DebugManager.print_debug_auto(self, "  Completed: ", intro_quest.get("completed", false))
+		DebugManager.print_debug_auto(self, "  Title: " + str(intro_quest.get("title", "N/A")))
+		DebugManager.print_debug_auto(self, "  Completed: " + str(intro_quest.get("completed", false)))
 		
 		if intro_quest.has("objectives"):
-			DebugManager.print_debug_auto(self, "  Objectives: ", intro_quest.objectives.size())
+			DebugManager.print_debug_auto(self, "  Objectives: " + str(intro_quest.objectives.size()))
 			for i in range(intro_quest.objectives.size()):
 				var obj = intro_quest.objectives[i]
-				DebugManager.print_debug_auto(self, "    [", i, "] Type: ", obj.type, ", Target: '", obj.target, "', Completed: ", obj.completed)
+				DebugManager.print_debug_auto(self, "    [" + str(i) + "] Type: " + str(obj.type) + ", Target: '" + str(obj.target) + "', Completed: " + str(obj.completed))
 				if obj.type == "explore":
-					DebugManager.print_debug_auto(self, "        Progress: ", obj.get("progress", 0), "/", obj.get("required", 1))
+					DebugManager.print_debug_auto(self, "        Progress: " + str(obj.get("progress", 0)) + "/" + str(obj.get("required", 1)))
 	else:
 		DebugManager.print_debug_auto(self, "INTRO QUEST NOT FOUND in active quests")
 		
@@ -94,11 +94,11 @@ func debug_quest_state():
 	
 	# Check system connections
 	DebugManager.print_debug_auto(self, "System connections:")
-	DebugManager.print_debug_auto(self, "  inventory_system: ", inventory_system != null)
-	DebugManager.print_debug_auto(self, "  dialog_system: ", dialog_system != null)
+	DebugManager.print_debug_auto(self, "  inventory_system: " + str(inventory_system != null))
+	DebugManager.print_debug_auto(self, "  dialog_system: " + str(dialog_system != null))
 	
 	if dialog_system:
-		DebugManager.print_debug_auto(self, "  dialog_system.dialog_ended connected: ", dialog_system.dialog_ended.is_connected(_on_dialog_ended))
+		DebugManager.print_debug_auto(self, "  dialog_system.dialog_ended connected: " + str(dialog_system.dialog_ended.is_connected(_on_dialog_ended)))
 	
 	DebugManager.print_debug_auto(self, "================================\n")
 
@@ -124,12 +124,12 @@ func check_quest_completion(quest_id):
 		for memory_tag in memory_requirements:
 			# Validate memory tag exists in registry
 			if not GameState.is_valid_memory_tag(memory_tag):
-				if debug: DebugManager.print_debug_auto(self, "WARNING: Quest ", quest_id, " requires invalid memory tag: ", memory_tag)
+				if debug: DebugManager.print_debug_auto(self, "WARNING: Quest " + str(quest_id) + " requires invalid memory tag: " + str(memory_tag))
 				continue
 			
 			# Check if memory is unlocked
 			if not GameState.has_tag(memory_tag):
-				if debug: DebugManager.print_debug_auto(self, "Quest ", quest_id, " waiting for memory: ", memory_tag)
+				if debug: DebugManager.print_debug_auto(self, "Quest " + str(quest_id) + " waiting for memory: " + str(memory_tag))
 				all_complete = false
 				break
 	
@@ -145,14 +145,14 @@ func trigger_memory_quest_events(memory_tag: String):
 	
 	# Validate memory tag
 	if not GameState.is_valid_memory_tag(memory_tag):
-		if debug: DebugManager.print_debug_auto(self, "Invalid memory tag: ", memory_tag)
+		if debug: DebugManager.print_debug_auto(self, "Invalid memory tag: " + str(memory_tag))
 		return
 	
 	# Get memory metadata from registry
 	var metadata = GameState.get_memory_metadata(memory_tag)
 	var character_id = metadata.get("character_id", "")
 	
-	if debug: DebugManager.print_debug_auto(self, "Checking quest impacts for memory: ", memory_tag)
+	if debug: DebugManager.print_debug_auto(self, "Checking quest impacts for memory: " + str(memory_tag))
 	
 	# Check all active quests for memory-related objectives
 	for quest_id in active_quests:
@@ -161,7 +161,7 @@ func trigger_memory_quest_events(memory_tag: String):
 		# Check if this quest has memory requirements
 		if quest.has("memory_requirements"):
 			if memory_tag in quest.memory_requirements:
-				if debug: DebugManager.print_debug_auto(self, "Memory ", memory_tag, " affects quest: ", quest_id)
+				if debug: DebugManager.print_debug_auto(self, "Memory " + str(memory_tag) + " affects quest: " + str(quest_id))
 				check_quest_completion(quest_id)
 		
 		# Check objectives that might be affected
@@ -171,7 +171,7 @@ func trigger_memory_quest_events(memory_tag: String):
 				
 				# Check for character-based talk objectives
 				if objective.type == "talk" and objective.target == character_id and not objective.completed:
-					if debug: DebugManager.print_debug_auto(self, "Memory unlock may enable talk with: ", character_id)
+					if debug: DebugManager.print_debug_auto(self, "Memory unlock may enable talk with: " + str(character_id))
 					# Don't auto-complete, just note the possibility
 				
 				# Check for memory-specific objectives
@@ -180,7 +180,7 @@ func trigger_memory_quest_events(memory_tag: String):
 						objective.completed = true
 						objective_updated.emit(quest_id, i, 1, 1)
 						quest_updated.emit(quest_id)
-						if debug: DebugManager.print_debug_auto(self, "Completed memory objective: ", memory_tag)
+						if debug: DebugManager.print_debug_auto(self, "Completed memory objective: " + str(memory_tag))
 						check_quest_completion(quest_id)
 
 # ENHANCED: Quest completion with memory rewards
@@ -204,13 +204,13 @@ func complete_quest(quest_id):
 			if GameState.is_valid_memory_tag(memory_tag):
 				if GameState.can_unlock_memory(memory_tag):
 					if GameState.discover_memory_from_registry(memory_tag, "quest_reward"):
-						if debug: DebugManager.print_debug_auto(self, "Awarded memory: ", memory_tag)
+						if debug: DebugManager.print_debug_auto(self, "Awarded memory: " + str(memory_tag))
 					else:
-						if debug: DebugManager.print_debug_auto(self, "Failed to award memory: ", memory_tag)
+						if debug: DebugManager.print_debug_auto(self, "Failed to award memory: " + str(memory_tag))
 				else:
-					if debug: DebugManager.print_debug_auto(self, "Memory conditions not met for reward: ", memory_tag)
+					if debug: DebugManager.print_debug_auto(self, "Memory conditions not met for reward: " + str(memory_tag))
 			else:
-				if debug: DebugManager.print_debug_auto(self, "WARNING: Quest reward contains invalid memory tag: ", memory_tag)
+				if debug: DebugManager.print_debug_auto(self, "WARNING: Quest reward contains invalid memory tag: " + str(memory_tag))
 	
 	# Move from active to completed
 	completed_quests[quest_id] = quest.duplicate(true)
@@ -219,7 +219,7 @@ func complete_quest(quest_id):
 	# Emit signal
 	quest_completed.emit(quest_id)
 	
-	if debug: DebugManager.print_debug_auto(self, "Completed quest: ", quest_id)
+	if debug: DebugManager.print_debug_auto(self, "Completed quest: " + str(quest_id))
 	
 	# Unlock follow-up quests
 	unlock_followup_quests(quest_id)
@@ -240,7 +240,7 @@ func _process_quest_rewards(rewards, quest_id: String):
 			"item":
 				if reward.has("id") and reward.has("amount") and inventory_system:
 					inventory_system.add_item(reward.id, reward.amount)
-					if debug: DebugManager.print_debug_auto(self, "Rewarded item: ", reward.id, " x", reward.amount)
+					if debug: DebugManager.print_debug_auto(self, "Rewarded item: " + str(reward.id) + " x" + str(reward.amount))
 			
 			"memory":
 				# ENHANCED: Memory rewards with registry validation
@@ -249,27 +249,27 @@ func _process_quest_rewards(rewards, quest_id: String):
 					if GameState.is_valid_memory_tag(memory_tag):
 						if GameState.can_unlock_memory(memory_tag):
 							if GameState.discover_memory_from_registry(memory_tag, "quest_reward"):
-								if debug: DebugManager.print_debug_auto(self, "Rewarded memory: ", memory_tag)
+								if debug: DebugManager.print_debug_auto(self, "Rewarded memory: " + str(memory_tag))
 							else:
-								if debug: DebugManager.print_debug_auto(self, "Failed to award memory: ", memory_tag)
+								if debug: DebugManager.print_debug_auto(self, "Failed to award memory: " + str(memory_tag))
 						else:
-							if debug: DebugManager.print_debug_auto(self, "Memory conditions not met: ", memory_tag)
+							if debug: DebugManager.print_debug_auto(self, "Memory conditions not met: " + str(memory_tag))
 					else:
-						if debug: DebugManager.print_debug_auto(self, "WARNING: Invalid memory tag in quest reward: ", memory_tag)
+						if debug: DebugManager.print_debug_auto(self, "WARNING: Invalid memory tag in quest reward: " + str(memory_tag))
 			
 			"knowledge":
 				if reward.has("id"):
 					var game_controller = get_node_or_null("/root/GameController")
 					if game_controller and game_controller.has_method("add_knowledge"):
 						game_controller.add_knowledge(reward.id)
-						if debug: DebugManager.print_debug_auto(self, "Rewarded knowledge: ", reward.id)
+						if debug: DebugManager.print_debug_auto(self, "Rewarded knowledge: " + str(reward.id))
 			
 			"relationship":
 				if reward.has("character") and reward.has("amount"):
 					var relationship_system = get_node_or_null("/root/RelationshipSystem")
 					if relationship_system:
 						relationship_system.increase_affinity(reward.character, reward.amount)
-						if debug: DebugManager.print_debug_auto(self, "Rewarded relationship: ", reward.character, " +", reward.amount)
+						if debug: DebugManager.print_debug_auto(self, "Rewarded relationship: " + str(reward.character) + " +" + str(reward.amount))
 
 # NEW: Validate quest memory requirements
 func validate_quest_memory_requirements(quest_id: String) -> Dictionary:
@@ -315,7 +315,7 @@ func validate_quest_memory_requirements(quest_id: String) -> Dictionary:
 					validation_result.warnings.append("Invalid objective memory requirement: " + memory_tag)
 	
 	if debug and validation_result.invalid_tags.size() > 0:
-		DebugManager.print_debug_auto(self, "Quest ", quest_id, " has invalid memory tags: ", validation_result.invalid_tags)
+		DebugManager.print_debug_auto(self, "Quest " + str(quest_id) + " has invalid memory tags: " + str(validation_result.invalid_tags))
 	
 	return validation_result
 
@@ -349,7 +349,7 @@ func _connect_signals():
 # NEW: Handle memory discovery events
 func _on_memory_discovered(memory_tag: String, description: String):
 	"""Handle memory discovery events for quest system"""
-	if debug: DebugManager.print_debug_auto(self, "Memory discovered: ", memory_tag, " - checking quest impacts")
+	if debug: DebugManager.print_debug_auto(self, "Memory discovered: " + str(memory_tag) + " - checking quest impacts")
 	
 	# Trigger quest events related to this memory
 	trigger_memory_quest_events(memory_tag)
@@ -367,12 +367,12 @@ func debug_quest_memory_relationships():
 		var quest = quest_templates[quest_id]
 		var validation = validate_quest_memory_requirements(quest_id)
 		
-		DebugManager.print_debug_auto(self, "Quest: ", quest_id)
-		DebugManager.print_debug_auto(self, "  Valid memory tags: ", validation.valid_requirements.size())
-		DebugManager.print_debug_auto(self, "  Invalid memory tags: ", validation.invalid_tags.size())
+		DebugManager.print_debug_auto(self, "Quest: " + str(quest_id))
+		DebugManager.print_debug_auto(self, "  Valid memory tags: " + str(validation.valid_requirements.size()))
+		DebugManager.print_debug_auto(self, "  Invalid memory tags: " + str(validation.invalid_tags.size()))
 		
 		if validation.warnings.size() > 0:
-			DebugManager.print_debug_auto(self, "  Warnings: ", validation.warnings)
+			DebugManager.print_debug_auto(self, "  Warnings: " + str(validation.warnings))
 	
 	DebugManager.print_debug_auto(self, "=============================================\n")
 
@@ -930,7 +930,7 @@ func get_save_data():
 		"area_exploration": area_exploration.duplicate(true)
 	}
 	
-	if debug: DebugManager.print_debug_auto(self, "Collected quest data: ", active_quests.size(), " active, ", completed_quests.size(), " completed, ", available_quests.size(), " available")
+	if debug: DebugManager.print_debug_auto(self, "Collected quest data: " + str(active_quests.size()) + " active, " + str(completed_quests.size()) + " completed, " + str(available_quests.size()) + " available")
 	return save_data
 	
 # Legacy compatibility wrapper

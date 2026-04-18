@@ -61,7 +61,7 @@ func _on_location_changed(old_location, new_location):
 
 	# Reset navigation when changing location
 	current_scene_path = GameController.current_scene_path
-	if debug: DebugManager.print_debug_auto(self, "Location changed to: ", current_scene_path)
+	if debug: DebugManager.print_debug_auto(self, "Location changed to: " + str(current_scene_path))
 	
 	# Try to find and cache the navigation node
 	_find_navigation_node()
@@ -78,7 +78,7 @@ func _find_navigation_node():
 	
 	if navigation_regions.size() > 0:
 		current_navigation = navigation_regions[0]
-		if debug: DebugManager.print_debug_auto(self, "Found navigation region: ", current_navigation.name)
+		if debug: DebugManager.print_debug_auto(self, "Found navigation region: " + str(current_navigation.name))
 		
 		# Cache for future use
 		navigation_instances[current_scene_path] = current_navigation
@@ -102,7 +102,7 @@ func _find_navigation_regions_recursive(node):
 func _register_all_agents():
 	# This function makes sure all agents in the scene are properly registered
 	var all_navigators = get_tree().get_nodes_in_group("navigator")
-	if debug: DebugManager.print_debug_auto(self, "Found ", all_navigators.size(), " navigation agents to register")
+	if debug: DebugManager.print_debug_auto(self, "Found " + str(all_navigators.size()) + " navigation agents to register")
 	
 	for navigator in all_navigators:
 		if navigator.has_node("NavigationAgent2D"):
@@ -142,10 +142,10 @@ func find_path(from_position: Vector2, to_position: Vector2) -> Array:
 	)
 	
 	if path.size() == 0:
-		if debug: DebugManager.print_debug_auto(self, "No path found from ", from_position, " to ", to_position)
+		if debug: DebugManager.print_debug_auto(self, "No path found from " + str(from_position) + " to " + str(to_position))
 		path_not_found.emit(from_position, to_position)
 	else:
-		if debug: DebugManager.print_debug_auto(self, "Path found with ", path.size(), " points")
+		if debug: DebugManager.print_debug_auto(self, "Path found with " + str(path.size()) + " points")
 		path_found.emit(from_position, to_position, path)
 	
 	return path
@@ -190,7 +190,7 @@ func navigate_to_marker(character: Node2D, marker_id: String, run: bool = false)
 	# Find the marker in the scene
 	var marker = _find_marker(marker_id)
 	if not marker:
-		if debug: DebugManager.print_debug_auto(self, "Cannot find marker: ", marker_id)
+		if debug: DebugManager.print_debug_auto(self, "Cannot find marker: " + str(marker_id))
 		return false
 	
 	# Navigate to marker position
@@ -220,9 +220,9 @@ func _find_marker(marker_id: String) -> Node2D:
 func debug_find_path(from_pos: Vector2, to_pos: Vector2) -> void:
 	var path = find_path(from_pos, to_pos)
 	if path.size() > 0:
-		if debug: DebugManager.print_debug_auto(self, "DEBUG: Found path with ", path.size(), " points")
+		if debug: DebugManager.print_debug_auto(self, "DEBUG: Found path with " + str(path.size()) + " points")
 		for i in range(path.size()):
-			if debug: DebugManager.print_debug_auto(self, "Point ", i, ": ", path[i])
+			if debug: DebugManager.print_debug_auto(self, "Point " + str(i) + ": " + str(path[i]))
 	else:
 		if debug: DebugManager.print_debug_auto(self, "DEBUG: No path found between points")
 

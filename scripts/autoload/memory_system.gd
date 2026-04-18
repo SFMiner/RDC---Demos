@@ -46,7 +46,7 @@ func _on_memory_data_ready():
 		DebugManager.print_debug_auto(self, "MEMORY SYSTEM: Checking available memories")
 		for trigger_type in range(9):
 			var memories = GameState.get_memories_for_trigger(trigger_type, "test")
-			DebugManager.print_debug_auto(self, "  Trigger type ", trigger_type, " has memories defined: ", memories.size() > 0)
+			DebugManager.print_debug_auto(self, "  Trigger type " + str(trigger_type) + " has memories defined: " + str(memories.size() > 0))
 			
 func _connect_to_other_systems():
 	# Connect to inventory for item acquisitions
@@ -61,42 +61,42 @@ func _connect_to_other_systems():
 
 # SIMPLIFIED: Main trigger functions now use registry
 func trigger_look_at(target_id: String) -> bool:
-	if debug: DebugManager.print_debug_auto(self, "Memory trigger: Look at ", target_id)
+	if debug: DebugManager.print_debug_auto(self, "Memory trigger: Look at " + str(target_id))
 	
 	return _process_memory_triggers(TriggerType.LOOK_AT, target_id, "look_at")
 
 func trigger_item_acquired(item_id: String) -> bool:
-	if debug: DebugManager.print_debug_auto(self, "Memory trigger: Item acquired ", item_id)
+	if debug: DebugManager.print_debug_auto(self, "Memory trigger: Item acquired " + str(item_id))
 	
 	return _process_memory_triggers(TriggerType.ITEM_ACQUIRED, item_id, "item_acquired")
 
 func trigger_location_visited(location_id: String) -> bool:
-	if debug: DebugManager.print_debug_auto(self, "Memory trigger: Location visited ", location_id)
+	if debug: DebugManager.print_debug_auto(self, "Memory trigger: Location visited " + str(location_id))
 	
 	return _process_memory_triggers(TriggerType.LOCATION_VISITED, location_id, "location_visit")
 
 func trigger_npc_talked_to(npc_id: String) -> bool:
-	if debug: DebugManager.print_debug_auto(self, "Memory trigger: Talked to NPC ", npc_id)
+	if debug: DebugManager.print_debug_auto(self, "Memory trigger: Talked to NPC " + str(npc_id))
 	
 	return _process_memory_triggers(TriggerType.NPC_TALKED_TO, npc_id, "npc_interaction")
 
 func trigger_quest_completed(quest_id: String) -> bool:
-	if debug: DebugManager.print_debug_auto(self, "Memory trigger: Quest completed ", quest_id)
+	if debug: DebugManager.print_debug_auto(self, "Memory trigger: Quest completed " + str(quest_id))
 	
 	return _process_memory_triggers(TriggerType.QUEST_COMPLETED, quest_id, "quest_completed")
 
 func trigger_dialogue_choice(choice_id: String) -> bool:
-	if debug: DebugManager.print_debug_auto(self, "Memory trigger: Dialogue choice ", choice_id)
+	if debug: DebugManager.print_debug_auto(self, "Memory trigger: Dialogue choice " + str(choice_id))
 	
 	return _process_memory_triggers(TriggerType.DIALOGUE_CHOICE, choice_id, "dialogue_choice")
 
 func trigger_item_used(item_id: String) -> bool:
-	if debug: DebugManager.print_debug_auto(self, "Memory trigger: Item used ", item_id)
+	if debug: DebugManager.print_debug_auto(self, "Memory trigger: Item used " + str(item_id))
 	
 	return _process_memory_triggers(TriggerType.ITEM_USED, item_id, "item_used")
 
 func trigger_character_relationship(character_id: String) -> bool:
-	if debug: DebugManager.print_debug_auto(self, "Memory trigger: Character relationship change ", character_id)
+	if debug: DebugManager.print_debug_auto(self, "Memory trigger: Character relationship change " + str(character_id))
 	
 	return _process_memory_triggers(TriggerType.CHARACTER_RELATIONSHIP, character_id, "relationship_change")
 
@@ -108,7 +108,7 @@ func _process_memory_triggers(trigger_type: int, target_id: String, discovery_me
 	var matching_memories = GameState.get_memories_for_trigger_type(trigger_type, target_id)
 	
 	if matching_memories.is_empty():
-		if debug: DebugManager.print_debug_auto(self, "No memory triggers found for: ", target_id)
+		if debug: DebugManager.print_debug_auto(self, "No memory triggers found for: " + str(target_id))
 		return false
 	
 	for memory_data in matching_memories:
@@ -127,7 +127,7 @@ func _process_memory_triggers(trigger_type: int, target_id: String, discovery_me
 				
 				if dialogue_title != "" and character_id != "":
 					dialogue_option_unlocked.emit(character_id, dialogue_title, tag_name)
-					if debug: DebugManager.print_debug_auto(self, "Unlocked dialogue option: ", character_id, " -> ", dialogue_title)
+					if debug: DebugManager.print_debug_auto(self, "Unlocked dialogue option: " + str(character_id) + " -> " + str(dialogue_title))
 				
 				# Show notification
 				var notification_system = get_node_or_null("/root/NotificationSystem")
@@ -205,7 +205,7 @@ func _validate_location_id(location_id: String) -> bool:
 		return true
 	
 	# Could also be an area within a scene, so don't be too strict
-	if debug: DebugManager.print_debug_auto(self, "INFO: Location ", location_id, " not found as scene file, might be area ID")
+	if debug: DebugManager.print_debug_auto(self, "INFO: Location " + str(location_id) + " not found as scene file, might be area ID")
 	return true
 
 func _validate_quest_id(quest_id: String) -> bool:
@@ -228,7 +228,7 @@ func _check_memory_conditions(memory_data: Dictionary) -> bool:
 	var condition_tags = memory_data.get("condition_tags", [])
 	for condition_tag in condition_tags:
 		if not GameState.has_tag(condition_tag):
-			if debug: DebugManager.print_debug_auto(self, "Memory condition not met: ", condition_tag)
+			if debug: DebugManager.print_debug_auto(self, "Memory condition not met: " + str(condition_tag))
 			return false
 	
 	return true
@@ -247,14 +247,14 @@ func _process_memory_unlock(memory_data: Dictionary, discovery_method: String, t
 		# Check for dialogue unlocks
 		if not dialogue_title.is_empty() and not character_id.is_empty():
 			dialogue_option_unlocked.emit(character_id, dialogue_title, unlock_tag)
-			if debug: DebugManager.print_debug_auto(self, "Unlocked dialogue option: ", character_id, " -> ", dialogue_title)
+			if debug: DebugManager.print_debug_auto(self, "Unlocked dialogue option: " + str(character_id) + " -> " + str(dialogue_title))
 		
 		# Show notification
 		var notification_system = get_node_or_null("/root/NotificationSystem")
 		if notification_system and notification_system.has_method("show_notification"):
 			notification_system.show_notification(description)
 		
-		if debug: DebugManager.print_debug_auto(self, "Memory discovered: ", unlock_tag, " - ", description)
+		if debug: DebugManager.print_debug_auto(self, "Memory discovered: " + str(unlock_tag) + " - " + str(description))
 
 func _check_memory_consequences(memory_data: Dictionary, character_id: String):
 	# Check if this unlocks dialogue options
@@ -275,7 +275,7 @@ func get_save_data():
 		"current_target": null  # Don't save node references, just reset
 	}
 	
-	if debug: DebugManager.print_debug_auto(self, "Collected memory system data: ", examination_history.size(), " examination entries")
+	if debug: DebugManager.print_debug_auto(self, "Collected memory system data: " + str(examination_history.size()) + " examination entries")
 	return save_data
 
 func load_save_data(data):
@@ -286,7 +286,7 @@ func load_save_data(data):
 	# Restore examination history
 	if data.has("examination_history"):
 		examination_history = data.examination_history.duplicate()
-		if debug: DebugManager.print_debug_auto(self, "Restored ", examination_history.size(), " examination history entries")
+		if debug: DebugManager.print_debug_auto(self, "Restored " + str(examination_history.size()) + " examination history entries")
 	
 	# Reset current target (node references don't persist across saves)
 	current_target = null

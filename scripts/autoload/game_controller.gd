@@ -107,7 +107,7 @@ func _ready():
 	player = GameState.get_player()
 
 func _on_day_changed(old_day, new_day):
-	if debug: DebugManager.print_debug_auto(self, "Day changed from %d to %d" % [old_day, new_day])
+	if debug: DebugManager.print_debug_auto(self, str("Day changed from %d to %d" % [old_day) + str(new_day]))
 	day_advanced.emit()
 
 	# Additional day change logic here

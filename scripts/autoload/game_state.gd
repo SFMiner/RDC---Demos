@@ -108,7 +108,7 @@ func _load_memory_registry():
 		var json_result := JSON.new()
 		if json_result.parse(json_string) == OK:
 			memory_registry = json_result.get_data()
-			if debug: DebugManager.print_debug_auto(self, "Loaded ", memory_registry.size(), " memory tags from registry")
+			if debug: DebugManager.print_debug_auto(self, "Loaded " + str(memory_registry.size()) + " memory tags from registry")
 		else:
 			if debug: DebugManager.print_debug_auto(self, "ERROR: Failed to parse memory registry JSON")
 	else:
@@ -161,7 +161,7 @@ func discover_memory_from_registry(tag_name: String, discovery_method: String = 
 	# Emit discovery signal
 	memory_discovered.emit(tag_name, description)
 	
-	if debug: DebugManager.print_debug_auto(self, "Memory discovered: ", tag_name, " - ", description)
+	if debug: DebugManager.print_debug_auto(self, "Memory discovered: " + str(tag_name) + " - " + str(description))
 	return true
 
 # NEW: Get memories by trigger type using registry
@@ -206,7 +206,7 @@ func get_dialogue_options_from_registry(character_id: String) -> Array:
 					"description": metadata.get("description", "")
 				}
 				available_options.append(option)
-				if debug: DebugManager.print_debug_auto(self, "Added dialogue option: ", option)
+				if debug: DebugManager.print_debug_auto(self, "Added dialogue option: " + str(option))
 	
 	return available_options
 
@@ -256,7 +256,7 @@ func set_tag(tag: String, value: Variant = true) -> void:
 	
 	tags[tag] = value
 	tag_added.emit(tag)
-	if debug: DebugManager.print_debug_auto(self, "Set tag '", tag, "' = ", value)
+	if debug: DebugManager.print_debug_auto(self, "Set tag '" + str(tag) + "' = " + str(value))
 
 # NEW: Load all memory definitions into GameState
 func _load_memory_definitions():
@@ -274,7 +274,7 @@ func _load_memory_definitions():
 	# Organize by trigger type for fast lookup
 	_organize_memories_by_trigger()
 	
-	if debug: DebugManager.print_debug_auto(self, "Loaded ", memory_definitions.size(), " memory definitions")
+	if debug: DebugManager.print_debug_auto(self, "Loaded " + str(memory_definitions.size()) + " memory definitions")
 	
 	# Debug the loaded data
 	call_deferred("debug_memory_definitions")
@@ -284,21 +284,21 @@ func _load_memory_definitions():
 func _load_individual_memories():
 	var path = "res://data/memories/individual_memories.json"
 	if not FileAccess.file_exists(path):
-		if debug: DebugManager.print_debug_auto(self, "No individual memories file found at: ", path)
+		if debug: DebugManager.print_debug_auto(self, "No individual memories file found at: " + str(path))
 		return
 	
 	var file = FileAccess.open(path, FileAccess.READ)
 	var json_string = file.get_as_text()
 	file.close()
 	
-	if debug: DebugManager.print_debug_auto(self, "Loaded JSON text length: ", json_string.length())
+	if debug: DebugManager.print_debug_auto(self, "Loaded JSON text length: " + str(json_string.length()))
 	if debug: DebugManager.print_debug_auto(self, "Full JSON content:")
 	if debug: DebugManager.print_debug_auto(self, json_string)
 	
 	var json = JSON.new()
 	var parse_result = json.parse(json_string)
 	if parse_result != OK:
-		if debug: DebugManager.print_debug_auto(self, "ERROR: Failed to parse individual memories JSON: ", json.get_error_message())
+		if debug: DebugManager.print_debug_auto(self, "ERROR: Failed to parse individual memories JSON: " + str(json.get_error_message()))
 		return
 	
 	var data = json.data
@@ -306,25 +306,25 @@ func _load_individual_memories():
 		if debug: DebugManager.print_debug_auto(self, "ERROR: Individual memories JSON is not a dictionary")
 		return
 	
-	if debug: DebugManager.print_debug_auto(self, "Successfully parsed JSON with ", data.size(), " entries")
-	if debug: DebugManager.print_debug_auto(self, "JSON keys: ", data.keys())
+	if debug: DebugManager.print_debug_auto(self, "Successfully parsed JSON with " + str(data.size()) + " entries")
+	if debug: DebugManager.print_debug_auto(self, "JSON keys: " + str(data.keys()))
 	
 	# Process each memory, skipping comments and metadata
 	for memory_id in data:
 		# SKIP COMMENTS AND METADATA
 		if memory_id.begins_with("_"):
-			if debug: DebugManager.print_debug_auto(self, "Skipping metadata entry: ", memory_id)
+			if debug: DebugManager.print_debug_auto(self, "Skipping metadata entry: " + str(memory_id))
 			continue
 		
 		var memory_data = data[memory_id]
 		
-		if debug: DebugManager.print_debug_auto(self, "Processing memory: ", memory_id)
-		if debug: DebugManager.print_debug_auto(self, "  Raw data: ", memory_data)
-		if debug: DebugManager.print_debug_auto(self, "  Data type: ", typeof(memory_data))
+		if debug: DebugManager.print_debug_auto(self, "Processing memory: " + str(memory_id))
+		if debug: DebugManager.print_debug_auto(self, "  Raw data: " + str(memory_data))
+		if debug: DebugManager.print_debug_auto(self, "  Data type: " + str(typeof(memory_data)))
 		
 		# Ensure memory_data is a dictionary
 		if typeof(memory_data) != TYPE_DICTIONARY:
-			if debug: DebugManager.print_debug_auto(self, "ERROR: Memory data for ", memory_id, " is not a dictionary: ", typeof(memory_data))
+			if debug: DebugManager.print_debug_auto(self, "ERROR: Memory data for " + str(memory_id) + " is not a dictionary: " + str(typeof(memory_data)))
 			continue
 		
 		# FIX TYPE CONVERSION: Ensure trigger_type is integer
@@ -332,11 +332,11 @@ func _load_individual_memories():
 			var trigger_type = memory_data["trigger_type"]
 			if typeof(trigger_type) == TYPE_FLOAT:
 				memory_data["trigger_type"] = int(trigger_type)
-				if debug: DebugManager.print_debug_auto(self, "Converted trigger_type from float to int for: ", memory_id)
+				if debug: DebugManager.print_debug_auto(self, "Converted trigger_type from float to int for: " + str(memory_id))
 		
 		# Store in memory_definitions
 		memory_definitions[memory_id] = memory_data
-		if debug: DebugManager.print_debug_auto(self, "Stored memory: ", memory_id, " with data: ", memory_data)
+		if debug: DebugManager.print_debug_auto(self, "Stored memory: " + str(memory_id) + " with data: " + str(memory_data))
 		
 
 func _load_memory_chains():
@@ -367,7 +367,7 @@ func _load_memory_chain_file(path: String):
 				var chain_id = chain_data.get("id", "")
 				if not chain_id.is_empty():
 					memory_chains[chain_id] = chain_data
-					if debug: DebugManager.print_debug_auto(self, "Loaded memory chain: ", chain_id)
+					if debug: DebugManager.print_debug_auto(self, "Loaded memory chain: " + str(chain_id))
 
 func _load_character_memory_data():
 	var character_loader = get_node_or_null("/root/CharacterDataLoader")
@@ -574,7 +574,7 @@ func is_known(tag: String):
 # Scene and NPC management (updated to avoid duplicate declarations)
 func set_current_scene(scene):
 	current_scene = scene
-	if debug: DebugManager.print_debug_auto(self, "GameState: Set current scene to ", scene.name)
+	if debug: DebugManager.print_debug_auto(self, "GameState: Set current scene to " + str(scene.name))
 	
 	# Update NPC and marker lists immediately
 	set_current_npcs()
@@ -592,7 +592,7 @@ func scene_visited(scene_name):
 
 func set_current_npcs():
 	current_npc_list = get_tree().get_nodes_in_group("npc")
-	if debug: DebugManager.print_debug_auto(self, "GameState: Updated NPC list with ", current_npc_list.size(), " NPCs")
+	if debug: DebugManager.print_debug_auto(self, "GameState: Updated NPC list with " + str(current_npc_list.size()) + " NPCs")
 	return current_npc_list
 
 func get_current_npcs():
@@ -600,7 +600,7 @@ func get_current_npcs():
 
 func set_current_markers():
 	current_marker_list = get_tree().get_nodes_in_group("marker")
-	if debug: DebugManager.print_debug_auto(self, "GameState: Updated marker list with ", current_marker_list.size(), " markers")
+	if debug: DebugManager.print_debug_auto(self, "GameState: Updated marker list with " + str(current_marker_list.size()) + " markers")
 	return current_marker_list
 
 func get_npc_by_id(npc_id):
@@ -617,7 +617,7 @@ func get_npc_by_id(npc_id):
 		if npc.get("character_id") and npc.character_id.to_lower() == npc_id.to_lower():
 			return npc
 	
-	if debug: DebugManager.print_debug_auto(self, "GameState: Could not find NPC with ID: ", npc_id)
+	if debug: DebugManager.print_debug_auto(self, "GameState: Could not find NPC with ID: " + str(npc_id))
 	return null
 
 func get_marker_by_id(marker_id):
@@ -635,7 +635,7 @@ func get_marker_by_id(marker_id):
 		elif marker.get("marker_id") and marker.marker_id == marker_id:
 			return marker
 	
-	if debug: DebugManager.print_debug_auto(self, "GameState: Could not find marker with ID: ", marker_id)
+	if debug: DebugManager.print_debug_auto(self, "GameState: Could not find marker with ID: " + str(marker_id))
 	return null
 
 # Additional state functions (updated to avoid duplicate declarations)
@@ -674,7 +674,7 @@ func discover_memory(memory_tag: String, description: String, discovery_method: 
 	# Emit discovery signal
 	memory_discovered.emit(memory_tag, description)
 	
-	if debug: DebugManager.print_debug_auto(self, "Memory discovered: ", memory_tag, " - ", description)
+	if debug: DebugManager.print_debug_auto(self, "Memory discovered: " + str(memory_tag) + " - " + str(description))
 	return true
 
 func has_discovered_memory(memory_tag: String) -> bool:
@@ -859,7 +859,7 @@ func _collect_save_data():
 		save_data["memory_system"] = memory_system.get_save_data()
 		if debug: DebugManager.print_debug_auto(self, "Collected memory system data")
 	
-	if debug: DebugManager.print_debug_auto(self, "Save data collection complete. Keys: ", save_data.keys())
+	if debug: DebugManager.print_debug_auto(self, "Save data collection complete. Keys: " + str(save_data.keys()))
 	return save_data
 
 func _apply_save_data(save_data):
@@ -1055,23 +1055,23 @@ func debug_memory_definitions():
 		return
 	
 	if debug: print("\n" + script_name_tag(self) + "=== MEMORY DEFINITIONS DEBUG ===")
-	if debug: DebugManager.print_debug_auto(self, "Total memory definitions: ", memory_definitions.size())
+	if debug: DebugManager.print_debug_auto(self, "Total memory definitions: " + str(memory_definitions.size()))
 	
 	for memory_id in memory_definitions:
 		var memory = memory_definitions[memory_id]
-		if debug: DebugManager.print_debug_auto(self, "Memory ID: ", memory_id)
-		if debug: DebugManager.print_debug_auto(self, "  Type: ", typeof(memory))
+		if debug: DebugManager.print_debug_auto(self, "Memory ID: " + str(memory_id))
+		if debug: DebugManager.print_debug_auto(self, "  Type: " + str(typeof(memory)))
 		if typeof(memory) == TYPE_DICTIONARY:
-			if debug: DebugManager.print_debug_auto(self, "  Keys: ", memory.keys())
-			if debug: DebugManager.print_debug_auto(self, "  Trigger type: ", memory.get("trigger_type", "MISSING"))
-			if debug: DebugManager.print_debug_auto(self, "  Target ID: ", memory.get("target_id", "MISSING"))
+			if debug: DebugManager.print_debug_auto(self, "  Keys: " + str(memory.keys()))
+			if debug: DebugManager.print_debug_auto(self, "  Trigger type: " + str(memory.get("trigger_type", "MISSING")))
+			if debug: DebugManager.print_debug_auto(self, "  Target ID: " + str(memory.get("target_id", "MISSING")))
 		else:
 			print(script_name_tag(self) + "  Value: ", memory)
 		print(script_name_tag(self) + "---")
 	
 	if debug: DebugManager.print_debug_auto(self, "Memories by trigger:")
 	for trigger_type in memories_by_trigger:
-		if debug: DebugManager.print_debug_auto(self, "  Type ", trigger_type, ": ", memories_by_trigger[trigger_type].size(), " targets")
+		if debug: DebugManager.print_debug_auto(self, "  Type " + str(trigger_type) + ": " + str(memories_by_trigger[trigger_type].size()) + " targets")
 	
 	if debug: DebugManager.print_debug_auto(self, "===============================\n")
 	
