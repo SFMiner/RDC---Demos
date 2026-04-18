@@ -1,15 +1,11 @@
 extends Node
 
-# Centralized path constants for Love & Lichens
+# Centralized path constants
 # Prevents hardcoded paths throughout the codebase
 
 const SCENES = {
 	"main_menu": "res://scenes/main_menu.tscn",
-	"game": "res://scenes/game.tscn",
-	"dorm_room": "res://scenes/world/locations/dorm_room.tscn",
-	"campus_quad": "res://scenes/world/locations/campus_quad.tscn",
-	"campus_path": "res://scenes/world/locations/campus_path.tscn",
-	"church_interior": "res://scenes/world/locations/church_interior.tscn"
+	"game": "res://scenes/game.tscn"
 }
 
 const UI = {
@@ -39,9 +35,7 @@ const SCRIPTS = {
 }
 
 const CUTSCENES = {
-	"base": "res://scenes/cutscene.tscn",
-	"campus_intro": "res://scenes/cutscenes/campus_intro_cutscene.tscn",
-	"lab_meeting": "res://scenes/cutscenes/lab_meeting_cutscene.tscn"
+	"base": "res://scenes/cutscene.tscn"
 }
 
 # Helper function to get scene path

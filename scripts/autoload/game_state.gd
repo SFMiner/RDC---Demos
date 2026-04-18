@@ -26,36 +26,6 @@ var tracker_id : int = 0
 
 var tags: Dictionary = {}
 var scenes: Dictionary = {
-	"CampusQuad":{
-		"pickups":[]
-	},
-	"Library":{
-		"pickups":[]
-	},
-	"ResearchLab":{
-		"pickups":[]
-	},
-	"DormRoom":{
-		"pickups":[]
-	},
-	"OldGrowthForest":{
-		"pickups":[]
-	},
-	"Cemetery":{
-		"pickups":[]
-	},
-	"MemorySpring":{
-		"pickups":[]
-	},
-	"CouncilOfToadstools":{
-		"pickups":[]
-	},
-	"Theater":{
-		"pickups":[]
-	},
-	"PermacultureGarden":{
-		"pickups":[]
-	},
 	"ChurchInterior":{
 		"pickups":[]
 	}
@@ -63,16 +33,13 @@ var scenes: Dictionary = {
 
 
 
-var poison_shared_facts = 0
-
 const _PathsScript = preload("res://scripts/autoload/paths.gd")
 
 var scenes_visited = []
 
-#var memory_tag_registry 
+#var memory_tag_registry
 # Variables from original GameState that might be missing
 var looking_at_adam_desk = false
-var poison_bugs = ["tarantula"]
 var atlas_emergence : int = 28
 var current_day : float = 0
 var memory_registry : Dictionary
@@ -126,54 +93,6 @@ var debug
 func _ready():
 	var _fname = "_ready"
 	debug = scr_debug or GameController.sys_debug
-
-func _initialize_camera_roll_starter_images():
-	const _fname = "_initialize_camera_roll_starter_images"
-
-	# Ensure the camera roll data structure exists
-	if debug: print(script_name_tag(self, _fname) + " function called.")
-	# Add starter images directly to GameState
-	var starter_images = {
-		"campus_welcome": {
-			"image_id": "mantis1",
-			"thumbnail_path": "res://assets/images/camera_roll_images/mantis.jpg",
-			"full_image_path": "res://assets/images/camera_roll_images/mantis.jpg",
-			"caption": "Mantis I found in the cemetery!",
-			"timestamp": "March 10, 2024",
-			"tags": "#mantis, #bug",
-			"source": "Aiden's Camera"
-		},
-		"Mushroom": {
-			"image_id": "mushroom1",
-			"thumbnail_path": "res://assets/images/camera_roll_images/mushroom1.png",
-			"full_image_path": "res://assets/images/camera_roll_images/mushroom1.png",
-			"caption": "New friend!",
-			"timestamp": "March 10, 2024",
-			"tags": "#musfroom, #fungus",
-			"source": "Aiden's Camera"
-		}
-	}
-	
-	# Only add if camera roll is empty
-
-	print(script_name_tag(self, _fname) + "Added starter images to camera roll")
-	
-	
-func add_journal_entry(entry_string : String):
-	var _fname = "add_journal_entry"
-	if debug: print(script_name_tag(self, _fname) + "entry_string = " + entry_string)
-	# get path to journal.gd script:
-	# load script at object "journal"
-	# check that "journal" exists
-	# call add_packed_entry on journal
-	
-# GameState.gd additions
-
-
-func _check_conversation_condition(condition: String) -> bool:
-	if condition.begins_with("!"):
-		return not has_tag(condition.substr(1))
-	return has_tag(condition)
 
 # SIMPLIFIED: Load only the registry
 func _load_memory_registry():
@@ -818,35 +737,18 @@ func start_new_game():
 
 	# Set default game data
 	game_data = {
-		"player_name": "Aiden Major",
-		"current_location": "church_interior",
-		"player_position": Vector2(966, 516),
+		"player_name": "Player",
+		"current_location": "game",
+		"player_position": Vector2(0, 0),
 		"current_day": 1,
 		"current_turn": 0,
 		"turns_per_day": 8
 	}
-	
+
 	# Add starting items
 	var inventory_system = get_node_or_null("/root/InventorySystem")
 	if inventory_system:
-		inventory_system.add_item("common_lichen1", 1)
-		inventory_system.add_item("rare_lichen1", 1)
-		inventory_system.add_item("lichenology_book", 1)
 		inventory_system.add_item("energy_drink", 2)
-	
-	# Initialize starting quest
-	var quest_system = get_node_or_null("/root/QuestSystem")
-	if quest_system:
-		quest_system.load_new_quest("intro_quest", true)
-	
-	# Load first scene
-	var game_controller = get_node_or_null("/root/GameController")
-	if game_controller:
-		game_controller.change_scene("res://scenes/world/locations/church_interior.tscn")
-	
-	
-	_initialize_camera_roll_starter_images()
-
 	
 	# Emit signal
 	game_started.emit(current_game_id)
@@ -1267,18 +1169,3 @@ static func node_has_method(node: Node, method: String) -> bool:
 	if not node:
 		return false
 	return node.has_method(method)
-
-# ─── Phone / Text Conversation Stubs ───────────────────────────────────────
-# The phone UI was removed; these stubs keep dialogue `do` calls from crashing.
-# Re-implement when a messaging system is added.
-func start_text_conversation(_conversation_id: String, _start_node: String) -> void:
-	push_warning("GameState.start_text_conversation called but phone system is not active.")
-
-func advance_text_conversation(_conversation_id: String, _next_node_id: String) -> void:
-	push_warning("GameState.advance_text_conversation called but phone system is not active.")
-
-# ─── Player Input Control ────────────────────────────────────────────────────
-func set_player_input_enabled(enabled: bool) -> void:
-	var player = get_player()
-	if player:
-		player.set_dialog_mode(not enabled)

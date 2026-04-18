@@ -152,7 +152,7 @@ func _spawn_single_npc(npc_data: Dictionary):
 
 	# Set character scale to match scene
 	if debug: print(GameState.script_name_tag(self, _fname) + parent_node.name + " scale = " + str(parent_node.scale))
-	var npc_scale = GameState.get_player().scale / parent_node.scale  / parent_node.get_parent().scale # Default scale from campus_quad
+	var npc_scale = GameState.get_player().scale / parent_node.scale  / parent_node.get_parent().scale # Calculate character scale based on parent node
 	npc_instance.scale = npc_scale
 	if debug: print(GameState.script_name_tag(self, _fname) + "Set character scale to: ", npc_scale)
 	
@@ -1091,14 +1091,6 @@ func save_cutscene(cutscene_id: String, cutscene_data: Dictionary):
 func _create_default_registry():
 	"""Create a default cutscene registry"""
 	var default_cutscenes = {
-		"campus_intro": {
-			"scene_path": Paths.get_cutscene("campus_intro"),
-			"dialog_file": "campus_intro_dialogue",
-			"location": "campus_quad",
-			"description": "Introduction to the campus quad area",
-			"triggers": ["first_visit_campus"],
-			"unlocks": ["campus_explored"]
-		},
 		"lab_meeting": {
 			"scene_path": Paths.get_cutscene("lab_meeting"),
 			"dialog_file": "lab_meeting_dialogue",

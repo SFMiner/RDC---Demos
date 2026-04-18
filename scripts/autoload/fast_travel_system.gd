@@ -20,26 +20,19 @@ func _ready():
 
 	# Initialize available locations (must be in _ready since Paths autoload isn't available at parse time)
 	available_locations = {
-		"campus_quad": {
-			"name": "Campus Quad",
-			"scene_path": Paths.get_scene("campus_quad"),
-			"spawn_point": "default",
-			"requires_visit": false,
-			"description": "The central meeting area of the university campus."
-		},
 		"cemetery": {
 			"name": "Old Cemetery",
 			"scene_path": Paths.get_scene("cemetery"),
 			"spawn_point": "entrance",
 			"requires_visit": true,
-			"description": "An old cemetery with abundant lichen growth on the tombstones."
+			"description": "An old cemetery."
 		},
 		"old_growth_forest": {
 			"name": "Old Growth Forest",
 			"scene_path": Paths.get_scene("old_growth_forest"),
 			"spawn_point": "default",
 			"requires_visit": true,
-			"description": "A dense forest with ancient trees covered in rare lichens."
+			"description": "A dense forest with ancient trees."
 		},
 		"permaculture_garden": {
 			"name": "Permaculture Garden",
@@ -49,9 +42,6 @@ func _ready():
 			"description": "A sustainable garden with a variety of ecosystems."
 		}
 	}
-
-	# Always mark campus quad as visited
-	visited_locations["campus_quad"] = true
 	
 	# Connect to location changed signal from GameController
 	var game_controller = get_node_or_null("/root/GameController")

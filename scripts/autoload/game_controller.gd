@@ -250,9 +250,6 @@ func start_new_game():
 	var game_state = get_node_or_null("/root/GameState")
 	if game_state:
 		game_state.start_new_game()
-	else:
-		# Fallback if GameState doesn't exist
-		change_scene(Paths.get_scene("church_interior"))
 
 # Load a game
 func load_game(slot):
@@ -307,9 +304,7 @@ func toggle_pause_menu():
 	# Even if current_scene_path says we're in main menu, if there's a player, we're in gameplay
 	if is_main_menu and player:
 		is_main_menu = false
-		# Fix the scene path
-		current_scene_path = Paths.get_scene("church_interior")
-		if debug: print(GameState.script_name_tag(self, _fname) + "Fixed scene path - we're actually in gameplay")
+		if debug: print(GameState.script_name_tag(self, _fname) + "Fixed scene detection - we're actually in gameplay")
 
 	if is_main_menu:
 		if debug: print(GameState.script_name_tag(self, _fname) + "In main menu, not pausing")
@@ -686,18 +681,8 @@ func create_test_items():
 	# Create a few test items - now just using the ids
 	var items = [
 		{
-			"id": "rare_lichen1",
-			"position": Vector2(400, 300),
-			"amount": 1
-		},
-		{
 			"id": "energy_drink",
 			"position": Vector2(700, 400),
-			"amount": 1
-		},
-		{
-			"id": "common_lichen1",
-			"position": Vector2(500, 350),
 			"amount": 1
 		}
 	]
@@ -781,10 +766,6 @@ func on_location_entered(location_id):
 	if quest_system:
 		quest_system.on_location_entered(location_id)
 		if debug: print(GameState.script_name_tag(self, _fname) + "Location entered: ", location_id)
-
-	# Add this to _ready() in game_controller.gd
-	# Initialize the "church_interior" visit for intro quest
-	call_deferred("on_location_entered", "church_interior")
 
 func debug_complete_quest_objective(quest_id, objective_type, target_id):
 	var _fname = "debug_complete_quest_objective"

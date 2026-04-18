@@ -1,7 +1,7 @@
 # Enhanced dialog_memory_extension.gd
 extends Node
 
-# Dialog Memory Extension for Love & Lichens
+# Dialog Memory Extension
 # Advanced integration between dialogue system and memory system
 
 signal memory_option_selected(character_id, memory_tag)
@@ -625,11 +625,9 @@ func debug_memory_conditions():
 	
 	# Test various memory conditions
 	var test_conditions = [
-		"poison_met_player",
-		"poison_met_player && library_visited",
-		"relationship_poison >= 2",
+		"library_visited",
 		"!quest_intro_completed",
-		"memory_count_lichen >= 3"
+		"memory_count >= 1"
 	]
 	
 	for condition in test_conditions:

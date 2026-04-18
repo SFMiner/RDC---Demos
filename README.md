@@ -1,24 +1,27 @@
-0# Love & Lichens
+# Blank RPG Framework
 
-A whimsical RPG/Visual Novel set in a college of environmental science, where understanding nature grants magical abilities.
+A flexible RPG/Visual Novel framework built in Godot 4.4+ for creating narrative-driven games with dialogue, inventory, quests, and relationship systems.
 
 ## Project Overview
 
-Love & Lichens is a narrative-driven game that combines relationship-building, environmental education, and non-violent "combat" through debates. Players take on the role of aiden Major, a new student at SUNY College of Environmental Science and Forestry, as they investigate a mysterious ecological imbalance affecting the campus.
+This project provides a foundation for building story-driven games with character interactions, player choices, and dynamic world responses. It combines core RPG systems including dialogue management, inventory handling, quest tracking, and NPC relationships.
 
 ## Core Systems
 
 ### Dialog System
-Handles character conversations and branching dialog trees. Dialog data is stored in JSON format for easy editing.
+Handles character conversations and branching dialogue trees. Dialogue data is stored in `.dialogue` files and processed by the Dialogue Manager addon.
 
 ### Relationship System
-Tracks the player's relationships with NPCs, from stranger to romantic interest. Relationships evolve based on interactions, dialog choices, and special events.
+Tracks the player's relationships with NPCs, evolving based on interactions, dialogue choices, and special events.
 
 ### Inventory System
-Manages the player's items, including lichen samples, books, and quest items.
+Manages the player's items and equipment.
 
-### Environmental Debate System (To Be Implemented)
-A non-violent "combat" system using rhetorical techniques and environmental knowledge.
+### Quest System
+Tracks objectives, progress, and quest completion.
+
+### Memory System
+Records player discoveries and story elements that unlock over time.
 
 ## Getting Started
 
@@ -37,13 +40,13 @@ A non-violent "combat" system using rhetorical techniques and environmental know
 4. Go to Project > Project Settings > Input Map tab
    - Add a new action called "interact"
    - Add key bindings: E and Space
-   - Make sure the default movement inputs are properly configured:
-	 - ui_up: W, Up Arrow
-	 - ui_down: S, Down Arrow 
-	 - ui_left: A, Left Arrow
-	 - ui_right: D, Right Arrow
+   - Configure movement inputs:
+     - ui_up: W, Up Arrow
+     - ui_down: S, Down Arrow
+     - ui_left: A, Left Arrow
+     - ui_right: D, Right Arrow
 5. Set the main scene to `res://scenes/game.tscn`
-6. Run the project 
+6. Run the project
 
 ### Troubleshooting
 - If you see "GameController not found" errors, double-check that all autoloads are properly configured
@@ -52,39 +55,42 @@ A non-violent "combat" system using rhetorical techniques and environmental know
 ## Project Structure
 
 ```
-love_and_lichens/
-├── assets/           # Game assets (images, sounds, etc.)
+blank-rpg/
+├── assets/           # Game assets (images, sounds, fonts, etc.)
 ├── scenes/           # Game scenes and UI components
 ├── scripts/          # Game logic and systems
 │   ├── autoload/     # Singleton systems
 │   ├── ui/           # UI scripts
 │   ├── world/        # World-related scripts
 │   └── player/       # Player-related scripts
-└── data/             # Game data in JSON format
-	└── dialogs/      # Character dialog data
+├── data/             # Game data in JSON and dialogue format
+│   ├── characters/   # Character definitions
+│   ├── dialogues/    # Dialogue files
+│   ├── quests/       # Quest definitions
+│   └── memories/     # Memory system data
+└── addons/           # Third-party addons
 ```
 
-## Development Roadmap
+## Key Features
 
-### Phase 1: Core Systems (Current)
-- [x] Basic project structure
-- [x] Dialog system
-- [x] Relationship system
-- [x] Inventory system
-- [x] Basic player movement and camera
-- [x] NPC interaction
+- **Dialogue Manager Integration**: Full support for branching conversations
+- **Character Customization**: Define custom fonts, colors, and personalities
+- **Flexible Quest System**: Create complex objectives and multi-step quests
+- **Save/Load System**: Multiple save slots with automatic persistence
+- **Tag-Based Memory System**: Track player discoveries and story progress
+- **Relationship Tracking**: Build and change NPC relationships dynamically
+- **Inventory Management**: Handle items, equipment, and special pickups
+- **Navigation System**: Click-to-navigate and keyboard movement support
 
-### Phase 2: Content Development
-- [ ] Campus locations
-- [ ] Character development
-- [ ] Quest system
+## Development Notes
 
-### Phase 3: Polish
-- [ ] UI refinement
-- [ ] Audio
-- [ ] Testing and balance
-- [ ] Documentation
+This framework is designed to be modular and extensible. Create your own stories by:
+1. Adding character data to `data/characters/`
+2. Writing dialogue in `data/dialogues/`
+3. Defining quests in `data/quests/`
+4. Creating locations in `scenes/world/locations/`
+5. Implementing custom logic in `scripts/world/` as needed
 
 ## Credits
 
-Developed as a solo project by Sean Miner
+Developed by Sean Miner using the Godot Engine

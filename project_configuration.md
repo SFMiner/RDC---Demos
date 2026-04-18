@@ -1,4 +1,4 @@
-# Love & Lichens Project Configuration
+# Blank RPG Framework - Project Configuration
 
 ## Autoload Configuration
 
@@ -48,7 +48,7 @@ Add the following input actions:
 
 1. Set the main scene to `res://scenes/game.tscn`
 2. Set the window size to 1280x720
-3. Set the application name to "Love & Lichens"
+3. Set the application name to your game name
 
 ## Physics Layers
 

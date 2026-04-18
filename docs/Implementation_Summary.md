@@ -1,7 +1,7 @@
 # Implementation Summary - Improvement Plan
 
 ## Overview
-This document summarizes the comprehensive improvement plan implementation for Love & Lichens game engine. All phases have been completed, bringing significant improvements to code quality, maintainability, and consistency.
+This document summarizes the comprehensive improvement plan implementation for the Blank RPG Framework. All phases have been completed, bringing significant improvements to code quality, maintainability, and consistency.
 
 ## Completed Improvements
 

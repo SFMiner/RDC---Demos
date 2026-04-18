@@ -1038,7 +1038,7 @@ func _check_area_visit_objectives(area_name, location_id=""):
 				
 				# Check for visit objective that matches area_name (direct match)
 				if objective.type == "visit" and not objective.completed:
-					# Match the area_name directly or the campus_quad:area_name format
+					# Match the area_name directly or the location:area_name format
 					if objective.target == area_name or (area_with_location != "" and objective.target == area_with_location):
 						if debug: print(GameState.script_name_tag(self) + "Found matching visit objective for area: ", area_name)
 						objective.completed = true
@@ -1068,9 +1068,8 @@ func check_all_areas_visited(location_id):
 	if not area_exploration.has(location_id):
 		return false
 		
-	# For campus_quad, we know there are 4 areas
-	# This should be made more dynamic in a full implementation
-	if location_id == "campus_quad" and area_exploration[location_id].visited_areas.size() >= 4:
+	# Check if any areas have been visited in the location
+	if area_exploration[location_id].visited_areas.size() > 0:
 		return true
 		
 	return false
@@ -1086,13 +1085,13 @@ func _check_multi_area_objectives():
 				var objective = quest.objectives[i]
 				
 				# Check for exploring multiple areas objective
-				if objective.type == "explore" and objective.target == "campus_quad" and not objective.completed:
+				if objective.type == "explore" and objective.target != "" and not objective.completed:
 					var visited_count = 0
 					var required_count = 3  # Require at least 3 areas to be visited
-					
-					# Count visited areas in campus_quad
-					if area_exploration.has("campus_quad"):
-						visited_count = area_exploration["campus_quad"].visited_areas.size()
+
+					# Count visited areas in the target location
+					if area_exploration.has(objective.target):
+						visited_count = area_exploration[objective.target].visited_areas.size()
 					
 					# Update progress tracking
 					if not objective.has("progress"):

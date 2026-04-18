@@ -34,7 +34,8 @@
       "mcp__minimal-godot-mcp__get_diagnostics",
       "Skill(investigate)",
       "Bash(find assets/character_sprites/father_matthew -name \"*.png\")",
-      "Bash(ls assets/character_sprites/)"
+      "Bash(ls assets/character_sprites/)",
+      "Bash(wc *)"
     ],
     "deny": [],
     "ask": []

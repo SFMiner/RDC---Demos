@@ -1290,7 +1290,7 @@ func get\_random\_location\_for\_nemesis(nemesis\_id):
 		return potential\_locations\[randi() % potential\_locations.size()\]  
 	else:  
 		\# Default fallback location  
-		return "campus\_quad"
+		return "church\_interior"
 
 func complete\_nemesis\_quest(quest\_id, resolution\_choice):  
 	if quest\_id in active\_quests and active\_quests\[quest\_id\].get("dynamic", false):  
@@ -1483,76 +1483,16 @@ extends Node2D
 \# Areas/locations in the game  
 var locations \= {  
 	"campus\_quad": {  
-		"name": "Campus Quad",  
-		"connections": \["science\_building", "library", "dormitory", "theater"\],  
-		"npcs": \["luna\_meadows"\],  
-		"environment": "outdoor"  
-	},  
-	"science\_building": {  
-		"name": "Environmental Science Building",  
-		"connections": \["campus\_quad", "laboratory", "greenhouse", "classroom"\],  
-		"npcs": \["professor\_moss"\],  
-		"environment": "indoor"  
-	},  
-	"laboratory": {  
-		"name": "Research Laboratory",  
-		"connections": \["science\_building"\],  
-		"npcs": \[\],  
-		"environment": "indoor"  
-	},  
-	"classroom": {  
-		"name": "Lecture Hall",  
-		"connections": \["science\_building"\],  
-		"npcs": \["philosophy\_student"\],  
-		"environment": "indoor"  
-	},  
-	"greenhouse": {  
-		"name": "Campus Greenhouse",  
-		"connections": \["science\_building", "garden"\],  
-		"npcs": \[\],  
-		"environment": "indoor"  
-	},  
-	"library": {  
-		"name": "Sustainability Library",  
-		"connections": \["campus\_quad"\],  
-		"npcs": \["skeptical\_student"\],  
-		"environment": "indoor"  
-	},  
-	"dormitory": {  
-		"name": "Eco-Friendly Dormitory",  
-		"connections": \["campus\_quad"\],  
-		"npcs": \["river\_stone"\],  
-		"environment": "indoor"  
-	},  
-	"garden": {  
-		"name": "Permaculture Garden",  
-		"connections": \["greenhouse"\],  
-		"npcs": \["nature\_guide"\],  
-		"environment": "outdoor"  
-	},  
-	"forest": {  
-		"name": "Old Growth Forest Preserve",  
-		"connections": \["campus\_quad"\],  
-		"npcs": \[\],  
-		"environment": "outdoor"  
-	},  
-	"lake": {  
-		"name": "Campus Lake",  
-		"connections": \["forest"\],  
-		"npcs": \[\],  
-		"environment": "outdoor"  
-	},  
-	"theater": {  
-		"name": "Campus Theater",  
-		"connections": \["campus\_quad"\],  
-		"npcs": \["drama\_club\_president", "performance\_artist"\],  
+		"name": "Church Interior",  
+		"connections": \[],  
+		"npcs": \["father\_matthew", "malachai", "guard1"m "guard2", "samwell", "bailey", "ira", "mrs_azir"\],  
 		"environment": "indoor"  
 	}  
 	\# More locations...  
 }
 
 \# Current location  
-var current\_location \= "campus\_quad"
+var current\_location \= "churh\_interior"
 
 func change\_location(location\_id):  
 	if location\_id in locations and location\_id in locations\[current\_location\]\["connections"\]:  
