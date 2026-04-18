@@ -5,7 +5,8 @@ extends Node
 
 const SCENES = {
 	"main_menu": "res://scenes/main_menu.tscn",
-	"game": "res://scenes/game.tscn"
+	"game": "res://scenes/game.tscn",
+	"church_interior": "res://scenes/world/locations/church_interior.tscn"
 }
 
 const UI = {
