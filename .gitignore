@@ -2,3 +2,8 @@
 .godot/
 /android/
 *.zip
+
+# Godot editor temporary files
+*.tmp
+*.tscn*.tmp
+*.tres*.tmp
