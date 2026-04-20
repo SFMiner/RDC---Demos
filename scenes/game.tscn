@@ -1,7 +1,18 @@
 [gd_scene load_steps=3 format=3 uid="uid://c0p7owuaem3nk"]
 
 [ext_resource type="Script" uid="uid://c367g84woylmp" path="res://scripts/game_scene_logic.gd" id="1_g3xwj"]
-[ext_resource type="PackedScene" uid="uid://psku74tm8111" path="res://scenes/ui/time_display.tscn" id="2_yqjtg"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uwrxv"]
+bg_color = Color(0.47876185, 0.0014744374, 0.6755655, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.85483587, 0.11532798, 0.7813444, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="Game" type="Node"]
 script = ExtResource("1_g3xwj")
@@ -25,5 +36,10 @@ text = "Loading scene..."
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="TimeDisplay" parent="CanvasLayer" instance=ExtResource("2_yqjtg")]
-visible = false
+[node name="Button" type="Button" parent="CanvasLayer"]
+offset_left = 1614.0
+offset_top = 25.0
+offset_right = 1678.0
+offset_bottom = 52.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_uwrxv")
+text = "  Reset  "

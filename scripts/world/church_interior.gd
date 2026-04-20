@@ -29,17 +29,20 @@ func _ready():
 	debug = scr_debug or GameController.sys_debug
 
 	if debug: print(GameState.script_name_tag(self, _fname) + "Church Interior scene initialized")
-	
+
 	setup_player()
 	setup_items()
 	initialize_systems()
 	setup_visit_areas()
+	GameState.safe_connect(CutsceneManager, "caught_up", Callable(self, "_on_npc_caught_up"))
+
 
 	await get_tree().create_timer(0.2).timeout
 	var quest_system = get_node_or_null("/root/QuestSystem")
 	if quest_system and quest_system.has_method("on_location_entered"):
 		quest_system.on_location_entered("church_interior")
 		if debug: print(GameState.script_name_tag(self, _fname) + "Notified quest system of location: church_interior")
+
 
 func setup_player():
 	const _fname = "setup_player"
@@ -92,3 +95,21 @@ func _on_visit_area_entered(body, area_name: String):
 		var cutscene_id : String = cutscene_triggers[area_name]
 		if debug: print(GameState.script_name_tag(self, _fname) + "Triggering cutscene: " + cutscene_id)
 		CutsceneManager.start_cutscene(cutscene_id)
+
+func _on_npc_caught_up(npc: Node2D, target_id: String):
+	const _fname = "_on_npc_caught_up"
+	if debug: print(GameState.script_name_tag(self, _fname) + str(npc) + " caught up to " + target_id)
+	# Stop the target NPC
+	var target_npc : Node2D = GameState.get_npc_by_id(target_id)
+	if target_npc:
+		if "follow_target" in target_npc:
+			target_npc.follow_target = null
+		if "velocity" in target_npc:
+			target_npc.velocity = Vector2.ZERO
+		if target_npc.has_node("NavigationAgent2D"):
+			target_npc.get_node("NavigationAgent2D").target_position = target_npc.global_position
+	# Start dialogue on the interposing NPC directly — no re-fetch needed
+	if is_instance_valid(npc) and npc.has_method("interact"):
+		print("calling interact from on_npc_caught.")
+		DialogSystem.start_dialog(npc, "start")
+		npc.interact()

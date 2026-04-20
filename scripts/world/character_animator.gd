@@ -1,6 +1,6 @@
 extends Node
 
-const scr_debug: bool = true
+const scr_debug: bool = false
 var debug: bool
 
 @onready var sprite: Sprite2D = get_parent().get_node_or_null("Sprite2D")

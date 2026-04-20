@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://c7i3e50e44wbc"
+path="res://.godot/imported/mrs_azir.dialogue-22d30c1c3109c383c4154017951d624b.tres"
+
+[deps]
+
+source_file="res://data/dialogues/mrs_azir.dialogue"
+dest_files=["res://.godot/imported/mrs_azir.dialogue-22d30c1c3109c383c4154017951d624b.tres"]
+
+[params]
+
+defaults=true

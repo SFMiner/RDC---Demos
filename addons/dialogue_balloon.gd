@@ -58,7 +58,7 @@ var character_font_sizes = {}
 # Store references to loaded fonts to avoid reloading
 var loaded_fonts = {}
 
-const scr_debug :bool = true
+const scr_debug :bool = false
 var debug
 
 func _ready() -> void:

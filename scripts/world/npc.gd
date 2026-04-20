@@ -6,7 +6,6 @@ class_name NPC
 signal interaction_started(npc_id)
 signal interaction_ended(npc_id)
 signal observed(feature_id)
-
 # ==========================================
 # CORE CHARACTER IDENTITY (@export for Inspector editing)
 # ==========================================
@@ -115,7 +114,6 @@ func _ready():
 	_initialize_game_behavior()
 #	z_as_relative = true
 #	sprite.z_as_relative = true
-	
 	
 	if debug: 
 		print(GameState.script_name_tag(self) + "Character setup complete. Observable features: ", observable_features.keys())

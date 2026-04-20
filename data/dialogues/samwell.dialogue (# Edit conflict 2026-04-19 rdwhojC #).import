@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://dr2w304bvtw2g"
+path="res://.godot/imported/samwell.dialogue-30f2f824622bb87a1ac479c30c02054f.tres"
+
+[deps]
+
+source_file="res://data/dialogues/samwell.dialogue"
+dest_files=["res://.godot/imported/samwell.dialogue-30f2f824622bb87a1ac479c30c02054f.tres"]
+
+[params]
+
+defaults=true

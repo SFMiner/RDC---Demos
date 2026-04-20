@@ -38,7 +38,14 @@
       "Bash(wc *)",
       "Bash(git checkout *)",
       "Bash(git reset *)",
-      "Bash(git show *)"
+      "Bash(git show *)",
+      "Bash(find scenes/tests -type f)",
+      "Bash(find . -maxdepth 1 -name \"*.tscn\")",
+      "Bash(find . -name \"memory_test_scene.tscn\" -not -path \"./.godot/*\")",
+      "Bash(find . -name \"combat_trigger.tscn\" -not -path \"./.godot/*\")",
+      "Bash(find . -name \"construct.tscn\" -not -path \"./.godot/*\")",
+      "Bash(ls -la \"scenes/tests/TestPhoneScene.tscn\")",
+      "Bash(echo \"EXIT:$?\")"
     ],
     "deny": [],
     "ask": []

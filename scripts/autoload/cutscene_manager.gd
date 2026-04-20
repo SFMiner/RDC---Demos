@@ -19,6 +19,8 @@ var stored_cutscenes: Dictionary = {}
 var active_cutscene: Node = null
 
 var active_cutscene_npcs: Array[Node] = []
+# Tracks follows that should emit caught_up when within range: npc_id -> {npc, target, target_id, distance}
+var _signal_follow_targets: Dictionary = {}
 var active_cutscene_props: Array[Node] = []
 var cutscene_markers: Dictionary = {}  # Runtime-created markers
 var cutscene_camera: Camera2D = null   # Spawned during camera moves; null when player cam is active
@@ -26,6 +28,7 @@ var cutscene_camera: Camera2D = null   # Spawned during camera moves; null when 
 # Signal for cutscene events
 signal cutscene_started(cutscene_id)
 signal cutscene_finished(cutscene_id)
+signal caught_up(npc: Node2D, target_id: String)
 
 func _ready():
 	const _fname : String = "_ready"
@@ -390,6 +393,22 @@ func trigger_cutscene_in_location(cutscene_id: String, location: String) -> bool
 
 func _physics_process(delta):
 	const _fname : String = "_physics_process"
+	# Check signal-follow arrivals
+	var arrived : Array = []
+	for npc_id in _signal_follow_targets:
+		var data : Dictionary = _signal_follow_targets[npc_id]
+		var npc : Node2D = data.npc
+		var target : Node2D = data.target
+		if not is_instance_valid(npc) or not is_instance_valid(target):
+			arrived.append(npc_id)
+			continue
+		if npc.global_position.distance_to(target.global_position) <= data.distance:
+			arrived.append(npc_id)
+			caught_up.emit(npc, data.target_id)
+			if debug: print(GameState.script_name_tag(self, _fname) + npc_id + " caught up to " + data.target_id)
+	for npc_id in arrived:
+		_signal_follow_targets.erase(npc_id)
+
 	# Process ongoing movements
 	var completed_movements = []
 	
@@ -453,7 +472,7 @@ func _process_movement(character_id, movement_data, delta):
 			character.is_running = false
 		return true
 	# Diagnostic: log first-frame movement attempt so we can confirm it's being processed
-	if debug: print(GameState.script_name_tag(self, _fname) + character_id + " moving: dist=" + str(distance) + " target=" + str(target_position) + " pos=" + str(character.global_position))
+#	if debug: print(GameState.script_name_tag(self, _fname) + character_id + " moving: dist=" + str(distance) + " target=" + str(target_position) + " pos=" + str(character.global_position))
 
 	var animation = movement_data.get("animation", "walk")
 
@@ -926,7 +945,8 @@ func camera_restore(duration: float = 0.5):
 # ---------------------------------------------------------------------------
 
 ## Make an NPC follow a target. target_id: "player", another NPC id, or "" to stop.
-func set_npc_follow(npc_id: String, target_id: String, distance: float = 64.0):
+## signal_stopped: if true, emits caught_up(npc_id, target_id) once within distance.
+func set_npc_follow(npc_id: String, target_id: String, distance: float = 64.0, signal_stopped: bool = false):
 	const _fname : String = "set_npc_follow"
 	var npc : Node2D = GameState.get_npc_by_id(npc_id)
 	if not npc:
@@ -941,6 +961,14 @@ func set_npc_follow(npc_id: String, target_id: String, distance: float = 64.0):
 		npc.follow_target = target
 	if "follow_distance" in npc:
 		npc.follow_distance = distance
+	if signal_stopped and target:
+		print("setting _signal_follow_targets")
+		_signal_follow_targets[npc_id] = {
+			"npc": npc,
+			"target": target,
+			"target_id": target_id,
+			"distance": distance
+		}
 	if debug: print(GameState.script_name_tag(self, _fname) + npc_id + " following: " + target_id)
 
 ## Stop an NPC from following.

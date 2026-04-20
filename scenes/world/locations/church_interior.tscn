@@ -1037,14 +1037,12 @@ texture = ExtResource("7_v4q0u")
 offset = Vector2(-0.24816895, -19.670227)
 
 [node name="Samwell" parent="Node2D/z_Objects" instance=ExtResource("8_4ovcp")]
-position = Vector2(132, 753)
+position = Vector2(441, 673)
 scale = Vector2(1.63, 1.63)
 character_id = "samwell"
 character_name = "Samwell"
 description = null
-dialogue_file = null
-initial_dialogue_title = null
-interactable = null
+dialogue_file = "samwell"
 portrait_path = null
 initial_animation = "idle_up"
 personality_traits = null
@@ -1072,7 +1070,7 @@ frame = 0
 position = Vector2(913.00006, 594)
 scale = Vector2(1.63, 1.63)
 character_id = "mrs_azir"
-character_name = "Mrs. Azir"
+character_name = "Mrs Azir"
 description = null
 dialogue_file = "mrs_azir"
 initial_dialogue_title = null
@@ -1150,10 +1148,11 @@ position = Vector2(52, -11)
 shape = SubResource("RectangleShape2D_4ovcp")
 
 [node name="ColorRect" type="ColorRect" parent="Node2D/z_Objects"]
-offset_left = 1537.0
-offset_top = 189.0
-offset_right = 1577.0
-offset_bottom = 229.0
+visible = false
+offset_left = 608.0
+offset_top = 431.0
+offset_right = 648.0
+offset_bottom = 471.0
 
 [node name="Transitions" type="Node2D" parent="Node2D"]
 
