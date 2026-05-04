@@ -1,0 +1,44 @@
+~ start
+
+if GameState.has_tag("samwell_to_speak")
+	=> to_malachai
+if not GameState.has_tag("samwell_to_speak")
+	=> general
+if GameState.has_tag("samwell_spoken")
+	=> after_sermon
+	
+	
+	
+~ to_malachai
+
+do CutsceneManager.stop_npc_follow("samwell")
+Samwell: Hey, Father Inquisitor, I need to speak with you.
+Inquisitor Malachai: ::surprised and annoyed::  You may call me Inquisitor Malachai. And now is not the time--
+Samwell: But yer actin' preist, ain't ya? You just said so. So you're a Father. 
+Samwell: An' I'm a father too, just the more physical, less spiritual, sort. And I gotta tell you, Dad to Dad, you're makin' a mistake on this one. 
+Samwell: Father Matthew, he's as good a man as there is who ain't--
+Inquisitor Malachai: I will be taking interviews later as part of my investigation, right now I--
+Samwell: ::ahem:: I should tell you, Father, that my name, which I've not yet mentioned, not wantin' to abuse my reputation, is [i]Samwell[/i].
+Inquisitor Malachai: ...
+Samwell: Of [i]Samwell's Farm[/i]!
+do CutsceneManager.play_animation("guard1", "idle_left", true)
+Guard: ::whispers to Inquisitor Malachai::
+Bailey: Okay, [i]now[/i] I think we should go.
+Aiden: Yeah, good plan. 
+do CutsceneManager.play_animation("malachai", "idle_right", true)
+Inquisitor Malachai: What do you mean you've heard of him? That has nothing to do with anything! [i]He[/i] has nothing to do with anything! Get him out of my way!
+do CutsceneManager.move_to("mrs_azir", "AZ0", "walk")
+do CutsceneManager.play_animation("mrs_azir", "idle_up", true)
+do GameState.set_tag("samwell_spoken")
+do DialogSystem.start_dialog("mrs_azir", "start")
+=> END
+
+
+~ general
+
+Samwell: Yes?
+
+
+~ after_sermon
+
+Samwell: Well, that wasn't the most uplifting sermon but it sure was eventful! 	

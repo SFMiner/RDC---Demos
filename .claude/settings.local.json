@@ -45,7 +45,9 @@
       "Bash(find . -name \"combat_trigger.tscn\" -not -path \"./.godot/*\")",
       "Bash(find . -name \"construct.tscn\" -not -path \"./.godot/*\")",
       "Bash(ls -la \"scenes/tests/TestPhoneScene.tscn\")",
-      "Bash(echo \"EXIT:$?\")"
+      "Bash(echo \"EXIT:$?\")",
+      "mcp__godot-mcp__scene",
+      "Bash(git push *)"
     ],
     "deny": [],
     "ask": []

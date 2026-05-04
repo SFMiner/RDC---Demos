@@ -795,13 +795,6 @@ y_sort_enabled = true
 
 [node name="Player" parent="Node2D/z_Objects" instance=ExtResource("12_2n5m3")]
 position = Vector2(610, 774)
-character_name = "Aiden"
-max_health = null
-max_stamina = null
-speed = null
-strength = null
-defense = null
-willpower = null
 
 [node name="Sprite2D" parent="Node2D/z_Objects/Player" index="0"]
 scale = Vector2(1.63, 1.63)
@@ -811,28 +804,8 @@ position = Vector2(35, 106)
 scale = Vector2(1.63, 1.63)
 character_id = "father_matthew"
 character_name = "father_matthew"
-description = null
 dialogue_file = "father_matthew"
 initial_dialogue_title = "sermon_start"
-interactable = null
-portrait_path = null
-initial_animation = null
-personality_traits = null
-interests = null
-background = null
-base_relationship_level = null
-font_path = null
-font_color = null
-font_size = null
-special_items = null
-auto_follow_player = null
-follow_distance = null
-max_health = null
-max_stamina = null
-speed = null
-strength = null
-defense = null
-willpower = null
 
 [node name="Sprite2D" parent="Node2D/z_Objects/FatherMatthew" index="0"]
 texture = ExtResource("5_h0ajb")
@@ -844,28 +817,9 @@ collision_layer = 0
 collision_mask = 0
 character_id = "malachai"
 character_name = "malachai"
-description = null
 dialogue_file = "malachai"
 initial_dialogue_title = ""
-interactable = null
-portrait_path = null
 initial_animation = "idle_left"
-personality_traits = null
-interests = null
-background = null
-base_relationship_level = null
-font_path = null
-font_color = null
-font_size = null
-special_items = null
-auto_follow_player = null
-follow_distance = null
-max_health = null
-max_stamina = null
-speed = null
-strength = null
-defense = null
-willpower = null
 
 [node name="Sprite2D" parent="Node2D/z_Objects/Malachai" index="0"]
 texture = ExtResource("6_q3gja")
@@ -878,28 +832,9 @@ collision_layer = 0
 collision_mask = 0
 character_id = "guard1"
 character_name = "Guard 1"
-description = null
 dialogue_file = "guard1"
 initial_dialogue_title = ""
-interactable = null
-portrait_path = null
 initial_animation = "idle_left"
-personality_traits = null
-interests = null
-background = null
-base_relationship_level = null
-font_path = null
-font_color = null
-font_size = null
-special_items = null
-auto_follow_player = null
-follow_distance = null
-max_health = null
-max_stamina = null
-speed = null
-strength = null
-defense = null
-willpower = null
 
 [node name="Sprite2D" parent="Node2D/z_Objects/Guard1" index="0"]
 texture = ExtResource("7_rw0um")
@@ -912,28 +847,9 @@ collision_layer = 0
 collision_mask = 0
 character_id = "guard2"
 character_name = "Guard 2"
-description = null
 dialogue_file = "guard2"
 initial_dialogue_title = ""
-interactable = null
-portrait_path = null
 initial_animation = "idle_left"
-personality_traits = null
-interests = null
-background = null
-base_relationship_level = null
-font_path = null
-font_color = null
-font_size = null
-special_items = null
-auto_follow_player = null
-follow_distance = null
-max_health = null
-max_stamina = null
-speed = null
-strength = null
-defense = null
-willpower = null
 
 [node name="Sprite2D" parent="Node2D/z_Objects/Guard2" index="0"]
 texture = ExtResource("7_4ovcp")
@@ -944,28 +860,8 @@ position = Vector2(511.00012, 819)
 scale = Vector2(1.63, 1.63)
 character_id = "bailey"
 character_name = "bailey"
-description = null
 dialogue_file = "bailey"
-initial_dialogue_title = null
-interactable = null
-portrait_path = null
-initial_animation = "idle_up"
-personality_traits = null
-interests = null
-background = null
-base_relationship_level = null
-font_path = null
-font_color = null
-font_size = null
-special_items = null
-auto_follow_player = true
-follow_distance = null
-max_health = null
-max_stamina = null
-speed = null
-strength = null
-defense = null
-willpower = null
+initial_animation = "idle_left"
 
 [node name="Sprite2D" parent="Node2D/z_Objects/Bailey" index="0"]
 texture = ExtResource("9_80s8o")
@@ -976,28 +872,8 @@ position = Vector2(575, 918.00006)
 scale = Vector2(1.63, 1.63)
 character_id = "ira"
 character_name = "ira"
-description = null
 dialogue_file = "ira"
-initial_dialogue_title = null
-interactable = null
-portrait_path = null
 initial_animation = "idle_up"
-personality_traits = null
-interests = null
-background = null
-base_relationship_level = null
-font_path = null
-font_color = null
-font_size = null
-special_items = null
-auto_follow_player = true
-follow_distance = null
-max_health = null
-max_stamina = null
-speed = null
-strength = null
-defense = null
-willpower = null
 
 [node name="Sprite2D" parent="Node2D/z_Objects/Ira" index="0"]
 texture = ExtResource("9_rw0um")
@@ -1041,26 +917,8 @@ position = Vector2(441, 673)
 scale = Vector2(1.63, 1.63)
 character_id = "samwell"
 character_name = "Samwell"
-description = null
 dialogue_file = "samwell"
-portrait_path = null
 initial_animation = "idle_up"
-personality_traits = null
-interests = null
-background = null
-base_relationship_level = null
-font_path = null
-font_color = null
-font_size = null
-special_items = null
-auto_follow_player = null
-follow_distance = null
-max_health = null
-max_stamina = null
-speed = null
-strength = null
-defense = null
-willpower = null
 
 [node name="Sprite2D" parent="Node2D/z_Objects/Samwell" index="0"]
 texture = ExtResource("5_fc4fh")
@@ -1071,28 +929,8 @@ position = Vector2(913.00006, 594)
 scale = Vector2(1.63, 1.63)
 character_id = "mrs_azir"
 character_name = "Mrs Azir"
-description = null
 dialogue_file = "mrs_azir"
-initial_dialogue_title = null
-interactable = null
-portrait_path = null
 initial_animation = "idle_up"
-personality_traits = null
-interests = null
-background = null
-base_relationship_level = null
-font_path = null
-font_color = null
-font_size = null
-special_items = null
-auto_follow_player = null
-follow_distance = null
-max_health = null
-max_stamina = null
-speed = null
-strength = null
-defense = null
-willpower = null
 
 [node name="Sprite2D" parent="Node2D/z_Objects/MrsAzir" index="0"]
 texture = ExtResource("16_cg1a3")
@@ -1157,20 +995,20 @@ offset_bottom = 471.0
 [node name="Transitions" type="Node2D" parent="Node2D"]
 
 [node name="entrance" type="Marker2D" parent="Node2D/Transitions" groups=["spawn_point"]]
-position = Vector2(158.916, 177.394)
+position = Vector2(610, 791)
 scale = Vector2(0.239448, 0.239448)
 
 [node name="CampusExitPoint" type="Area2D" parent="Node2D/Transitions" groups=["interactable"]]
-position = Vector2(159.188, 176.851)
+position = Vector2(615, 1010)
 scale = Vector2(0.271739, 0.271739)
 collision_layer = 2
 script = ExtResource("11_v6kps")
-target_location = "campus_quad"
-spawn_point = "DormExitSpawn"
-transition_name = "Return to Campus"
+target_location = "ithaca_exterior"
+spawn_point = "church_return"
+transition_name = "Return to Ithaca"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Transitions/CampusExitPoint"]
-position = Vector2(1379.3088, 714.4686)
+position = Vector2(0, 7.3598022)
 shape = SubResource("CircleShape2D_dbj4a")
 
 [node name="ColorRect" type="ColorRect" parent="Node2D/Transitions/CampusExitPoint"]

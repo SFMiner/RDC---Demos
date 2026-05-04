@@ -1,0 +1,31 @@
+~ start
+
+if GameState.has_tag("samwell_spoken")
+	=> to_malachai
+if not GameState.has_tag("samwell_spoken")
+	=> general
+if GameState.has_tag("mrs_azir_spoken")
+	=> after_sermon
+	
+~ to_malachai
+Mrs Azir: What about the flowers?!
+Inquisitor Malachai: What? How did this woman get in front of--
+Mrs Azir: It's the Blessing. [wait = 1] Of. [wait = 1] The Flowers.
+Mrs Azir: You can't just end the Mass without one flower bein' blessed! I am an old woman, I got a lot of sinnin' to take care of!
+Inquisitor Malachai: You can deal with those at Confession!
+Mrs Azir: Nah, nah! I ain't havin' my sin's just up an' vanish! It's gotta be flowers!
+Inquisitor Malachai: For your information, the High Lictor is expected to eliminate the Blessing of Flowers from the liturgical calendar at the next Conclave.
+Inquisitor Malachai: It is a heretical tradition that was brought into the church in a misguided attempt to woo pagans to the Church.
+Mrs Azir: They're takin' away the flowers!? You tryin' to get folks to just stay home?!
+
+=> END
+
+
+~ general
+
+Mrs Azir: Yes?
+
+
+~ after_sermon
+
+Mrs Azir: Well, I'mpissed about the flowers, but at least I got some new sins to think about!

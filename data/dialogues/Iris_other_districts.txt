@@ -1,0 +1,299 @@
+import "res://dialogues/BeastmanEnclave.dialogue" as enclave
+import "res://dialogues/Iris3.dialogue" as Iris
+
+
+
+
+~ enter_basalt
+if DialogSaid.aiden_knows("enter_basalt") == true:
+	=> skip_basalt_opening
+else:
+	do DialogSaid.aiden_meets("enter_basalt")
+	The Industrial District is very different from the colorful gaiety of Stonewall.
+	You are greeted by a landscape of buildings, factories, and alleyways. The air is thick with the scent of oil and metal, and the distant sounds of machinery echo through the streets. 
+	Missing too are the open spaces where throngs may gather; where the sun is blocked by the buildings and awnings, it is a mix of shadows and dim lights, creating an atmosphere of mystery and potential danger. Graffiti in various media are everywhere.
+	But it is never silent: it is filled always with the sounds of humans at work, and their machinery.
+
+~ skip_basalt_opening
+You see many options to explore:
+
+- A large, busy warehouse with workers loading and unloading goods.
+	=> busy_warehouse
+
+- A rusty gate leading to an old factory yard.
+	=> rusty_factory_gate
+
+- A narrow, dark alleyway between two factories.
+	=> dark_alleyway_front
+
+- A person skulking about, picking through what seem to be cast-off materials.
+	=> skulker
+
+- A large scrapyard filled with piles of metal and broken machinery.
+	=> scrapyard_front
+
+- A worker carrying a load of materials along  the street.
+	=> carrying_worker
+
+#- A group of rough-looking people gathered near a factory.
+#	=> workers
+
+- Examine the graffiti 
+	=> graffiti
+
+#- On one corner of the outside of the empy factory, there is a solid-looking, if rusty, ladder #going up to the roof.
+#	=> ladder_to_roof
+~ busy_warehouse
+if DialogSaid.aiden_knows("warehouse") == true:
+	 => skip_warehouse
+else
+	DialogSaid.aiden_mees("warehouse")
+The warehouse is open and accessible. There is no way to sneak up to the entrance: the loading yard is empty of carriages, and a half dozen workers are out and about. As you approach, one of the workers looks up and says, "Yeah? What do you need?"
+- We're looking for someone.
+	Worker: Yeah? Not everyone wants to be found.
+	Bailey: This one does. Small child. Lost. We're her to bring him to his family.
+	Worker: Hmm. Well. We don' thave kids around here, except Bring Your Kid to Work Day of course. Why don't you go onto the floor and ask for Mr. Grant.
+	You make your way ontot he even busier working floor. You spot Mr. Grant right away: he walks around the place like he's the only one wo can be trusted to get anythign done, and everyone else treats him likw it's true.	
+	- Aiden: Have you seen a young Beastman cub around here?
+		Mr. Grant: Haven't seen any kids, Beastman or otherwise. We're too busy here to notice much else. Try the scrapyard; it gets more foot traffic.
+		do DialogSaid.aiden_meets("Mr. Grant")
+	- Bailey: Any unusual activity recently?
+		Mr. Grant: Nothing out of the ordinary. Just the usual hustle. But I did see a group of people near the scrapyard earlier. 
+		do DialogSaid.aiden_meets("Mr. Grant")
+#- We're looking for work.
+#- We're looking to buy some... whatever you store here.
+- Go to the scrapyard [If DialogSaid.aiden_knows("Mr. Grant")] == true
+	=> scrapyard_front
+~ skip_warehouse
+- Return to the entry to the district.
+	=> enter_basalt
+
+
+~ rusty_factory_gate
+if DialogSaid.aiden_knows("rusty_factory_gate") == true
+	=> skip_rusty_factory_gate
+do DialogSaid.aiden_meets("rusty_factory_gate")
+The gate's lock is rusted shut. Even if you knew how to pick it, it woulnd't budge. However there's a gap you can slip throgh; it lokos like it was made a long time ago, by someone who shouldn't ahve been there.
+Aiden: Are those footprints?
+Bailey: I'm nobody's tracker, but... yeah. I think hey might. .
+Ira: They're small!
+Aiden: Like a little kid's.
+- Slip through
+	You're immediately confronted by a guard, you'd put at her mid-30s. She looks at you closely, and has her billyclub in hand, but is not otherwise aggressive.
+	Guard: Gate's locked for a reason.
+	Ira: We're looking for a lost child we think might have come this way. 
+	Bailey: Have you seen anyone unusual?
+	Guard: I was on my break. When I got back it looked like some people had been messing around in the back, but they were gone by the tme I'd gotten back.
+	Aiden: Do you mind if we take a look?
+	Ira: We promise not to touch anythign!
+	Elena: Well.... I guess you're not gonna stuff a hydraulic press in your pocets and walk off. Go on in, but be careful; there's a lot of heavy machinery still here. 
+	You explore the factory until you find a hidden passage that is well-concealed behind a large piece of machinery and leads to multiple tunnels. 
+- Enter Tunnel
+	=> secret_tunnel
+- Return to the entry to the district.
+	=> enter_basalt
+~ skip_rusty_factory_gate
+- Enter Tunnel
+	=> secret_tunnel
+- Return to the entry to the district.
+	=> enter_basalt
+
+~ secret_tunnel
+There are three exits to tunnels. Which to you take?
+- The left exit [if DialogSaid.aiden_knows("scrapyard_tunnel") == false]
+	=> scrapyard_emerge
+- Tunnel to the scrapyard [if DialogSaid.aiden_knows("scrapyard_tunnel") == true]
+	=> scrapyard_emerge
+- The central exit [if DialogSaid.aiden_knows("underground_club_tunnel") == false]
+	=> underground_club_emerge
+- Tunnel to the club [if DialogSaid.aiden_knows("underground_club_tunnel") == true]
+	=> underground_club_emerge
+- The right exit [if DialogSaid.aiden_knows("alleyway_tunnel") == false]
+	=> dark_alleyway_emerge
+- Tunnel to the Alleyway [if DialogSaid.aiden_knows("alleyway_tunnel") == true]
+	=> dark_alleyway_emerge
+- Return to the entry to the district.
+	=> enter_basalt
+
+~ dark_alleyway_emerge
+if DialogSaid.aiden_knows("alleyway_tunnel") == true
+	=> skip_alleyway
+[do DialogSaid.aiden_meets("alleyway_tunnel")] [next]
+You follow the tunnel for a minute or so, then come to a dead-end, only to realize that the wall has a concealed door built into it. You open the door slowly, and find yourselves in a dark alleyway.
+Voice from behind the door: Um. Hey. 'Scuse me? Yyou're harshing my paint job, man!
+You look behind the door, and realize that the young man was panting a mural on the other side of the door when you openined it!
+=> dark_alleyway
+~ dark_alleyway_front
+if DialogSaid.aiden_knows("alleyway_tunnel") == true
+	=> skip_alleyway
+In the alleyway, you find a young man painting a mural.
+~ dark_alleyway
+if DialogSaid.aiden_knows("alleyway") == true
+	=> skip_alleyway
+else
+	do DialogSaid.aiden_meets("alleyway")
+The mural is lit by glowing crystal lamps. The mural is vibrant and colorful, in contrast to the utilitarian walls and fences of most of the district.
+Ira: Your art is amazing. Seen anything strange while working here?
+Tony: Thanks! Not really, but I did notice a group carrying something earlier. Didn’t get a good look, though.
+Aiden: Do you know anything about a missing Beastman cub?
+Tony: Aw, man, naw, I didn't see any kids, but  some kid saw me. Well, he saw my shit. Some kid got into my paints, brah!
+Tony points to a corner of his alley that has mutliple handprints in bright colors. But the hands look. strange.... a little like.. Paws!
+Aiden: He was here!
+Bailey: But where did he go?
+
+if DialogSaid.aiden_knows("alleyway_tunnel") == false
+	Ira: I think... maybe... there. 
+	Ira points to more paint-covered-handprints at a certain point on the wall. Looking closer,m you see there's a seem where the boards should be  joined together, but aren't. You've found a secret door!
+else:
+	Ira: I think... maybe... he wenty back in there.
+	Ira points to more paint-covered-handprints on the corner of the door to the tunnel you just exited.
+
+~ skip_alleyway
+Tony: Hey. What's up?
+- Go through the secret tunnel
+	=> secret_tunnel
+- Return to the entry to the district.
+	=> enter_basalt
+
+
+
+~ skulker
+The figure - a man, you now see, in his 50s or 60s -- startles as you aproach, but recovers.
+Skulker: Hey there. What do you lot want?
+- Return to the entry to the district.
+	=> enter_basalt
+	
+~ underground_club_emerge
+[do DialogSaid.aiden_meets("underground_club_tunnel")] [next]
+You follow the tunnel for a minute or so, asthe sound of lively music grows louder. then come to a dead-end, only to realize that the wall has a conCealed door built into it. THe music seems to be coming from right on the other side. You open the door slowly, and find yourselves in what looks like a nightclub!
+=> underground_club
+
+~ underground_club_front
+You open the door, and find yourselves in what looks like a nightclub!  
+
+~ underground_club
+if DialogSaid.aiden_knows("underground_club") == false
+	[do DialogSaid.aiden_meets("underground_club")] [next]
+	It takes you a moment to realize that the bartender is looking straight at you. 
+	While not as fantastic as the Black Iris, it has a homey, everyday appeal, especially considering it looks like it was juryrigged into a space that wasn't intended to be a club.
+	Ira: We’re looking for a young Beastman cub. Seen anything?
+	Jack: Wow. That's a coincidence.
+	Aiden: What do you mean?
+	Jack: Well, I mean, yeah. Of all the days for you to come in, the only day it ever happened! A kid just like that came wandering in her a coulpe of hours ago! That's so weird!
+	Bailey: It's... not really weird. It's not a coincidence. We came looking for him [i]because[/i] he got lost around here.
+	Jack: Oh. Well. Anyway, yeah he was here.
+	::pause::
+	Aiden: And where. Is. He. Now?
+	Jack: Oh, Idunno. I mean, Arnold took him, so he's probably with Arnold.
+	Bailey: And who is Arnold?
+	Ira: We're not from around here.
+	Jack: Oh. Well, I don't know where he lives or anything.
+	Patron: Wouldn't Arnold still be at his store around now?
+	Jack: Oh, yeah. I guess so. Yeah, Jack runs a parts business.
+	Ira: (nervously) Body parts?!
+	Jack: No! No way! Machine parts! Ventilation pipes. Um. Joint... thingies. Other... thingies...
+	Jack: I don't really know much about machine parts. I'm a bartender. Anyway, his store's straight down Building Street, right across from the Street Building.
+	Aiden: On Building Street...
+	Ira: ...across from... the Street Building.
+	Bailey: Got it!
+- Look for Arnold's store.
+	=> arnold_store
+- Return to the entry to the district.
+	=> enter_basalt
+
+~ scrapyard_emerge
+[do DialogSaid.aiden_meets("scrapyard_tunnel")] [next]
+You follow the tunnel for a minute or so, then come to a dead-end, only to realize that the wall has a concealed door built into it. You open the door slowly.
+=> scrapyard
+
+~ scrapyard_front
+The only entrance to the scrpyard goes through a small building, via an entrance big enough to drive a wagon through each way at once. You go throught the entrance.
+
+~ scrapyard
+if DialogSaid.aiden_knows("scrapyard") == false
+	[do DialogSaid.aiden_meets("scrapyard")] [next]
+	Behind a desk nearby sits a woman in her late 30s or early 40s, who looks up as you enter, with a no-nonsense expression. The desk has a nameplate that reads, "Sarah Moonen" 
+	Woman: "Can I help you?"
+	do DialogSaid.aiden_meets("sarah moonen")
+	Ira: We think a young Beastman cub might be here. Can we look around?
+	The woman's eyes narrow, and seems to be thinking. After a moment, relaxes and speaks.
+	Sarah: Sure, but be careful. This place is a maze. And I heard some noises from that pile over there.
+	Bailey: Seen anything unusual?
+	Sarah: Found a piece of clothing snagged on some metal. It looked like it belonged to a kid.
+	Sarah takes a folded cloth child-size cap from behind her desk. 
+	Bailey: That looks like his!
+	Sarah: Well he ain't here now. This was here when I got in  today, and I went all over this place after looking for who might've left it, and there was no one. He must've gotten out before I came in, two hours ago.
+	Ira: (looking out the door sadly) He could have wandered anywhere by now!
+	Sarah: Not really anywhere. The doors were locked until I opened them when I got in this afternoon.
+	Aiden: But if he's not here and he didn't leave, then he must've--
+	Ira: Gone back out the way he came in. 
+	Bailey: The same way we came in.
+else:
+	Sarah: Hey there.
+- Go back through the tunnel
+	=> secret_tunnel
+- Return to the entry to the district.
+	=> enter_basalt
+
+~ carrying_worker
+You follow the worker as he goes about his rounds. Do you try to get his attention, or try to be stealthy?
+- Call out
+- Catch up
+- Keep calm and stealth along!
+- Return to the entry to the district.
+	=> enter_basalt
+	
+~ workers
+You approach the dozen or so  peple who sseem to be camped out, and they all turns to stare at you as you draw near. 
+- Return to the entry to the district.
+	=> enter_basalt
+	
+~ graffiti
+The graffiti appears to be local street art. There are clear tension sand rivalries between the different graffiti gangs. One depicts what like a stylized beastman child.
+- Return to the entry to the district.
+	=> enter_basalt
+
+~ ladder_to_roof
+From the rooftop, you can see nearly the whole district.
+- A group of people is moving around the scrapyard, some carrying large objects.
+Several factory buildings with open exits and busy workers, indicating where heavy foot traffic occurs.
+- You can track the worker you saw carrying his load of materials.
+- You can see the figure picking the the pile of cast-offs.
+- A group of teens painting a mural; anthe the cast off uc an't make out their words, but the two groups' gestures and body language seen adversarial toward one another.
+- The main streets filled with workers and vehicles, giving a sense of the district’s daily rhythm and potential hiding places.
+- Increased security presence near certain areas, such as the docks and larger factories, suggesting these are key areas of interest or concern.
+- Various open spaces and narrow alleys riddle the district like burrows. It seems as if anyone could move anwhere with anything.
+
+~ arnold_store
+You walk several blocks down the stret which is clearly labeled "BUILDING STREET" on every corner, uutil you come to the even more clearly labeled Street Building, which has "STREET BUILDING" written over the door in foot-high letters.
+Aiden: This place is weird.
+- Enter the building with the sign "Fairweather's Machine Supply"
+	Your entrance causes a bell to ring, and a middle aged, portly man with a moustache, wearing tweed over a denim work shirt, comes walking from behind a stack of machine parts. 
+	Arnold: Welcome to Fairweather's Parts and Machinery. How can I assist you today?
+	- Bailey: We're looking for a lost child. 
+		Arnold: Um. Boy or girl?
+		Aiden: You know exactly who we're looking for!
+		Bailey: Please: we're looking for a young Beastman child, named Kael. He got lost and his parents are very afraid for him.
+		Arnold: (looking relieved) Oh, good. Well you see, I... couldn't just hand him over to someone if they couldnt' say who they were looking for. You don't jst hand kids to strangers like that. Just amoment.
+		 
+	- Aiden: Drop the act. Give us the boy! The bartender at your club sold you out!
+		Arnold: (nervously) Oh dear, yes. I... I wasn't looking to [i]keep[/i] him! Oh, I've been worried someone might misunderstand and think I had ill intentions! I couldn't just.. couldn't leave him wandering alone. 
+		Arnold: He's in the back, playing with some parts. I, um... I admit I thought you'd be... different?
+		Bailey: We're not the boy's family. We've come to take him to them.
+		Arnold: (relieved) Oh, thank goodness. I was worried sick. Well, let me get him.  
+	Arnold: ::calling in to back of the store:: Kael! There are some foloks here to take you home! 
+	Kael comes bounding out, holding a wrench like a sword and a piece of gutter pipe like... well, not [i]much[/i] like a shield, but doing the best he can.
+	Aiden: Thank you for looking after him. We'll take him back to his parents.
+	Bailey: You did the right thing, Arnold. Do you know how he ended up here?
+	Arnold: He was wandering around, looking lost and scared. Well, now that I think of it... maybe I was projecting the scared part. He's a breave little man. Um. Beastman. But I couldn't just ignore him. This district can be confusing for a child. And dangerous; there's a lot of machinery, and rust, and guard dogs, and places to hide.
+Ira: It was kind of you to help him. Has he said anything about where he came from?
+Arnold: I asked, but he pretty much just knows it as "Home" and he was planning to wander around until he found it. I didn't even know there were Beastmen in Iris. Make sure he gets home safely, alright?
+[do DialogSaid.aiden_meets("kael")] [next]
+[do DialogSaid.aiden_meets("fairweather")] [next]
+[set DialogSaid.been_to_the_beastman_enclave = true] [next]
+
+~ leave_district
+- Leave the district
+	- return to iris
+		=> Iris/iris_map
+=> leave_district		

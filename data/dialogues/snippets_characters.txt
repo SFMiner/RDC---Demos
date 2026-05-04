@@ -1,0 +1,12 @@
+~ Bailey
+
+Bailey: [[Hey|Hi]], Aiden, what's up?
+Aiden: Hey!
+=> END
+
+~ Cora
+
+Cora: Good mrning, child!
+Aiden: Hi, Mom!
+=> END
+

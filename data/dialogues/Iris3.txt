@@ -1,0 +1,1407 @@
+import "res://dialogues/BeastmanEnclave.dialogue" as enclave
+import "res://dialogues/Iris_other_districts.dialogue" as Iris_od
+
+
+
+~ arrival_in_iris
+if DialogSaid.init_jump == "aiden_choice_on_arrival"
+	[do DialogSaid.init_jump == ""] [next]
+	=> aiden_choice_on_arrival
+if DialogSaid.init_jump == "arrival_at_black_iris"
+	[do DialogSaid.change_background('OutsideBlackIris')] [next]
+	[do DialogSaid.init_jump == ""] [next]
+	=> black_iris
+if DialogSaid.init_jump == "inside_black_iris"
+	[do DialogSaid.init_jump == ""] [next]
+	=> inside_black_iris
+if DialogSaid.init_jump == "glittering_iris"
+	[do DialogSaid.init_jump == ""] [next]
+	=> glittering_iris
+
+[do DialogSaid.change_background('OutsideIris')] [next]
+Aiden: I... I know that a City is supposed to be big, but...
+Bailey: But you didn't know what that meant until now, right?
+Bailey: I get it. I was here for the first time once, too. I still remember the shock. And after being back to Ithaca, I'm feeling it again, a little.
+Ira: It's nice to be home, but after Ithaca, it looks kind of... impersonal.
+Bailey: That's not all a bad thing. Trust me, being able to get lost in a crowd can be a blessing.
+Aiden: I've never been lost in a crowd.
+Aiden: I've been alone in one, but never lost.
+Bailey: Guard checkpoint ahead.
+Aiden: Are we going to have trouble?
+Bailey: No, it's pretty much a formality. I mean, if we were wanted criminals around the world, they might have our descriptions, but I don't think we'll qualify because we had a bad run-in with a priest in -- what was it you called it? "The outskirts of the hinterlands"?
+Bailey: That's [i]such[/i] a great description of that town, by the way.
+Aiden: Yeah, well, you spend a couple of decades in a place like that you come up with some choice words for it.
+Bailey: I remember.
+Ira: I thought it seemed really nice. Until the last part, I mean.
+Bailey: You're right, Ira there were some really nice parts. But I tried not to show you to the worst parts.
+if DialogSaid.Bailey_Parents == 1
+	Bailey: And you remember my parents. 
+	Ira: Um. Yeah. That was... pretty uncool.
+Bailey: The [i]worst[/i] thing, though, you didn't even notice.
+Ira: The w... worst part?
+Bailey: ::nods somberly::
+Bailey: Not one freezy slush in the whole town.
+Aiden: "freezy slush"?
+Ira: [i]You've never had a freezy slush?[/i]
+Bailey: See? You didn't believe me when I told you that most people fgo their whole lives without one.
+Ira: I'm never leaving the city again.
+Aiden: ... [next]
+Aiden: [i]"freezy slush"?[/i]
+Bailey: ::laughs:: They're not bad, but no one loves them as much as Ira does. It's one of their few vices. 
+
+Bailey: Oh, it's our turn!
+Guard1: Name?
+- Aiden: Aiden.
+	[set DialogSaid.Iris_who_are_you = "Aiden"] [next]
+- Aiden: Malachai.
+	[set DialogSaid.Iris_who_are_you = "Malachai"] [next]
+	[do DialogSaid.Iris_lie_counter()] [next]
+- Aiden: Geralt.
+	[set DialogSaid.Iris_who_are_you = "Geralt"] [next]
+	[do DialogSaid.Iris_lie_counter()] [next]
+Guard1: Where are you coming from?
+- Aiden: Ithaca.
+	[set DialogSaid.Iris_where_from = "Ithaca"] [next]
+	Guard1: [i]Where?[/i]
+	Aiden: I said, [i]Ithaca[/i].
+	Guard1: I didn't mean I couldn't hear you I meant where is... Oh, nevermind, it's not my business.
+- Aiden: A farm just over there. ::point randomly:: 
+	Guard1: Well which one? Chillfurrow? Lon Lon? Draynor? 
+	- Aiden: Um... Chillfurrow. 
+		[do DialogSaid.Iris_lie_counter()] [next]
+		[set DialogSaid.Iris_where_from = "Farm Chillfurrow"] [next]	
+		Guard1: Huhn. Sorry about that stuckup boss you got.
+	- Aiden: Um... Lon Lon. 
+		[do DialogSaid.Iris_lie_counter()] [next]
+		[set DialogSaid.Iris_where_from = "Farm Lon Lon"] [next]	
+		Guard1: How's Malon? I haven't seen her father in awhile.
+	- Aiden: Um... Draynor. 
+		[do DialogSaid.Iris_lie_counter()] [next]
+		[set DialogSaid.Iris_where_from = "Farm Draynor"] [next]	
+		Guard1: Ew. Creepy place.
+- Aiden: From... Crossroads.
+	[set DialogSaid.Iris_where_from = "Crossroads"] [next]	
+	[do DialogSaid.Iris_lie_counter()] [next]
+	Guard1: Hmm. Trader are ya?
+
+~ what_brings_you_here
+if DialogSaid.Iris_why_came != "my feet"
+	Guard1: What brings you here?
+- Aiden: My feet! [if DialogSaid.Iris_why_came != "my feet"]
+	[set DialogSaid.Iris_why_came = "my feet"] [next]
+	Guard1: ... Wow. I haven't heard that one in... a week or two. 
+	Guard1: Why. Are. You. Here?
+	=> what_brings_you_here
+- Aiden: I'm... with a traveling circus! 
+	[do DialogSaid.Iris_lie_counter()]
+	[set DialogSaid.Iris_why_came = "circus"] [next]
+	Guard1: Oh, that bunch? If you can even call them a "bunch". Well, you better hurry if you want to catch up.
+	Aiden: ?
+	Aiden: Um. I will, then.
+	Guard1: That's all, then. Enjoy your stay.
+- Aiden: I'm visiting a friend. 
+	[set DialogSaid.Iris_why_came = "visiting a friend"] [next]
+	Guard1: Where's your friend live?
+	Bailey: I'm the friend. I live on Sapphire Street.
+	Guard1: Stonewall, huh? 
+	if DialogSaid.editting_level < 2:
+		Guard1: Oh. Yeah, I see it now. Sure, go on in. Have fun.
+		Bailey: ...
+		Ira: See what? What did he see?
+		Aiden: Later, Ira. Let's just go. 
+		Aiden: ::to Guard:: Are we done here?
+		Guard1: I said have fun, didn't I?
+		[do DialogSaid.change_background('InsideIris1')] [next]
+		::Group walks a short distance into the city::
+		Aiden: (to Bailey) You okay?
+		Bailey: Hmm? Oh. Yeah. Thanks. It's just... been a little while. I like to tell myself it doesn't get under my skin anymore, but...
+		Aiden: Yeah. I'm sorry.
+		Bailey: Thanks. I know you get it. 
+	else:
+		Guard1: Alright. Go on in. Enjoy your stay.
+		[do DialogSaid.change_background('InsideIris1')] [next]
+		::Group walks a short distance into the city::
+if DialogSaid.Iris_why_came != "visiting a friend"
+	[do DialogSaid.change_background('InsideIris1')] [next]
+	::Group walks a short distance into the city::
+
+~ aiden_choice_on_arrival
+Bailey: All right, we're here now! What do you want to do first?
+- Get food (and a drink).
+	[set DialogSaid.curr_quest = "get_food"] [next]
+	Aiden: I'm kind of hungry... and thirsty.
+	Bailey: I happen to have a favorite place for that!
+	=> intro_to_stonewall
+- Find some entertainment (and a drink).
+	[set DialogSaid.curr_quest = "get_entertainment"] [next]
+	Aiden: I've heard there are exciting things to see here... and maybe something to drink as well?
+	Bailey: ::grins:: I know something you can't see in Ithaca!
+	=> intro_to_stonewall
+- Get settled in. [if DialogSaid.settled_in == false]
+	[set DialogSaid.curr_quest = "settle_in"] [next]
+	Aiden: I'm pretty tired. Do you think we could just... go put our bags down?
+	Bailey: I'm with you on that one. I'll show you my flat.
+	=> intro_to_stonewall
+
+~ intro_to_stonewall
+[do DialogSaid.change_background('OutsideStonewall1')] [next]
+if DialogSaid.seen_stonewall == false
+	::A good walk later::
+	Bailey: Here’s the neighborhood.
+	Aiden: Why did the guard call it "Stonewall"?
+	Bailey: Oh. Well, that's a history lesson.
+	Bailey: Well, as you can see, Iris is a walled city. That goes way back to when it was the center of a kingdom. Each of the districts was walled with a different type of stone.
+	 Bailey: Marble for the artisan's district, sandstone for the market district, granite for the noble district... like that.
+	Bailey: After a while, the districts came to be named after the stone of the wall; the Marble District, the Sandstone District, the Granite District, and so on.
+	Bailey: A couple of hundred years ago, when the Church started really making things difficult for people like us, a lot of them moved here because the people in Iris didn't care so much.
+	Ira: But they weren’t exactly welcome, either.
+	Bailey: Right. They were basically refugees, and refugees might be accepted someplace but they're usually resented as newcomers, accused of taking up space and jobs. 
+	Bailey: So they ended up making their own settlement just outside the walls. After awhile, they decided to build their own wall, out of whatever random stones and cobbles they were able to find. 
+	Bailey: So you look at the wall today, you'll find boulders, cobblestones, bricks -- even the cornerstones of demolished buildings, with the date still on them!
+	Ira: And after a while, it came to be called the Stonewall District!
+	Aiden: Wow. 
+	Bailey: It beats the other name: the "Queer Quarter".
+	Aiden: It feels...
+	Bailey: Welcoming?
+	Aiden: Yeah.
+	[set DialogSaid.seen_stonewall = true] [next]
+	Bailey: Yeah. It's not perfect, but... you remember how I told you Ithaca wasn't really home for me anymore? [i]This[/i] is home now.
+
+if DialogSaid.curr_quest == "settle_in":
+	=> arrival_at_baileys_flat
+if DialogSaid.curr_quest == "get_food":
+	=> black_iris
+if DialogSaid.curr_quest == "get_entertainment":
+	=> glittering_iris
+
+~ arrival_at_baileys_flat
+[do DialogSaid.change_background('InsideBaileyFlat')] [next]
+Bailey: And here we are. Home sweet home.
+Aiden: This is... nice.
+Bailey: Thanks. It's not much, but it's mine.
+Ira: It's pretty big for a one-person flat around here.
+Bailey: Well, when you've been around as long as I have, you accumulate things. And space for things.
+Aiden: So where can we put our stuff?
+Bailey: You can take the room on the right. It's not much, but it's private.
+Aiden: Thanks. You know I hate to impose.
+Bailey: It's no imposition. I don't use much room, except to put my things in, and I've been trying to do with less things in my life anyway.
+Aiden: Thanks, Bailey. This means a lot.
+Bailey: Don't mention it. We're all in this together, right?
+Aiden: Right. Together.
+Bailey: Now, about the neighborhood. It's mostly good folks around here, but there are a few characters you should be aware of.
+Bailey: Mrs. Haversham in the flat across the hall is a terrible gossip. She means well, but she has a knack for knowing everyone's business. Try not to tell her anything you don't want the whole building to know.
+Bailey: Then there's Mr. Griggs downstairs. He's a bit of a letch; I steer clear of him, especially when I'm alone. He's never vulgar, and I've never heard of him touching or peaking in on anyone, so I [i]think[/i] he's harmless, but you never know. At best, he's a nuisance.
+Bailey: Penelope on the third floor is a sweetheart, but she's a bit... overzealous when it comes to helping out. If she offers to cook you something, politely decline. Trust me on this one.
+Aiden: So, she's the city version of my Aunt Lily? 
+Bailey: ::laughs:: Basically, yeah.
+Bailey: And finally, there's Abernathy. They're a real bore, always going on about his stamp collection. Which wouldn't be so bad except he's kind of snooty about it, too. They'll snear at any other interest anyone might have. 
+Bailey: There's a little market in the square, just a few blocks away. There's a vendor there, Sal, who sells the best produce around but he drives a hard bargain. 
+Bailey: If you want bread or sweets, Bentley runs a bakery that people come to from all over the city, but we're in luck and it's just downstairs from us.
+Bailey: Just watch out for the fishmonger, Big Pete. His prices are amazing but the fish are... questionable. Let's just say, if you buy one, you probably won't be only thing that's eating it.
+set DialogSaid.settled_in = true
+Aiden: Ew.
+Bailey: Yeah. I don't eat a lot of fish these days.
+Bailey: Okay. We're settled in. What do you want to do now?
+=> aiden_choice_on_arrival
+
+~ take_a_nap
+Bailey: Oh, I was hoping you'd say that. I'm beat. 
+Bailey: Ira, you want to crash here too?
+Ira: Oh, thanks, but I should get home. I'm sure Kira misses me. I can take a nap there. 
+Bailey: Alright. Thanks for going on this adventure with me!
+Ira: Are you kidding? This was the most exciting thing I've ever done! I've never been so far away or seen so many interesting things!
+Aiden: Nothing more interesting than a good hog wallow.
+Ira: RIGHT?! Hogs are adorable!
+- Aiden: Yeah, you can enjoy them before breakfast, and for breakfast!
+	Ira: Wellll... not if you mean as bacon. It takes time to cure bacon, so you're not going to be able to eat it the same day you slaughter the hog.
+	Aiden: ... Right, of course, I don't know what I was thinking
+	Ira: Oh, it's okay! We're all tired and bound to make mistakes! In fact, I'd better go; sometimes when I get tired I say awkward things! Welcome to Iris, Aiden! ::leaves::
+- Aiden: To each their own, Ira. I'm glad you had fun but for me it was just the same old same old. For me, [i]this[/i] place is the adventure.
+	Ira: To each their own! See you all later! And welcome to Iris, Aiden! ::leaves::
+Aiden: They kind of grow on you.
+Bailey: I told you. I can introduce you to some more friends tonight after we wake up.
+Aiden: [i]If[/i] I wake up tonight.
+Bailey: If not, then tomorrow.
+::they go to sleep. time passes.::
+::Late night. Aiden wakes up::
+[set DialogSaid.is_night = true] [next]
+Bailey: Hey, you're up! I'm kinda starved, how about you?
+[set DialogSaid.took_nap = true] [next]
+Aiden: Yeah, I think my stomach has finally caught up with me.
+[set DialogSaid.can_find_job = false] [next]
+Bailey: We can either go someplace for some food, or go to a show and get some food on the way. Either way there'll be people who'll love to meet you.
+Aiden: I don't know, we're supposed to be on a mission.
+Bailey: You need to eat no matter what kind of mission you're on. Besides, you're not going to make a lot of headway in the middle of the night. 
+Bailey: I know you're eager, but seriously, let yourself finish settling into town before you start the crusade. You'll do a better job of it.
+Aiden: ::sigh:: You're probably right. I mean, I [i]know[/i] you're right. It's just hard to feel like I'm doing nothing.
+Bailey: You're not doing nothing. You're learning about the new place you're in. you're making friends -- contacts, if it helps to think of them that way. 
+Bailey: And more important right now, you're unwinding. You're still on edge, and you won't make good decisions in that state.
+Aiden: I [i]said[/i], I know you're right. But... that does make me feel better about it, thanks. 
+Bailey: Alright, so where do you want to go? And don't say finding a job because you're not going to do that at this time of night, unless you happen to trip over it.
+=> aiden_choice_on_arrival
+
+
+
+~ black_iris_restrooms
+if DialogSaid.restrooms == false
+	Bailey: ::points:: There are four in the back.
+	[set DialogSaid.restrooms = true] [next]
+- Check out the restrooms.
+	The restrooms each have a an infinity symbol on the door. Beneath each is taped a handwritten note: "The symbol means anyone can use it, it doesn't mean infinite people can fit into the room. Don't try that again. -Leo"
+	=> black_iris_restrooms
+- Leave the restooms
+	=> look_around_black_iris_1
+
+~ black_iris
+[do DialogSaid.change_background('OutsideBlackIris')] [next]
+Aiden: ::reading:: "Black Iris"?
+Bailey: Yep, it's not much, but it's ours.
+Aiden: Seems a little gloomier than the rest of town.
+Bailey: It's gloomy on the [i]outside[/i]. That just makes it stand out.
+Leo: Evening, Bailey. Who's your friend?
+Bailey: Hi, Leo! This is Aiden. They're new in town.
+Leo: Well, welcome to the Black Iris. We don't have many rules here, but respect is a big one. You give it, you get it, or you get out. How much you don't give is how hard you go out.
+Aiden: Sounds fair to me.
+Leo: Good. Enjoy your evening.
+[set DialogSaid.been_to_the_black_iris = true] [next]
+=> inside_black_iris
+
+~ inside_black_iris
+if DialogSaid.been_to_black_iris == false
+	[set DialogSaid.been_to_the_black_iris = true]  [next]
+	[do DialogSaid.change_background('InsideBlackIris')] [next]
+	Aiden: This is "not much"?
+	Bailey: Okay, maybe it's a [i]bit[/i] much. But so are a lot of the people in it!
+[do DialogSaid.change_background('InsideBlackIris')] [next]	
+- Ask where the restroom is. [if DialogSaid.restrooms == false]
+	=> black_iris_restrooms
+- Look around at the other people in the bar.
+	=> look_around_black_iris_1
+- Talk to Bailey
+	set DialogSaid.last_place = "Black Iris"
+	=> talk_to_bailey
+
+
+~ talk_to_Leo
+if DialogSaid.aiden_knows("Leo") == false
+	Leo: smiles in a friendly but unfocused way as you approach.
+	do DialogSaid.aiden_meets("Leo")
+	Aiden: Hey, Leo. You the bouncer here?
+	Leo: Well, they call it that, but you know, they don't ever bounce? No matter how hard I try.
+	Aiden: Hah!
+	Leo: ...?
+	Aiden: Um. Were you... being serious?
+	Leo: Yeah. I don't joke about bouncing. It's serious work. People can get hurt if I don't do it just right.
+	Aiden: Ah. You know, maybe what they mean is that the bad apples sort of bounce off of [i]you[/i]?
+	Leo: Oh. You mean, it's a metaphor?
+	Aiden: You know about metaphors?
+	Leo: Yeah, we get a lot of artsy types in here who are always talking about it. Like Lena and Jordan over there. They're always metaphoring something into a play.
+	set DialogSaid.seen_leo_lately = true
+	=> look_around_black_iris_1
+else
+	Aiden: Hey, Leo. [[Anything new?|What's new?|What's up?|What's the word?|How's tricks?|How are things?]]
+	if DialogSaid.seen_leo_lately == true
+		Leo: Nothing much new since last we talked.
+	else:
+		% Leo: Marianne added a beetroot burger to the menu.
+		% Leo: Marianne decided to put a carrot IPA on tap.
+		% Leo: I had to bounce someone lasrt night. And guess what. They [i]bounced[/i]!
+		% Leo: Is anything truly new?
+		% Leo: Marianne decided to put a carrot IPA on tap.
+		% Leo: Marianne decided to put a carrot IPA on tap.
+		% Leo: Juke tried to play a harmonica solo during his set. It was... interesting.
+		% Leo: Morgan tried to start a karaoke night. It was a disaster.
+		% Leo: We found a cat in the cellar. We named it Whiskey.
+		% Leo: The jukebox started playing polka music out of nowhere. We can't get it to stop.
+		% Leo: Eli lost a bet and had to dye their hair pink. It's quite a sight.
+		% Leo: Riley started a mural on the back wall. It's... abstract.
+		% Leo: We had a poetry slam last night. It got surprisingly competitive."
+		% Leo: Kai tried a new recipe. Let's just say... it didn't go well.
+		% Leo: Marianne and I are debating whether a hot dog is a sandwich.
+		% Leo: Is the universe not in a constant state of renewal, each moment birthing the next?
+		% Leo: In the grand scheme of the cosmos, what does 'new' even mean?"
+		% Leo: We're all just stardust, Aiden. Even this bar and everyone in it.
+		% Leo: I've been pondering the nature of existence. It's heavy stuff.
+		% Leo: I've been wondering if the same thing can be in two places at once. Maybe if they're rally, really small?
+		% Leo: DJ Sequin tried to teach me to DJ. It was... a learning experience.
+		% Leo: We had a salsa dancing night. I've never seen so many people trip over their own feet.
+		% Leo: Someone left a goldfish in a bowl on the bar. We're calling it Bubbles.
+		% Leo: Kai accidentally set off the fire alarm with his spicy chili. It was chaos.
+		% Leo: Marianne started a trivia night. Turns out, we have some real brainiacs here.
+		% Leo: We had a costume party. You should've seen Riley's outfit!
+		% Leo: Someone tried to pay their tab with a painting. Marianne actually accepted it.
+		% Leo: We found a secret door in the cellar. It was just a broom closet, but still...
+		% Leo: Morgan and Eli started a dart tournament. It's getting pretty intense.
+		% Leo: We're having a debate about whether cereal is a soup. Opinions are divided.
+		% Leo: Juke brought in a theremin. The sounds... they haunt me.
+		% Leo: We had a power outage and had to light everything with candles. It was oddly romantic.
+		% Leo: Someone proposed here last night. She said yes!
+		% Leo: We're thinking of starting a book club. Any genre preferences?
+		% Leo: There's a rumor going around that the Black Iris is haunted. Spooky, right?
+		% Leo: We had a karaoke night. Let's just say, there are some hidden talents among us.
+		% Leo: We're hosting a charity event next week. It's for a good cause.
+		% Leo: Marianne's thinking about adding a rooftop terrace. Imagine the view!"
+		% Leo: We had a surprise visit from a celebrity. I won't name names, but it was exciting.
+		% Leo: We're considering opening for brunch. Who doesn't love a good mimosa?"
+		% Leo: We had a pet day where everyone brought their pets. It was adorable chaos.
+		% Leo: We're planning a '90s themed night. Time to dust off those old outfits.
+		% Leo: We had a mixology competition. Some of the concoctions were... interesting.
+		% Leo: We're thinking about starting a pool league. Any interest?
+		% Leo: We had a poetry reading. It was deeper than I expected."xt week. They're really good.
+		% Leo: We had a pie-eating contest. I've never seen so much pie in my life.
+		% Leo: We had a magic show. It was surprisingly entertaining.
+		% Leo: We're thinking about hosting a speed dating event. Could be fun.
+		% Leo: We had a wine tasting. I still can't tell the difference between a Merlot and a Cabernet.
+		% Leo: We're planning a beach-themed party. Time to break out the floral shirts and bathing suits.
+		% Leo: We had a yoga class. I've never felt so relaxed.
+		% Leo: We're hosting a local art exhibition. There's some real talent in this town.
+	set DialogSaid.seen_leo_lately = true
+	=> look_around_black_iris_1
+
+~ meet_marianne
+do DialogSaid.aiden_meets("Marianne")
+Marianne: Bailey! Where you been? And who's your friend?
+Bailey: This is Aiden. Old, old friend from the sticks. They're new in town.
+Marianne: Well, welcome to the Black Iris. First round's on me.
+Aiden: That's very kind of you, thank you.
+Marianne: Just part of the Black Iris hospitality. And just so you know, I'll still expect a tip.
+Bailey: We'll need some food too. Where's Tandra tonight? She usually takes our order.
+Marianne: Oh, she left us to move into an art collective with her new partners. She'd doing modeling full time for them now. We're actually short-staffed at the moment. Upside, maybe our floors won't get spilled on so much. Tandra was a good worker mostly, but a klutz and a half.
+- Ask about job opening.
+	Aiden: Are you looking for someone to help out? I'm new in town and could use a job.
+	Marianne: Do you have experience?
+	Aiden: Tons! ... Um. Just not in serving drinks.
+	Marianne: Huhn. Well, neither did Tandra to start. How about this, how's your balance?
+	Aiden: About average, I guess.
+	Marianne: Then you're already ahead of the game. How soon can you start? 
+	set DialogSaid.iris_job = "Black Iris"
+	- Now
+		Aiden: Right away if you need me to.
+		Marianne: I do. Turn around and you can take your first order.
+		Bailey: I'll take the Iris Burger with extra pickle and a Sapphire Juice, and whatever my friend wants!
+		Aiden: Um. I'm the friend, right?
+		Marianne: Tell you what, you can start after you finish your meal. The first dishes you bus can be yours.
+	- Tomorrow
+		Aiden: If it's okay, I'll get to know the place tonight, and start tomorrow.
+		Marianne: That'll do. All I ask for tonight is you eat at the bar so I won't have to go far to bus your plates. My hip ain't what to used to be.
+		Aiden: You got it! Thanks for the opportunity!
+- Ignore job opening.
+	You enjoy your meal with Bailey.
+	=> look_around_black_iris_1
+=> look_around_black_iris_1
+
+~ talk_to_marianne
+Marianne: Hey, Aiden! you showing up as a worker or a customer?
+- Aiden: Worker!
+	You get started on your work.
+- Aiden: Customer. How about a drink?
+	You get a drink from the bar.
+=> look_around_black_iris_1
+
+
+~ look_around_black_iris_1
+You look around the Black Iris
+- Ask where the restroom is. [if DialogSaid.restrooms == false]
+	=> black_iris_restrooms
+- Go to restroom. [if DialogSaid.restrooms == true]
+	=> black_iris_restrooms
+- An older woman, tough-looking but smiling, is behind the bar. [if DialogSaid.aiden_knows("Marianne") == false]
+	A woman in late middle age, with short, grey hair spiked up and backward, stands behind the bar. She gives a nod when you make eye contact, but doesn't stare.  
+	- Speak to bartender.
+		=> meet_marianne
+	- Go back to looking at the room.
+		=> look_around_black_iris_1
+- Marianne is behind the bar. [if DialogSaid.aiden_knows("Marianne") == true]
+	She gives a nod from behind the bar when you make eye contact, but doesn't stare.
+	- Speak to Marianne.
+		=> talk_to_marianne
+	- Go back to looking at the room.
+		=> look_around_black_iris_1
+- Leo is standing near the door.
+	Leo is quietly observing the room, casually alert for any disturbance.
+	- Talk to Leo
+		Leo is a big, muscular man with short, lustrous hair. 
+		=> talk_to_Leo
+	- Go back to looking at the room.
+		=> look_around_black_iris_1
+- A slight, masculine person in flamboyant clothing is sitting at the end of the bar. [if DialogSaid.aiden_knows("DJ Sparkle") == false]
+	They are listening to the musician and nodding along to the beat. They wear a bowler hat, a pair of small, tinted round glasses and their outfit features a good deal of sequin and sparkly crystal. 
+	- Talk to the sparkly person.
+		=> talk_to_dj_sparkle
+	- Go back to looking at the room.
+		=> look_around_black_iris_1
+- DJ Sparkle is sitting at the end of the bar. [if DialogSaid.aiden_knows("DJ Sparkle") == true]
+	He is listening to the musician and nodding along to the beat.
+	- Talk to DJ Sparkle.
+		=> talk_to_dj_sparkle
+	- Go back to looking at the room.
+		=> look_around_black_iris_1
+
+- A person of indeterminate gender is sketching something. [if true == false]
+	This person, in darker, bohemian clothing, sits alone at a small table, and seems to be sketching something, occasionally glancing up, then back to their sketch. Once you focus your attention, you see that they seem to be glancing at [i]you[/i]! They instantly look back down when you make eye contact.
+	- Talk to the sketching person. (NOT WRITTEN)
+		do DialogSaid.aiden_meets("Riley")
+	- Go back to looking at the room.
+		=> look_around_black_iris_1
+- A tall, femme person is talking to someone covered in striking tattoos. [if DialogSaid.aiden_knows("Morgan") == false]
+	At a table, a tall, femme person seems to be enthusiastically telling a story, with expansive gestures. All you can register at first glance of the person she is talking to is the numerous striking, colorful tattoos that cover much of their exposed skin.
+	- Ask to join these people.
+		do DialogSaid.aiden_meets("Morgan")
+		do DialogSaid.aiden_meets("Eli")
+		=> meet_morgan_and_eli
+- Morgan is talking to Eli [if DialogSaid.aiden_knows("Morgan") == true]
+	Morgasn is talking to Eli. For a change, Morgan seems to be listening as much as she is talking.
+	- Join Morgan and Eli.
+		=> talk_to_morgan_and_eli
+	- Go back to looking at the room.
+		=> look_around_black_iris_1
+- Two femme customers are sitting together at a table. [if DialogSaid.aiden_knows(["Lena", "Jordan"]) == false]
+	One is a dressed femme, with longer blond hair shaved on one side. The other dressed more androgynously, and has an auburn faux-hawk with a pompadour front. They seem happy with one another's company. 
+	- Ask to join these people.
+		=> talk_to_lena_and_jordan
+	- Go back to looking at the room.
+		=> look_around_black_iris_1
+- Jordan and Lena are stitting together at a table. [if DialogSaid.aiden_knows("Lena") == true]
+	Lena and Lordan are sitting at a table. 
+	- Ask to join them.
+		=>  talk_to_lena_and_jordan
+	- Go back to looking at the room.
+		=> look_around_black_iris_1
+- You almost fail to notice a person quietly cleaning up. [if true == false]
+	You almost didn't notice them, because they are so inconspicuous they blend into the woodwork. They are petite, dressed in muted colors, and seem to stand in such a way that they fold in on themselves, looking even smaller than they are. Though no one is looking at them, you get the impression that they are actively avoiding eye contact as they quietly gather glasses and plates, wipe up spills, and do general cleaning. You have a feeling that if you look away you'll have to scan the room again to find them.
+	- Talk to this person.  (NOT WRITTEN)
+		do DialogSaid.aiden_meets("Lysander")
+	- Go back to looking at the room.
+		=> look_around_black_iris_1
+- Talk to Bailey
+	set DialogSaid.last_place = "Looking Around Black Iris"
+	=> talk_to_bailey
+- Leave the Black Iris
+	set DialogSaid.seen_leo_lately = false
+	=> street_outside_black_iris
+
+
+~ talk_to_dj_sparkle
+- Approach the sparkly person. [if DialogSaid.aiden_knows("DJ Sparkle") == false]
+	DJ Sparkle: Hey there! I'm DJ Sparkle. The music man. Master of beats. Paragon of style. 
+	[do DialogSaid.aiden_meets("DJ Sparkle")] [next]
+- Do you work here? [if DialogSaid.dj_sparkle_work == false and DialogSaid.aiden_knows("DJ Sparkle") == true]
+	set DialogSaid.dj_sparkle_work = true
+	DJ Sparkle: If it looks like I'm working, I'm doin' it wrong. I work over at the Glittering Iris. I'm just taking a break and enjoying the scene here. What can I do for you?
+	set DialogSaid.know_about_glittering_iris = true
+	- Ask about Glittering Iris [if DialogSaid.been_to_the_glittering_iris == false and DialogSaid.dj_sparkle_offer == false]
+		DJ Sparkle: The conjunction of fashion, music, wit, and splendor. If you've not been there, I doubt you've seen its like. I need to be there soon anyway. You should come along.
+		set DialogSaid.dj_sparkle_intro = true
+		- Aiden: Okay!
+			 => glittering_iris
+		- Aiden: Not just now, thanks. I'm still getting to know this place.
+			DJ Sparkle: Alright, but please, soon as you're done, let me know. This ignorance cannot be allowed to continue! 
+	- Continue with conversation
+		=> talk_to_dj_sparkle
+		
+- I'm ready! Let's go to the Glittering Iris! [if DialogSaid.dj_sparkle_offer == true and DialogSaid.been_to_the_glittering_iris == false]
+	set DialogSaid.dj_sparkle_intro = true
+	DJ Sparkle: I thought you'd never ask!
+	=> glittering_iris
+
+- Ask about DJ Sparkle's role at The Glittering Iris. [if DialogSaid.know_about_glittering_iris == true and DialogSaid.aiden_knows("DJ Sparkle") == true]
+	DJ Sparkle: As the DJ at the Glittering Iris, I'm in charge of the music there. I set the mood, get people dancing, and make sure everyone's having a good time.
+	if DialogSaid.in_party("Bailey") and DialogSaid.bailey_mentions_iris == false
+		Bailey: I know the Glittering Iris! You do a great job there, Sparkle.
+		set DialogSaid.bailey_mentions_iris = true
+	if DialogSaid.been_to_the_glittering_iris == false
+		- Ask about the Glittering Iris  
+			DJ Sparkle: The conjunction of fashion, music, wit, and splendor. If you've not been there, I doubt you've seen its like. 
+			if DialogSaid.dj_sparkle_intro == false
+				DJ Sparkle: I need to be there soon anyway. You should come along. 
+				set DialogSaid.dj_sparkle_offer = true
+				- Aiden: Okay!
+					 => glittering_iris
+				- Aiden: Not just now, thanks. I'm still getting to know this place.
+					DJ Sparkle: Alright, but please, soon as you're done, let me know. This ignorance cannot be allowed to continue! 
+		- Continue with conversation
+			=> talk_to_dj_sparkle
+- Ask about DJ Sparkle's favorite part of being a DJ.  [if DialogSaid.aiden_knows("DJ Sparkle") == true]
+	DJ Sparkle: I love seeing people lose themselves in the music. When the beat drops and the crowd goes wild, there's no better feeling in the world.
+
+- Ask about the challenges of being a DJ. [if DialogSaid.aiden_knows("DJ Sparkle") == true]
+	DJ Sparkle: It's not always easy to keep the energy up, especially on long nights. But I love what I do, and I wouldn't trade it for anything.
+
+- Ask about DJ Sparkle's musical influences. [if DialogSaid.aiden_knows("DJ Sparkle") == true]
+	DJ Sparkle: I draw inspiration from all kinds of music, from classical to modern SDM. It's all about finding the perfect beat.
+	- Aiden: SDM? [if DialogSaid.knows_SDM == false]
+		DJ Sparkle: Steampowered Dance Music. 
+		DJ Sparkle: Where you from?
+		Aiden: Um... someplace without a lot of steam power.
+		set DialogSaid.knows_SDM = true
+		if DialogSaid.been_to_glittering_iris == false
+			DJ Sparkle: Oh my goodness, this cannot be allowed! You must be saved! Now. I'll take you there immediately.
+			set DialogSaid.dj_sparkle_offer = true
+			Aiden: Take me where?
+			if DialogSaid.in_party("Bailey") and DialogSaid.bailey_mentions_iris == false
+				Bailey: The Glittering Iris. Sparkle does great job there!
+			else:
+				DJ Sparkle: The Glittering Iris, where I make my tunes earn their keep. 
+			set DialogSaid.dj_sparkle_intro = true
+			- Aiden: Okay!
+
+				 => glittering_iris
+			- Aiden: Not just now, thanks. I'm still getting to know this place.
+				DJ Sparkle: Alright, but please, soon as you're done, let me know. This ignorance of modern music cannot be allowed to continue! 
+				set DialogSaid.dj_sparkle_offer == true
+	- Continue with converation
+		=> talk_to_dj_sparkle
+		
+- Ask about DJ Sparkle's thoughts on the club scene. [if DialogSaid.been_to_the_glittering_iris == false and  DialogSaid.aiden_knows("DJ Sparkle") == true]
+	DJ Sparkle: The club scene is a place of freedom and expression. It's a place where you can let loose, be yourself, and dance the night away.
+- Accept offer to go to the Glittering Iris. [if DialogSaid.dj_sparkle_offer == true]
+	=> glittering_iris 
+- Ask about DJ Sparkle's future plans. [if DialogSaid.aiden_knows("DJ Sparkle") == true]
+	DJ Sparkle: I'm always looking for new ways to elevate my sets. Who knows, maybe one day you'll see me performing at a music festival.
+- Ask about DJ Sparkle's thoughts on the Black Iris. [if DialogSaid.aiden_knows("DJ Sparkle") == true]
+	DJ Sparkle: The Black Iris is a great place to unwind. It's got a different vibe from the Glittering Iris, but I love it. It's nice to take a break from the decks and just enjoy the music for a change.
+	if DialogSaid.in_party("Bailey") and DialogSaid.bailey_mentions_iris == false
+		Bailey: I know the Glittering Iris! You do a great job there, Sparkle.
+		set DialogSaid.bailey_mentions_iris = true
+- Leave the conversation
+	=> look_around_black_iris_1
+[do DialogSaid.aiden_meets("DJ Sparkle")] [next()]
+=> talk_to_dj_sparkle
+
+~ talk_to_lena_and_jordan
+if DialogSaid.aiden_knows("Lena") == false and DialogSaid.aiden_knows("Jordan") == false  
+	do DialogSaid.aiden_meets("Lena")
+	do DialogSaid.aiden_meets("Jordan")
+	Lena: Bailey! Come join us. Who's your friend?
+	Bailey: Lena, Jordan, this is Aiden. They just moved to town.
+	Jordan: Nice to meet you, Aiden. Lena and I run the local theater group. If you're into drama, you should come by sometime.
+	Aiden: Nice to meet you!
+	Lena: Don't let her fool you. She provides drama any time, any place.
+	Jordan: Oh you're one to talk! You remain the only person to have started a fight with a guardee at the [i]library[/i]!
+	Aiden: You got in a fight? With a guard?! At the [i]library[/i]?!
+	Lena: It was an [i]argument[/i]! Not fisticuffs.
+	Jordan: Only because I got you out of there in time. 
+	Jordan: (to Aiden) She was reaching for a brick to throw.
+	Lena: That was a [b]book[/b]!
+	Jordan: A book as thick as a brick!
+	Lena: I'm gonna throw the book at [i]you[/i] when we get home!
+	Jordan: (to bar) Look! I'm being oppressed!
+	Lena: (to Aiden) Sometimes I ask myself how I ended up with someone who shouts things like, "Look! I'm being oppressed!" in public. 
+	Lena: Then I realize it's partly [i]because[/i] she shouts things like, "Look, I'm being oppressed!" in public!
+	Jordan: You need me to balance out your quiet and demure nature.
+	::Lena and Jordan share a kiss::
+
+~ lena_jordan_conversation
+if DialogSaid.lena_jordan_how_long == false or DialogSaid.lena_jordan_where_met == false or DialogSaid.knows_about_mermaid_sisters == false
+	- Ask how long they've been together [if DialogSaid.lena_jordan_how_long == false]
+		set DialogSaid.lena_jordan_how_long = true
+		Aiden: How long have you been together?
+		Jordan: Two days.
+		Lena: Two [i]years[/i].
+		Jordan: Really? ... It seems like just yesterday!
+		Lena: ... I was ready to get angry just now. Well played, love.
+		Jordan: ... "Well Played Love." Now [i]that's[/i] a title for a show.
+		Lena: Wow, it really is. 
+		Jordan: You're a damm muse, woman.
+		::Lena and Jordan share a kiss::
+
+	- Aiden: Where did you meet? [if DialogSaid.lena_jordan_where_met == false]
+		set DialogSaid.lena_jordan_where_met = true
+		Jordan: It would be [i]so[/i] cool to say we met right here at this table! But it'd be a lie.
+		Lena: ::points:: We met at over the bar.
+		Jordan: I was with some friends who probably weren't very good for me.
+		Lena: And I didn't have any friends at the time.
+		Jordan: One of my friends at the time was hitting on Lena.
+		Lena: They weren't very good for [i]anyone[/i].
+		Jordan: True. And that's why I had to rescue her.
+		Lena: It was very chivalrous.
+		Jordan: And then it turned out I liked her better than any of those friends so we moved to this little table and that's pretty much history.
+		Lena: HERstory!
+		Jordan: ... Babe, I love you, but that was so corny.
+		Lena: ::shrugs:: Well, at least you love me.
+		::Lena and Jordan share a kiss::
+
+	- Ask about their theater [if DialogSaid.knows_about_mermaid_sisters == false]
+		set DialogSaid.knows_about_mermaid_sisters = true
+		Aiden: Tell me about your theater.
+		Lena: "The Mermaid Sisters Theater" near the corner of Ruby and Lorde.
+		Aiden: Are... you the Mermaid Sisters?
+		Lena: Um, no.
+		Jordan: They were a singing group that we bought it from.
+		Lena: Gorgeous harmonies.
+		Jordan: They had a great look, too.
+		Lena: But a lot of people had a problem with some of the language in their songs.
+		Jordan: [i]I[/i] liked it. 
+		Lena: I wish we did some musicals, but it's hectic enough getting the plays together.
+		Jordan: We're doing a musical now!
+		Lena: There's music in it, that doesn't make it a musical.
+		Jordan: It's [i]about[/i] music!
+		Lena: It's about [i]musicians[/i]!
+		Jordan: (to Aiden) We used to do two-woman shows. Man, they were easy!
+		Lena: But nobody came to see them.
+		Jordan: But [i]so[/i] easy!
+		Bailey: Hey, I came to see them! ... 
+		Bailey: Well... Two of them...
+		Jordan: And that made you our biggest fan.
+		Lena: So we started doing a bigger mix of bigger shows, more topical scripts. We do alright now. And we still get experimental!
+		Jordan: Right now we're experimenting with not having a cast.
+		Aiden: That's... even less than a two-woman show.
+		Lena: She exaggerates. We're only missing three actors.
+		Jordan: Out of five.
+		Lena: ::puts head down:: Ugh, this is going to be such a bust!
+		Jordan: It's gonna be fine! ... Somehow.
+		Jordan: (to Aiden and Bailey) We have roles, and we had two other actors, with one role still to cast, and then both of the actors we had came down sick. And the show is in one week.
+		Bailey: What are the parts?
+		Jordan: Two musicians -- brother and sister -- and the songwriter who they're both falling for.
+		- Aiden: Maybe I could play a part!
+			Lena: Do you have any acting experience?
+			if DialogSaid.iris_lie_count > 0
+				Aiden: Sure! I gave the guard at the gate the performance of a lifetime! 
+			else
+				Aiden: Um. My Aunt Lily thinks I like her Carrot Souffle.
+			Lena: ...
+			Jordan: Good enough for us! Come on by the theater later and you can read the parts!
+		- Aiden: I'm sure you'll find some people. 
+			Aiden: There seem to be a lot of artristic folks around here.
+			Jordan: Well that's a two edged sword.
+			Lena: Lots of actors, and lots of shows. 
+			Jordan: Everyone and her house mother has some kind of show going on.
+else:
+	% Lena: [[Hey |Hi |Hello| What up,|Hey there]] Aiden! [[How goes it|How's everything|How is everything going|How've you been]]?
+	% Jordan: [[Hey-hey |Hi |Hello| What up,|Hey there]] [[country boi|Aiden|Bailey-buddy|Newcomer|Newbie]]! [[What's up|How goes the world|How's life|How's life treating you]]?
+	- Aiden: It's nice here. Very different.
+		Jordan: Do you miss the cows?
+		- Aiden: A bit. The hustle is a little hard to sleep through.
+		- Aiden: Not as much as I would have thought.
+			
+		- Aiden: [[Not bit.|No way.|Hardly.|Not on your life.]] This is a breath of fresh air.
+			Jordan: Metaphorically speaking.
+			if DialogSaid.aiden_knows("Leo") == true
+				Leo: (shouts from across room) See what I mean?
+			Aiden: Well, yes.
+	- It's all good. Can you tell me where to find your theater again? I wanted to check it out! [if DialogSaid.been_to_the_mermaid_sisters == false and DialogSaid.can_get_to_mermaid_sisters == false]
+		Jordan: We were just heading there. Want to join?
+		- Sure!
+			Lena: Yay! To the theater!
+			=> the_mermaid_sisters
+		- Not right now, thanks. I want to head over later.
+			Lena: Sure! It's "The Mermaid Sisters Theater", near the corner of Ruby and Lorde. Just follow Milk Avenue toward the wall, until you get to Ruby, make a right, and go straight until you get to Lorde, and tere you are! Bailey knows the way! 
+			set DialogSaid.can_get_to_mermaid_sisters == true
+			Aiden: Thanks!
+		
+- It was nice to meet you! (leave conversation)
+	Aiden: Well it was really nice to meet you! I'll get back to your date!
+	=> look_around_black_iris_1
+
+- Aiden: I have to go. Talk to you later!
+	=> look_around_black_iris_1
+=> lena_jordan_conversation
+
+~ meet_morgan_and_eli
+[do DialogSaid.aiden_knows("Morgan") == true] [next]
+[do DialogSaid.aiden_knows("Eli") == true] [next]
+Morgan: Bailey! I haven't seen you in aminute!
+Bailey: Aiden, let me introduce you to Morgan, our resident tinkerer and teller of tall tales. She's got a knack for turning the mundane into the magical.
+Morgan: You got that right! You've caught me in the middle of telling Eli here the saga of the clockwork mice.
+Eli: It's a good one so far, you'll want to hear this.
+- Aiden: Sounds fascinating!
+- Aiden: Actually, I have to go.
+	=> look_around_black_iris_1
+Morgan: So, there I was, elbow-deep in the guts of this arcane automaton. The owner had been complaining about a 'strange ticking noise' and 'occasional bursts of flame', right? 
+Morgan: So I'm thinking, probably a misalignment in the thaumic resonator or a leak in the pyroconduit. But no, it was a nest of clockwork mice! 
+Morgan: They'd taken up residence in the casing and were causing all sorts of havoc.
+Eli: Morgan ended up doing a full automaton rebuild, and made a separate compartment for the mice. Turned an infestation into a feature.
+Morgan: That's right. So, what brings you to our humble establishment? Looking for a drink, a story, or perhaps a mechanical mouse of your own?"
+- Aiden: I'm fresh in town today, just seeing everything from the first time.
+	Eli: Where you from?
+	Aiden: It feels like another world.
+	Bailey: Aiden and I grew up together.
+	Eli: Didn't you say you're from deep in the sticks?
+	Aiden: Sticks are way too sophisticated for Ithaca. We're from the [i]straw[/i].
+- Let Bailey do the talking.
+	Bailey: I'm showing my friend around. They're from the my hometown.
+	Eli: The one on the other side of nowhere?
+Morgan: Then this must be a shock.
+- Aiden: Feels like a dream.
+- Aiden: A bit. I'm managing.
+- Aiden: Nah. Water off a duck's back. Just keep it coming.
+Eli: Nice to meet you both. Always good to see new faces in this place.
+Eli: It was a hard shift for me, coming here. I grew up in what I thought was a pretty big town about halfway between here and Coinage. Nothing was what I expected. Not that it's a complaint.
+Aiden: What brought you here?
+Eli: Same as most people in Stonewall. I'd always been different. So I came here, where the queer folks go.
+- Ask about Eli's tattoos.
+	=> eli_tatoos
+Aiden: Well, thank you for the conversation! I will see you around here!
+=> look_around_black_iris_1
+
+~ talk_to_morgan_and_eli
+Morgan: "Hey, Aiden! How are you liking the city?"
+- 
+~ street_outside_black_iris
+[do DialogSaid.change_background('OutsideBlackIris')] [next]
+You are on the street outisde the Black Iris.
+- Go into the black Iris
+	=> look_around_black_iris_1
+- Go elsewhere
+	=>< iris_map 
+
+~ eli_tatoos
+if DialogSaid.asked_eli_tats == true
+	Aiden: Your tattoos are gorgeous. Tell me about them?
+	Eli: Sure!
+else:
+	[set DialogSaid.asked_eli_tats = true]   [next]
+	Aiden: Can you tell me more about your tattoos, Eli?	
+	Eli: I did most of them myself. It's kind of my thing. I got my first few just on impulse--
+	Morgan: [i]Too much[/i] impulse. One of them, anyway.
+	Eli: She's not wrong. But that's the one that made me an artist. 
+	Eli: One of my early pieces was a name of someone who I'd now know better than to get involved with. 
+	Eli: But hindsight didn't help me. There I was, young and devastated and basically all alone, questioning who I was and what I wanted. And I was having trouble moving on with their name on my back.
+	Eli: So I decided that the only thing to do was to get it covered up. But it wasn't enough it just get it patched over. I needed to rebuild myself, to become someone new. And I had to fix the name myself.
+	Eli: So I learned to do ink. Made me into who I am now.
+- Ask about the Phoenix tattoo on their back.
+	Eli: Well, that's the one that started it all, pretty much. Somewhere under all that ink is a name I don't even want to remember, let alone wear around. I did it myself. A symbol of my rebirth and transformation. Which might be cliche, but I figure as long as the artwork is good enough, no one will notice.
+	- Aiden: Wait, you did it yourself? It's on your back.
+		Morgan: That's where I come in!
+		Eli: (Yes, tnods) That's how Morgan and I got to know one another. It was important to me to do it on my own... but it was on my back. So how? Well, one day Morgan was here fiddling with a contraption, hoping someone would ask her about it--
+		Morgan: Hey!
+		Eli: What, am I wrong?
+		Morgan: ...
+		Morgan: No. (pouts)
+		Eli: And it's some kind of handwriting copier. Whatever she did with her hand, the little arm on the thing did too.
+		Morgan: No magic! All gears and springs! I still sell one every once in awhile.
+		Eli: So I asked her to make me one that I could use on my own back. With a little periscope contractiopn made of lenses and mirrors. 
+		Eli: It felt weird looking at my own back and inking it like I was my own client. But it worked. 
+		Morgan: They're still paying it off. That's why I usually bring them along when I come here: they're buying the drinks.
+		Eli: And the way she can nurse a drink I'll be paying it off for years to come. 
+- Ask about the Compass Rose tattoo on their right forearm.
+	Eli: Each point of the compass is designed with a different pattern, representing the diversity of paths one can take in life. I did this one as a reminder that I always have the freedom to choose my direction. And maybe that I need to [i]check[/i] my direction once in awhile.
+- Ask about the Quill and Ink tattoo on their left bicep.
+	Eli: This tattoo is a tribute to my love of stories and my belief in the power of words. It's also a nod to Morgan role as the Black Iris's resident storyteller.
+- Ask about the Hourglass tattoo on their right calf.
+	Eli: This was a reminder to me that time is fleeting and to make the most of every moment.
+- Ask about the Laughing Skull tattoo on their left shoulder.
+	Eli: This tattoo was just a whim, a reminder not to take life too seriously and to find humor even in the face of mortality.
+- Ask about the Stars tattoos scattered across their body.
+	Eli: Each star represents a significant person in my life. Some stars are just outlines, representing those who are still present in my life, while others are filled in, representing those who have passed on or moved away.
+- Ask about the Tree tattoo on their left forearm.
+	- Eli: This tattoo is a symbol of growth, strength, and resilience, a reminder of my own journey and the growth I've experienced.
+- Ask about the Musical Notes tattoo behind their right ear.
+	- Eli: This tattoo doesn't have a deep meaning, I simply liked the design and the idea of carrying a bit of music with me wherever I go.
+- Leave the conversation
+	=> look_around_black_iris_1
+
+
+
+~ iris_map
+- Bailey's Flat
+	=> baileys_flat
+- The Black Iris (Stonewall District) [if DialogSaid.been_to_the_black_iris == true]
+	=> black_iris
+- The Glittering Iris (Stonewall District) [if DialogSaid.been_to_the_glittering_iris == true]
+	=> glittering_iris
+- The Mermaid Sister Theater (Stonewall District) [if DialogSaid.can_get_to_mermaid_sisters == true]
+	=> the_mermaid_sisters
+- Beastman Enclave (Stonewall District) [if DialogSaid.can_get_to_the_beastman_enclave == true]
+	=> beastman_enclave
+- The Colorful Canvas (Marble District) [if DialogSaid.been_to_the_colorful_canvas == true]
+	=> the_colorful_canvas
+- The Spice Bazaar (Sandstone District) [if DialogSaid.been_to_the_spice_bazaar == true]
+	=> the_spice_bazaar
+- The Exotic Emporium (Sandstone District) [if DialogSaid.been_to_the_exotic_emporium == true]
+	=> the_exotic_emporium
+- The Grand Library (Limestone District) [if DialogSaid.been_to_the_grand_library == true]
+	=> the_grand_library
+- The Observatory (Limestone District) [if DialogSaid.been_to_the_observatory == true]
+	=> the_observatory
+- The Grand Manor (Granite District) [if DialogSaid.been_to_the_grand_manor == true]
+	=> the_grand_manor
+- The Boutique (Granite District) [if DialogSaid.been_to_the_boutique == true]
+	=> the_boutique
+- The Foundry (Basalt District) [if DialogSaid.been_to_the_foundry == true]
+	=> the_foundry
+- The Workman's Rest Tavern (Basalt District) [if DialogSaid.been_to_the_workmans_rest_tavern == true]
+	=> the_workmans_rest_tavern
+- The Harbor Master's Office (Slate District) [if DialogSaid.been_to_the_harbor_masters_office == true]
+	=> the_harbor_masters_office
+- The Salty Seagull (Slate District) [if DialogSaid.been_to_the_salty_seagull == true]
+	=> the_salty_seagull
+- The Crystal Cathedral (Quartz District) [if DialogSaid.been_to_the_crystal_cathedral == true]
+	=> the_crystal_cathedral
+- The Pilgrim's Rest (Quartz District) [if DialogSaid.been_to_the_pilgrims_rest == true]
+	=> the_pilgrims_rest
+- The Rainbow Market
+	=> to_the_rainbow_market
+- The Basalt District
+	=> Iris_od/enter_basalt
+
+
+
+~ outside_baileys_flat
+You're on the street outside Bailey's flat
+- Go inside
+	You're in Bailey's flat
+	=> baileys_flat
+- Go somewhere else.
+	=> iris_map
+
+
+~ baileys_flat
+- Look around Bailey's flat
+	=> look_around_baileys_flat
+- leave
+	=> outside_baileys_flat
+	
+	
+~ look_around_baileys_flat
+- Talk to Bailey
+	set DialogSaid.last_place = "Baileys Flat"
+	=> talk_to_bailey
+- Leave
+	=> baileys_flat
+	
+~ talk_to_bailey
+- Is there any entertainment to be had around here? [if DialogSaid.been_to_the_glittering_iris == false]
+	Bailey: Oh, yeah. I know something you can't find in Ithaca.
+	=> glittering_iris
+- Is there anywhere in this town to get something to eat? [if DialogSaid.been_to_the_black_iris == false]
+	Bailey: Oh, yeah. I knwo something you can't find in Ithaca.
+	=> black_iris
+- Do you know how to get to the Mermaid Sisters' Theater? [if DialogSaid.knows_about_mermaid_sisters == true and DialogSaid.can_get_to_mermaid_sisters == false]
+	Bailey: Oh, yeah. I knwo something you can't find in Ithaca.
+	=> black_iris
+- Leave the conversation
+	if DialogSaid.last_place == "Baileys Flat"
+		=> baileys_flat	
+	if DialogSaid.last_place == "Black Iris"
+		=> inside_black_iris
+	if DialogSaid.last_place == "Looking Around Black Iris"
+		=> look_around_black_iris_1
+	if DialogSaid.last_place == "Look Around Glittering Iris"
+		=> look_around_glittering_iris_1
+			
+~ glittering_iris
+[do DialogSaid.change_background('InsideGlitteringIris')] [next]
+set DialogSaid.know_about_glittering_iris = true
+if DialogSaid.been_to_the_glittering_iris == false
+	set DialogSaid.been_to_the_glittering_iris = true
+	if DialogSaid.dj_sparkle_intro == true
+		set DialogSaid.dj_sparkle_intro = false
+		Aiden: This is... different.
+		DJ Sparkle: Indeed it is. In fact, that is very much the point. Allow me to introduce you to the art of drag, which is to say, the culmination of the human arts of speech, music, dance, fashion, subterfuge and truth.
+		Aiden: Subterfuge [i]and[/i] truth?
+		DJ Sparkle: Not only that, the revelation of truth [i]through[/i] subterfuge. You are about to understand. We've arrived just in time. Behold Madame Starshine, sister and mother to all of us here.
+	else:
+		Aiden: This is... different.
+		Bailey: You wanted to see something, and this is something.
+		Aiden: It sure is!
+		Bailey: Oh, we're just in time!
+	Madame Starshine: ::comes out on stage::
+	Madame Starshine: Good Evening, everyone, welcome to the Glittering Iris, where gender is a construct and we on this stage are construction workers!
+	Madame Starshine: I am Madame Starshine and this is my home. 
+	Madame Starshine: And if you're well behaved, it can be your home away from home, but you still have to leave it at closing time.
+	Madame Starshine: Tonight you are about to witness acts of passion... or maybe just acts of passin'. 
+	Madame Starshine: The first performer tonight comes to us not just from 'cross the road, but from Crossroads; the mercurial mercantile, Sugah Beat!
+	::Sugah Beat comes on stage, Madame Starshine comes down to floor, goes to bar::
+else
+	do DialogSaid.rand_performer()
+~ look_around_glittering_iris_1
+{{DialogSaid.queen_on_stage}} is performing on stage.
+- {{DialogSaid.queen_at_bar}} is at the bar.
+	{{DialogSaid.where_is_queen_detailed(DialogSaid.queen_at_bar)}} 
+	- Speak to Madame Starshine. [if DialogSaid.queen_at_bar == "Madame Starshine"]
+		=>talk_to_madame_starshine
+	- Speak to Vivienne Verve. [if DialogSaid.queen_at_bar == "Vivienne Verve"]
+		=> talk_to_vivienne_verve
+	- Speak to Missy Demeanor. [if DialogSaid.queen_at_bar == "Missy Demeanor"]
+		=> talk_to_missy_demeanor
+	- Speak to Jinx Jezebel. [if DialogSaid.queen_at_bar == "Jinx Jezebel"]
+		=> talk_to_jinx_jezebel
+	- Speak to Lady Oddity. [if DialogSaid.queen_at_bar == "Lady Oddity"]
+		=> talk_to_lady_oddity
+	- Speak to Sugah Beat. [if DialogSaid.queen_at_bar == "Sugah Beat"]
+		=> talk_to_sugah_beats
+	- Speak to Duke Dynamite. [if DialogSaid.queen_at_bar == "Duke Dynamite"]
+		=> talk_to_duke_dynamite
+	- Speak to Queen Quasar. [if DialogSaid.queen_at_bar == "Queen Quasar"]
+		=> talk_to_queen_quasar
+	- Go back to looking at the room.
+		=> look_around_glittering_iris_1
+		
+- {{DialogSaid.at_the_table()}}
+	To whom do you wish to speak?
+	- Speak to Madame Starshine. [if DialogSaid.is_at_table("Madame Starshine") == true]
+		=>talk_to_madame_starshine
+	- Speak to Vivienne Verve. [if DialogSaid.is_at_table("Vivienne Verve") == true]
+		=> talk_to_vivienne_verve
+	- Speak to Missy Demeanor. [if DialogSaid.is_at_table("Missy Demeanor") == true]
+		=> talk_to_missy_demeanor
+	- Speak to Jinx Jezebel. [if DialogSaid.is_at_table("Jinx Jezebel") == true]
+		=> talk_to_jinx_jezebel
+	- Speak to Lady Oddity. [if DialogSaid.is_at_table("Lady Oddity") == true]
+		=> talk_to_lady_oddity
+	- Speak to Sugah Beat. [if DialogSaid.is_at_table("Sugah Beat") == true]
+		=> talk_to_sugah_beats
+	- Speak to Duke Dynamite. [if DialogSaid.is_at_table("Duke Dynamite") == true]
+		=> talk_to_duke_dynamite
+	- Speak to Queen Quasar. [if DialogSaid.is_at_table("Queen Quasar") == true]
+		=> talk_to_queen_quasar
+	- Leave the rable.
+		=> look_around_glittering_iris_1
+
+- Leave the Glittering Iris.
+	=> outside_the_glittering_iris
+- Talk to Bailey
+	set DialogSaid.last_place = "Look Around Glittering Iris"
+	=> talk_to_bailey
+
+~ talk_to_madame_starshine
+You open your mouth to speak.
+- Approach Madame Starshine. [if DialogSaid.aiden_knows("Madame Starshine") == false]
+	[do DialogSaid.aiden_meets("Madame Starshine")] [next]
+	Madame Starshine: Well, hello there, darling. I'm Madame Starshine, the proprietor of this fine establishment. What brings you to our glittering iris?
+- Ask about Madame Starshine's role at The Glittering Iris. [if DialogSaid.aiden_knows("Madame Starshine") == true]
+	Madame Starshine: As the proprietor, I oversee everything that happens here. From the performances to the drinks, everything has to be perfect. After all, our patrons deserve nothing but the best.
+- Ask about Madame Starshine's favorite part of running The Glittering Iris. [if DialogSaid.aiden_knows("Madame Starshine") == true]
+	Madame Starshine: My favorite part is seeing the joy on people's faces when they watch our queens perform. It's a magical experience, and I'm proud to be a part of it.
+- Ask about the challenges of running The Glittering Iris. [if DialogSaid.aiden_knows("Madame Starshine") == true]
+	Madame Starshine: It's not always easy, darling. There are long nights, difficult decisions, and plenty of challenges. But it's all worth it to create a space where our queens can shine.
+- Ask about Madame Starshine's vision for The Glittering Iris. [if DialogSaid.aiden_knows("Madame Starshine") == true]
+	Madame Starshine: My vision is to create a space where everyone feels welcome. A place where our queens can express themselves freely, and our patrons can enjoy a night of fabulous entertainment.
+- Ask about Madame Starshine's background. [if DialogSaid.aiden_knows("Madame Starshine") == true]
+	Madame Starshine: I've been in the drag scene for years, darling. I started as a queen myself, and eventually decided to open my own club. It's been a wild ride, but I wouldn't change a thing.
+- Ask about Madame Starshine's thoughts on the drag scene. [if DialogSaid.aiden_knows("Madame Starshine") == true]
+	Madame Starshine: The drag scene is a vibrant, diverse community. It's a place where people can express themselves, challenge norms, and celebrate individuality. It's a beautiful thing, darling.
+- Ask about the name of the Glittering Iris. [if DialogSaid.aiden_knows("Madame Starshine") == true]
+	Madame Starshine: Oh honey, this place, and our sister establishment, my dear friend Marianne's place, the Black Iris, are the pillars that sustain queer society in the city of Iris. And this pillar glitters even in the dark of night.
+	if DialogSaid.both_at_table("Madame Starshine", "Sugah Beat") == true
+		Sugah Beat: Sweetheart, you have so many dear friends you're going to have to start opening some new establishments.
+- Ask about her outfit. [if DialogSaid.both_at_table("Madame Starshine", "Lady Oddity")  == true]
+	Madame Starshine: Darling, fashion is a statement, not a style. Every piece I wear is a part of the story I'm telling.
+	Lady Oddity: And what a fascinating story it is, darling. Your wardrobe is like a library of fabulousness.
+- Ask about her inspiration. [if DialogSaid.both_at_table("Madame Starshine", "Missy Demeanor")  == true]
+	Madame Starshine: Inspiration, my dear, is everywhere. It's in the laughter of the crowd, the beat of the music, the sparkle in a lover's eye.
+	Missy Demeanor: And in the bottom of a cocktail glass, no doubt.
+- Ask about her relationship with Marianne. [if DialogSaid.both_at_table("Madame Starshine", "Vivienne Verve") == true ]
+	 Madame Starshine: Marianne and I go way back. We've seen each other through thick and thin, honey. She's more than a friend, she's family.
+	Vivienne Verve: A family that slays together, stays together.
+- Ask about her favorite performance. [if DialogSaid.both_at_table("Madame Starshine", "Jinx Jezebel")  == true]
+	Madame Starshine: Every performance is my favorite, darling. The moment I step on that stage, I'm home.
+	Jinx Jezebel: And the stage is lucky to have you, Starshine.
+- Ask about her makeup routine. [if DialogSaid.both_at_table("Madame Starshine", "Duke Dynamite") == true]
+	Madame Starshine: Oh, it's a ritual, my dear. A little bit of magic, a whole lot of glitter, and voila! Starshine is born.
+	Duke Dynamite: And what a dazzling birth it is. 
+- Ask about her advice for aspiring drag queens. [if DialogSaid.both_at_table("Madame Starshine", "Queen Quasar") == true]
+	Madame Starshine: Be true to yourself, honey. Drag is about expressing who you are, not who others want you to be.
+	Queen Quasar: Words of wisdom from the queen herself.[do DialogSaid.aiden_meets("Madame Starshine")]
+- Leave the conversation
+	=> look_around_glittering_iris_1
+=> talk_to_madame_starshine
+
+
+~ talk_to_sugah_beats
+- Approach Sugah Beat.  [if DialogSaid.aiden_knows("Sugah Beat") == false]
+	[do DialogSaid.aiden_meets("Sugah Beat")] [next]
+	Sugah Beat: Well, hello there, honey! You look like you're new around here. The name's Sugah Beat, and I'm the sweetest rhythm you'll ever dance to. What brings you to our humble abode?
+- Compliment Sugah Beat on her performance. [if DialogSaid.aiden_knows("Sugah Beat") == true]
+	Sugah Beat: Oh, aren't you just the sweetest? I do love a good compliment. It's all about the energy, darling. You give the crowd love, and they give it right back. That's the magic of the stage.
+- Ask about Sugah Beat's favorite song to perform. [if DialogSaid.both_at_table("Sugah Beat". "Madame Starshine") == true and  DialogSaid.aiden_knows("Sugah Beat") == true]
+	Sugah Beat: Oh, darling, that's like asking a mother to pick her favorite child. But if I had to choose, I'd say "I Will Survive." It's a classic, and it always gets the crowd going.
+	Madame Starshine: And she does it justice every time, let me tell you. The crowd goes wild!
+- Ask Sugah Beat about her experience in the drag scene. [if DialogSaid.aiden_knows("Sugah Beat") == true]
+	Sugah Beat: Oh, darling, I've seen it all. The highs, the lows, the glitter, the tears. But through it all, one thing remains the same – the love. The love we have for ourselves, for each other, and for the art of drag. That's what keeps me going.
+- Ask about Sugah Beat' costume inspiration.[if DialogSaid.both_at_table("Sugah Beat". "Lady Oddity") == true and  DialogSaid.aiden_knows("Sugah Beat") == true]
+	Sugah Beat: I draw inspiration from everywhere, darling. The glitz of old vaudevulle, the boldness of the art scenes, the elegance of the runway. But most importantly, I dress to impress.
+	Lady Oddity: And impress she does. I've never seen someone rock a feather boa quite like Sugah.
+- Ask Sugah Beat about her inspiration. [if DialogSaid.aiden_knows("Sugah Beat") == true]
+	Sugah Beat: Inspiration? Honey, life is my inspiration. Every heartbreak, every triumph, every beat of the music – it's all a part of the performance. And of course, a little bit of Sugah never hurts.
+- Ask about Sugah Beat' makeup routine. [if DialogSaid.both_at_table("Sugah Beat". "Missy Demeanor")  == true and DialogSaid.aiden_knows("Sugah Beat") == true]
+	Sugah Beat: Oh, honey, it's a process. It takes time to look this good. But the key is blending, blending, blending. And never skimp on the glitter.
+	Missy Demeanor: I've seen her in action. It's like watching an artist at work.
+- Ask about Sugah Beat's favorite part of performing. [if DialogSaid.both_at_table("Sugah Beat". "Vivienne Verve")  == true and DialogSaid.aiden_knows("Sugah Beat") == true]
+	Sugah Beat: The energy, darling. There's nothing like the rush of being on stage, the spotlight on you, the crowd cheering. It's electric.
+	Vivienne Verve: She's not kidding. When Sugah's on stage, you can feel the energy in the room shift. 
+- Ask about Sugah Beat' pre-show rituals. [if DialogSaid.both_at_table("Sugah Beat". "Jinx Jezebel") and DialogSaid.aiden_knows("Sugah Beat") == true]
+	Sugah Beat: I always have a little pep talk with myself in the mirror before I go on stage. A little reminder that I'm fabulous and I'm about to kill it.
+	Jinx Jezebel: It's adorable, really. And it works. She always kills it. 
+- Ask about Sugah Beat's most memorable performance. [if DialogSaid.both_at_table("Sugah Beat". "Duke Dynamite")  == true and DialogSaid.aiden_knows("Sugah Beat") == true]
+	Sugah Beat: Oh, there have been so many. But I'll never forget the time I performed in the pouring rain. The show must go on, darling.
+	Duke Dynamite: I was there that night. It was unforgettable. Sugah, soaked to the bone, belting out tunes. The crowd loved it.
+- Ask Sugah Beat about her outfit. [if DialogSaid.aiden_knows("Sugah Beat") == true]
+	Sugah Beat: This old thing? Well, darling, in this business, you've got to stand out. And nothing says 'look at me' quite like sequins and feathers. But remember, it's not just about what you wear, it's how you wear it.
+- Ask about Sugah Beat's drag family. [if DialogSaid.all_at_table("Sugah Beat", "Queen Quasar", "Jinx Jezebel") == true and DialogSaid.aiden_knows("Sugah Beat") == true]
+	Sugah Beat: I'm blessed to be part of a wonderful drag family. We lift each other up, support each other, and push each other to be the best we can be.
+	Queen Quasar: It's true. We're more than just performers. We're a family.
+	Jinx Jezebel: Crime family, I like to think. Mostly crimes of fashion.
+- Leave conversation
+	=> look_around_glittering_iris_1
+=> talk_to_sugah_beats
+
+~ talk_to_lady_oddity
+- Approach Lady Oddity. [if DialogSaid.aiden_knows("Lady Oddity") == false]
+	Lady Oddity: Well, well, well, what do we have here? A fresh face in our midst. I'm Lady Oddity, darling. The queen of the strange and unusual. What's your story? 
+- Compliment Lady Oddity on her performance.
+	Lady Oddity: Oh, you liked that, did you? It's not everyone's cup of tea, but then again, I've never been one for the ordinary. I believe in pushing boundaries, darling. That's where the real magic happens. 
+- Ask about Lady Oddity's future plans. [if DialogSaid.both_at_table("Lady Oddity", "Queen Quasar") == true]
+	Lady Oddity: The future is a mystery, darling. But wherever I go, I'll be pushing boundaries and challenging norms. That's a promise.
+	Queen Quasar: And we'll be here to witness it. Can't wait to see what you do next, Oddity.
+- Ask Lady Oddity about her outfit.
+	Lady Oddity: My outfit? It's a reflection of my soul, darling. A little bit dark, a little bit strange, and entirely unique. In this world, you've got to be true to who you are. And I, my dear, am an oddity.
+- Ask about Lady Oddity's favorite performance. [if DialogSaid.both_at_table("Lady Oddity", "Missy Demeanor") == true]
+	Lady Oddity: Oh, that's like asking a mother to pick her favorite child. But I did love the night I performed as a living piece of abstract art.
+	Missy Demeanor: I remember that night. She had us all questioning reality by the end of it.
+- Ask Lady Oddity about her inspiration.
+	Lady Oddity: Inspiration? It's all around us, darling. In the shadows, in the whispers of the wind, in the beauty of the night. I draw from the world around me, turning the ordinary into the extraordinary.
+- Ask about Lady Oddity's unique style. [if DialogSaid.both_at_table("Lady Oddity", "Madame Starshine") == true]
+	Lady Oddity: Oh, darling, I've always been a bit of an oddball. I like to think outside the box, push boundaries. My style is a reflection of that.
+	Madame Starshine: And it's a sight to behold, let me tell you. Lady Oddity is a true original.
+- Ask about Lady Oddity's makeup process. [if DialogSaid.both_at_table("Lady Oddity", "Vivienne Verve") == true]
+	Lady Oddity: It's a ritual, darling. Each stroke of the brush, each splash of color, it's all part of the transformation. It's like painting a masterpiece on my own face.
+	Vivienne Verve: And it's a masterpiece indeed. I've never seen anyone use makeup quite like Lady Oddity.
+- Ask Lady Oddity about her experience in the drag scene.
+	Lady Oddity: The drag scene is a world of its own, darling. It's a place where you can be whoever you want to be, without judgment or fear. It's not always easy, but it's always worth it. After all, where else could a creature like me truly belong? 
+- Ask about Lady Oddity's inspirations. [if DialogSaid.both_at_table("Lady Oddity", "Sugah Beat") == true]
+	Lady Oddity: I draw inspiration from everywhere, darling. Art, nature, dreams, nightmares. The world is full of oddities if you know where to look.
+	Sugah Beat: She ain't lying. I've seen her get inspired by a broken heel and a spilled drink.
+- Ask about Lady Oddity's thoughts on drag. [if DialogSaid.both_at_table("Lady Oddity", "Jinx Jezebel") == true]
+	Lady Oddity: Drag, to me, is about freedom. Freedom to express, to challenge, to transform. It's a celebration of individuality and creativity.
+	Jinx Jezebel: Well said, Oddity. We're all here to express ourselves in our own unique ways. 
+- Ask about Lady Oddity's most memorable audience reaction. [if DialogSaid.both_at_table("Lady Oddity", "Duke Dynamite") == true]
+	Lady Oddity: There was this one time, a woman in the audience was so moved by my performance, she started crying. It was a powerful moment.
+	Duke Dynamite: I remember that. It was a testament to the power of Lady Oddity's performances. 
+- Leave the conversation.
+	=> look_around_glittering_iris_1
+[do DialogSaid.aiden_meets("Lady Oddity")] [next()]
+=> talk_to_lady_oddity
+
+
+
+~ talk_to_vivienne_verve
+- Approach Vivienne Verve. [if DialogSaid.aiden_knows("Vivienne Verve") == false]
+	Vivienne Verve: Well, aren't you a sight for sore eyes? I'm Vivienne Verve, the queen of elegance and grace. What brings you to our glittering stage? [do DialogSaid.aiden_meets("Vivienne Verve")]
+- Compliment Vivienne Verve on her performance.
+	Vivienne Verve: Oh, you're too kind, darling. I believe in the power of performance, the ability to captivate and inspire. If I've managed to touch even one heart, then I've done my job. 
+- Ask Vivienne Verve about her outfit.
+	Vivienne Verve: This ensemble? It's a testament to the timeless beauty of classic elegance. A queen must always be at her best, and for me, that means embodying the grace and sophistication of the golden age of Vaudeville.
+- Ask Vivienne Verve about her inspiration.
+	Vivienne Verve: My inspiration comes from the icons of the past, the divas and starlets who defined an era. Their strength, their style, their spirit - they paved the way for queens like me to shine. 
+- Ask Vivienne Verve about her experience in the drag scene.
+	Vivienne Verve: The drag scene is a vibrant tapestry of creativity and expression. It's a place where we can celebrate our individuality and challenge societal norms. It's not always easy, but it's a journey I wouldn't trade for anything. [do DialogSaid.aiden_meets("Vivienne Verve")]
+- Approach Vivienne Verve. [if DialogSaid.aiden_knows("Vivienne Verve") == false]
+	Vivienne Verve: Hello, darling. I'm Vivienne Verve, the queen of elegance and grace. It's a pleasure to meet you. What brings you to our humble abode?
+- Ask about Vivienne Verve's favorite performance. [if DialogSaid.both_at_table("Vivienne Verve", "Queen Quasar")]
+	Vivienne Verve: My favorite performance was when I did a classic Vaudeville number. The crowd was absolutely mesmerized.
+	Queen Quasar: I remember that night. You were absolutely radiant, Vivienne!
+- Ask about Vivienne Verve's inspirations. [if DialogSaid.both_at_table("Vivienne Verve", "Lady Oddity")]
+	Vivienne Verve: I draw inspiration from the classic Vaudeville divas. Their elegance, their grace, their strength - it's all so inspiring.
+	Lady Oddity: And you certainly embody that elegance, Vivienne.
+- Ask about Vivienne Verve's thoughts on drag. [if DialogSaid.both_at_table("Vivienne Verve", "Missy Demeanor")]
+	Vivienne Verve: Drag is about self-expression. It's about embracing who you are and showcasing it to the world. It's a celebration of individuality.
+	Missy Demeanor: That's beautifully put, Vivienne. We're all here to express ourselves in our own unique ways.
+- Ask about Vivienne Verve's makeup process. [if DialogSaid.both_at_table("Vivienne Verve", "Duke Dynamite")]
+	Vivienne Verve: Makeup is like painting a masterpiece on your face. It's all about creating a look that's elegant and glamorous.
+	Duke Dynamite: And you always look like a star, Vivienne!
+- Ask about Vivienne Verve's most memorable audience reaction. [if DialogSaid.both_at_table("Vivienne Verve", "Jinx Jezebel")]
+	Vivienne Verve: There was this one time, a woman in the audience was so moved by my performance, she said it was like watching a classic musical play. It was a powerful moment.
+	Jinx Jezebel: That's the power of drag, baby. It can really touch people.
+- Leave the conversation
+	=> look_around_glittering_iris_1
+[do DialogSaid.aiden_meets("Vivienne Verve")] [next]
+=> talk_to_vivienne_verve
+
+
+~ talk_to_queen_quasar	
+- Approach Queen Quasar. [if DialogSaid.aiden_knows("Queen Quasar") == false]
+	Queen Quasar: Greetings, earthling! Welcome to the cosmos of the Glittering Iris. I'm Queen Quasar, your guide to the stars. What can I do for you today? 
+- Ask about Queen Quasar's journey into drag. [if DialogSaid.both_at_table("Queen Quasar", "Madame Starshine") == true]
+	Queen Quasar: My journey into drag was like a supernova, explosive and full of energy. It was a way for me to express my inner star.
+	Madame Starshine: And what a star you are, Quasar. Your performances are always out of this world.
+- Compliment Queen Quasar on her performance.
+	Queen Quasar: Why, thank you! There's nothing quite like a journey through the stars, is there? I'm glad you enjoyed the ride. 
+- Ask about Queen Quasar's favorite performance.  [if DialogSaid.both_at_table("Queen Quasar", "Sugah Beat") == true]
+	Queen Quasar: My favorite performance was when I did a space-themed burlesque number. The crowd was absolutely starstruck.
+	Sugah Beat: I remember that night. You were absolutely stellar, Quasar! 
+- Ask about Queen Quasar's inspirations.  [if DialogSaid.both_at_table("Queen Quasar", "Lady Oddity") == true]
+	Queen Quasar: I draw inspiration from the cosmos. The stars, the galaxies, the infinite vastness of space. It's all so mesmerizing and beautiful.
+	Lady Oddity: Your performances certainly reflect that, Quasar. They're always a cosmic journey. 
+- Ask Queen Quasar about her outfit.
+	Queen Quasar: Queen Quasar: Oh, this old thing? It's just a little something I whipped up in my space lab. Every queen needs her crown, and every star needs her sparkle, don't you think? 
+- Ask about Queen Quasar's thoughts on drag.  [if DialogSaid.both_at_table("Queen Quasar", "Missy Demeanor") == true]
+	Queen Quasar: Drag is like a galaxy, full of diverse stars shining in their own unique way. It's about expressing your inner star and shining bright.
+	Missy Demeanor: That's beautifully put, Quasar. We're all stars in the drag galaxy. 
+- Ask about Queen Quasar's makeup process.  [if DialogSaid.both_at_table("Queen Quasar", "Vivienne Verve") == true]
+	Queen Quasar: Makeup is like painting a galaxy on your face. It's all about creating a look that's out of this world.
+	Vivienne Verve: And you always look like a celestial body, Quasar. 
+- Ask Queen Quasar about her inspiration.
+	Queen Quasar: Queen Quasar: My inspiration? The universe, darling! There's so much beauty and wonder out there, just waiting to be discovered. And if I can bring a little bit of that wonder down to earth, then I've done my job. 
+- Ask about Queen Quasar's most memorable audience reaction.  [if DialogSaid.both_at_table("Queen Quasar", "Duke Dynamite") == true]
+	Queen Quasar: There was this one time, a man in the audience was so moved by my performance, he said it was like watching a star being born. It was a powerful moment.
+	Duke Dynamite: That's the power of drag, baby. It can really touch people. 
+- Ask Queen Quasar about her experience in the drag scene.
+	Queen Quasar: Queen Quasar: The drag scene is like a galaxy of its own. It's full of stars, each one unique and beautiful in their own way. It's a place where you can truly be yourself, no matter who or what you are. And that, to me, is the most beautiful thing of all.
+- Ask about Queen Quasar's future plans. [if DialogSaid.both_at_table("Queen Quasar", "Jinx Jezebel") == true]
+	Queen Quasar: The future is as vast as the cosmos, darling. But one thing's for sure, I'll keep doing drag and spreading stardust through my performances.
+	Jinx Jezebel: And we'll be here cheering you on, Quasar. Keep shining!
+- Leave the conversation
+	=> look_around_glittering_iris_1
+[do DialogSaid.aiden_meets("Queen Quasar")] [next]
+=> talk_to_queen_quasar
+
+
+~ talk_to_missy_demeanor
+- Approach Missy Demeanor. [if DialogSaid.aiden_knows("Missy Demeanor") == false]
+	Missy Demeanor: Well, hello there, sugar. I don't believe we've had the pleasure. I'm Missy Demeanor, the sassiest queen in town. What brings you to our humble abode?
+- Compliment Missy Demeanor on her performance.
+	Missy Demeanor: Why, thank you, darling. I do aim to entertain. It's all about the energy, the passion, the drama. If I can make someone's night a little brighter, then I've done my job. 
+- Ask Missy Demeanor about her outfit.
+	Missy Demeanor: This old thing? Honey, this is just one of my many fabulous ensembles. A queen must always look her best, after all. It's all part of the show, the allure, the fantasy.
+- Ask Missy Demeanor about her inspiration.
+	Missy Demeanor: Inspiration, darling? It comes from life itself. The highs, the lows, the laughter, the tears. I take it all and channel it into my performances. That's the beauty of drag, it's a reflection of life in all its glorious messiness.
+- Ask Missy Demeanor about her experience in the drag scene.
+	Missy Demeanor: The drag scene, honey, is a world of its own. It's a community, a family. We lift each other up, we support each other. It's not just about the glitz and glamour, it's about finding a place where you can truly be yourself.
+- Leave the Conversation
+	=> look_around_glittering_iris_1
+[do DialogSaid.aiden_meets("Missy Demeanor")] [next]
+=> talk_to_missy_demeanor
+
+~ talk_to_duke_dynamite
+- Approach Duke Dynamite. [if DialogSaid.aiden_knows("Duke Dynamite") == false]
+	Duke Dynamite: Well, well, well, if it isn't a new face! I'm Duke Dynamite, the king of the stage and the master of the mic. What brings you to our humble abode?
+- Ask about Duke Dynamite's thoughts on drag. [if DialogSaid.both_at_table("Duke Dynamite", "Missy Demeanor") == true]
+	Duke Dynamite: To me, drag is about breaking barriers and challenging stereotypes. It's a form of self-expression and a celebration of diversity.
+	Missy Demeanor: Amen to that, Duke. We're all here to shake things up and have a good time.
+- Compliment Duke Dynamite on his performance.
+	Duke Dynamite: Ah, you've got good taste! There's nothing like the roar of the crowd and the thrill of the spotlight. It's a rush like no other, I tell ya. 
+- Ask about Duke Dynamite's favorite performance. [if DialogSaid.both_at_table("Duke Dynamite", "Sugah Beat") == true]
+	Duke Dynamite: That's a tough one. But I'd say the night I did a tribute to classic rock legends. The crowd went wild, and I felt like a true rockstar.
+	Sugah Beat: Oh, I remember that night. You brought the house down, Duke!
+- Ask Duke Dynamite about his outfit.
+	Duke Dynamite: This? It's all about the flair, my friend. A king's gotta look the part, after all. And nothing says 'king' quite like a bit of sparkle and a whole lot of attitude. 
+- Ask about Duke Dynamite's future plans. [if DialogSaid.both_at_table("Duke Dynamite", "Queen Quasar") == true]
+	Duke Dynamite: The future is wide open, my friend. But one thing's for sure, I'll keep rocking and rolling, and giving the crowd a dynamite show.
+	Queen Quasar: And we'll be here cheering you on, Duke. Keep on rocking! 
+- Ask Duke Dynamite about his inspiration.
+	Duke Dynamite: My inspiration? That's easy. It's the trailblazers, the pioneers, the ones who dared to step out of the shadows and into the spotlight. They're the ones who showed me that being different isn't just okay - it's something to be celebrated.
+- Ask about Duke Dynamite's journey into drag. [if DialogSaid.both_at_table("Duke Dynamite", "Madame Starshine") == true]
+	Duke Dynamite: Well, it started as a dare, believe it or not. But once I got on that stage, I felt a rush like nothing else. I was hooked.
+	Madame Starshine: And we're all glad you took that dare, Duke. You've been a dynamite addition to our family. 
+- Ask Duke Dynamite about his experience in the drag scene.
+	Duke Dynamite: The drag scene is a world of its own. It's a place where you can be whoever you want to be, no questions asked. It's a place of acceptance, of love, of freedom. And I wouldn't have it any other way. 
+- Ask about Duke Dynamite's inspirations. [if DialogSaid.both_at_table("Duke Dynamite", "Lady Oddity") == true]
+	Duke Dynamite: I draw a lot of inspiration from music, especially rock and roll. There's a raw energy to it that I try to bring to my performances.
+	Lady Oddity: And it shows. Duke's performances are always full of energy and passion.
+- Ask about Duke Dynamite's makeup process. [if DialogSaid.both_at_table("Duke Dynamite", "Vivienne Verve") == true]
+	Duke Dynamite: It's a transformation, for sure. I like to think of it as putting on my armor. It's a part of becoming Duke Dynamite.
+	Vivienne Verve: And what an armor it is. Duke always looks sharp.
+- Ask about Duke Dynamite's most memorable audience reaction. [if DialogSaid.both_at_table("Duke Dynamite", "Jinx Jezebel") == true]
+	Duke Dynamite: There was this one time, a guy in the audience was so into my performance, he started headbanging and knocked his drink over. It was hilarious.
+	Jinx Jezebel: I remember that! We all had a good laugh. Duke's performances can really get the crowd going.
+- Leave the conversation
+	=> look_around_glittering_iris_1
+[do DialogSaid.aiden_meets("Duke Dynamite")] [next]
+=> talk_to_duke_dynamite
+
+~ talk_to_jinx_jezebel
+- Approach Jinx Jezebel. [if DialogSaid.aiden_knows("Jinx Jezebel") == false]
+	Jinx Jezebel: Well, hello there, darling! I'm Jinx Jezebel, the queen of mischief and mayhem. What brings you to our fabulous corner of chaos? 
+	Aiden: New in town. This is my first... "drag" show.
+	Jinx Jezebel: Oh, sweetie, this really is new to you. I could hear the quotes around "drag"!  
+	Aiden: ::blushes:: Well yes. Nothing like this where I'm from. Mostly just chickens and cows.
+	Jinx Jezebel: Oh, then you should talk to Sugah Beat, I believe that's her background as well!
+- Ask Jinx Jezebel about her experience in the drag scene.
+	Jinx Jezebel: The drag scene is a vibrant explosion of creativity and defiance. It's a place where we can challenge conventions and redefine beauty. It's not always easy, but it's a journey I wouldn't trade for anything.
+- Ask about Jinx Jezebel's inspirations. [if DialogSaid.both_at_table("Jinx Jezebel", "Lady Oddity") == true]
+	Jinx Jezebel: I draw inspiration from all sorts of places. Movies, music, fashion, you name it. But mostly, I'm inspired by the idea of challenging norms and expectations.
+	Lady Oddity: And you do it so well, Jinx. Your performances are always a breath of fresh air.
+- Compliment Jinx Jezebel on her performance.
+	Jinx Jezebel: Oh, you liked that, did you? I do love to put on a show. It's all about the thrill, the surprise, the unexpected twist. If I've managed to keep you on your toes, then I've done my job.
+- Ask about Jinx Jezebel's favorite performance. [if DialogSaid.both_at_table("Jinx Jezebel", "Sugah Beat") == true]
+	Jinx Jezebel: That would have to be the night I did a burlesque number. The crowd was absolutely electric that night.
+	Sugah Beat: I remember that night. You were absolutely stunning, Jinx!
+- Ask about Jinx Jezebel's thoughts on drag. [if DialogSaid.both_at_table("Jinx Jezebel", "Missy Demeanor") == true]
+	Jinx Jezebel: Drag is a form of rebellion, darling. It's about challenging norms, pushing boundaries, and expressing yourself in the most fabulous way possible.
+	Missy Demeanor: Preach, Jinx! Drag is all about being 
+- Ask about Jinx Jezebel's journey into drag. [if DialogSaid.both_at_table("Jinx Jezebel", "Madame Starshine") == true]
+	Jinx Jezebel: Oh, it's been a wild ride, darling. I started doing drag as a way to express myself and it just took off from there.
+	Madame Starshine: And we've been blessed with your presence ever since, Jinx.
+- Ask Jinx Jezebel about her inspiration.
+	Jinx Jezebel: My inspiration comes from the rule breakers, the rebels, the ones who dared to be different. Their courage, their audacity, their spirit - they paved the way for queens like me to break the mold.
+- Ask about Jinx Jezebel's makeup process. [if DialogSaid.both_at_table("Jinx Jezebel", "Vivienne Verve") == true]
+	Jinx Jezebel: Makeup is a crucial part of the transformation process. It's like painting a masterpiece, but the canvas is your own face.
+	Vivienne Verve: And you always look like a work of art, Jinx.
+- Ask about Jinx Jezebel's most memorable audience reaction. [if DialogSaid.both_at_table("Jinx Jezebel", "Duke Dynamite") == true]
+	Jinx Jezebel: There was this one time, a woman in the audience was so moved by my performance, she started crying. It was a powerful moment.
+	Duke Dynamite: That's the power of drag, baby. It can really touch people.
+- Ask Jinx Jezebel about her outfit.
+	Jinx Jezebel: This little number? It's a testament to the wild and unpredictable. A queen must always be ready to surprise, and for me, that means embodying the spirit of rebellion and unpredictability. [do DialogSaid.aiden_meets("Jinx Jezebel")]
+- Ask about Jinx Jezebel's future plans. [if DialogSaid.both_at_table("Jinx Jezebel", "Queen Quasar") == true]
+	Jinx Jezebel: The future is full of possibilities, darling. But one thing's for sure, I'll keep doing drag and spreading love and joy through my performances.
+	Queen Quasar: And we'll be here cheering you on, Jinx. Keep shining!
+- Leave the conversation
+	=> look_around_glittering_iris_1
+[do DialogSaid.aiden_meets("Jinx Jezebel")] [next]
+=> talk_to_jinx_jezebel
+
+~ outside_the_glittering_iris
+You are on the street outside the Glittering Iris.
+- Go inside.
+	=> glittering_iris
+- Go somewhere else.
+	=> iris_map
+
+~ outside_the_mermaid_sisters
+set DialogSaid.been_to_the_rainbow_market = true
+set DialogSaid.can_get_to_the_rainbow_market = true
+- Enter the Rainbow Market.
+	=> the_mermaid_sisters
+- Go somewhere else.
+	=> iris_map
+
+
+~ to_the_rainbow_market
+set DialogSaid.been_to_the_rainbow_market = true
+set DialogSaid.can_get_to_the_rainbow_market = true
+- Enter the Rainbow Market.
+	=> the_rainbow_market
+- Go somewhere else.
+	=> iris_map
+
+~ beastman_enclave
+[set DialogSaid.been_to_the_beastman_enclave = true] [next]
+[set DialogSaid.DialogSaid.can_get_to_the_beastman_enclave = true] [next]
+=> enclave/beastmen_start
+- Go somewhere else.
+	=> iris_map
+
+
+~ the_colorful_canvas
+Stub
+- leave
+	=> iris_map
+
+~ the_spice_bazaar
+set DialogSaid.been_to_the_spice_bazaar = true
+set DialogSaid.been_to_the_spice_bazaar = true
+Stub
+- leave
+	=> iris_map
+
+~ the_exotic_emporium
+Stub
+- leave
+	=> iris_map
+
+~ the_grand_library
+set DialogSaid.been_to_the_grand_library = true
+set DialogSaid.can_get_to_the_grand_library = true
+Stub
+- leave
+	=> iris_map
+
+~ the_observatory
+set DialogSaid.been_to_the_observatory = true
+set DialogSaid.can_get_to_the_observatory = true
+Stub
+- leave
+	=> iris_map
+
+~ the_grand_manor
+set DialogSaid.been_to_the_grand_manor = true
+set DialogSaid.can_get_to_the_grand_manor = true
+Stub
+- leave
+	=> iris_map
+
+~ the_boutique
+set DialogSaid.been_to_the_boutique = true
+set DialogSaid.can_get_to_the_boutique = true
+Stub
+- leave
+	=> iris_map
+
+~ the_mermaid_sisters
+set DialogSaid.been_to_the_mermaid_sisters = true
+set DialogSaid.can_get_to_the_mermaid_sisters = true
+- leave
+	=> iris_map
+
+~ the_foundry
+Stub
+set DialogSaid.been_to_the_foundry = true
+set DialogSaid.can_get_to_the_foundry = true
+- leave
+	=> iris_map
+
+~ the_workmans_rest_tavern
+Stub
+set DialogSaid.been_to_the_foundry = true
+set DialogSaid.can_get_to_the_foundry = true
+- leave
+	=> iris_map
+
+~ the_harbor_masters_office
+Stub
+set DialogSaid.been_to_the_harbor_masters_office = true
+set DialogSaid.can_get_to_the_harbor_masters_office = true
+- leave
+	=> iris_map
+
+~ the_salty_seagull
+Stub
+set DialogSaid.been_to_the_salty_seagull = true
+set DialogSaid.can_get_to_the_salty_seagull = true
+- leave
+	=> iris_map
+
+~ the_crystal_cathedral
+Stub
+set DialogSaid.been_to_the_crystal_cathedral = true
+set DialogSaid.can_get_the_crystal_cathedral = true
+- leave
+	=> iris_map
+
+~ the_pilgrims_rest
+Stub
+set DialogSaid.been_to_the_pilgrims_rest = true
+set DialogSaid.can_get_to_the_pilgrims_rest = true
+- leave
+	=> iris_map
+
+
+~the_mermaid_sisters
+STUB
+
+~ the_rainbow_market
+Mila: Hello there, lovely strangers. I'm Mila, the keeper of curious trinkets and whispered secrets.
+do DialogSaid.aiden_meets("mila")
+do DialogSaid.aiden_meets("basalt_district")
+Mila: I have a small favor to ask, if your hearts are kind and your time allows.
+Aiden: What kind of favor?
+Mila: You see, a young child named Kael, full of dreams and mischief, has wandered off into the Basalt District.
+Mila: His parents, dear souls, are worried sick. The shadows there are not kind to little ones.
+- Aiden: Sure, we'll help find Kael.
+
+	do DialogSaid.aiden_meets("kael_quest_accepted")
+	do DialogSaid.aiden_meets("basalt_district")
+	Mila: Oh, you have my deepest gratitude! Please, take care. The Basalt District hides many secrets.
+- Aiden: Why should we help?
+	Mila: Ah, the child... a tender sprout in our garden of life. But there's more you should know.
+	Mila: Kael is a Beastman cub, a lion-human hybrid. The Beastmen are like wildflowers in a meadow, misunderstood but beautiful in their own way.
+	Mila: Helping them is like nurturing a garden, full of potential and life. Kael, an innocent blossom, needs our care.
+	- Aiden: I see your point. We'll help find Kael.
+		do DialogSaid.aiden_meets("kael_quest_accepted")
+		do DialogSaid.aiden_meets("basalt_district")
+		Mila: My heart sings with joy! Please, hurry. Every moment counts.
+	- Aiden: I'm still not convinced. Tell me more about the Beastmen.
+		Mila: The Beastmen, they are our hidden stars, shining brightly but often unseen.
+		Mila: They seek love and acceptance, just like you and me. Helping Kael is a step towards a brighter constellation.
+		- Aiden: Alright, we'll help find Kael.
+			Mila: Thank you! You are like a gentle breeze on a hot day. Safe travels.
+			do DialogSaid.aiden_meets("kael_quest_accepted")
+			do DialogSaid.aiden_meets("basalt_district")
+		- Aiden: I'm still not sure.
+			Mila: I understand. Sometimes, the heart needs time to see what the eyes cannot. The offer stands, should you change your mind. I just hope the child has that time.
+- We don't have time for this.
+	Mila: I understand. Life moves swiftly, like a river. If you find a moment to spare, please think of Kael and his worried parents.
+- Leave
+=> iris_map

@@ -1,0 +1,69 @@
+# ==============================================================================
+# ENTRY POINT
+# ==============================================================================
+
+~ start
+
+if not GameState.has_tag("after_sermon")
+	=> before_sermon
+if GameState.has_tag("after_sermon")
+	=> after_sermon
+
+
+
+~ before_sermon
+do GameState.set_player_input_enabled(false)
+Bailey: I was looking forward to the celebration today but... The vibe is really off today. 
+- Aiden: It's that damn Inquisitor!
+	Bailey: That's my bet, yeah. Le'ts just hope for the best.
+- Aiden: Let's hope for the best. Matthew can handle it.
+	Bailey: I trust him. I just don't trust the Inquisitor.
+- Aiden: Don't be a worrywort, it'll be fine!
+	Bailey: I hope you're right.
+do GameState.set_player_input_enabled(true)
+=> END!
+
+
+~ after_sermon
+do GameState.set_player_input_enabled(false)
+do CutsceneManager.play_animation("bailey", "idle_right", false)
+Bailey: I can't believe he did that.
+#if GameState.has_tag("schmermerhorne")
+- Aiden: I didn't realize he was that brave.
+	Bailey: I... always thought of him as brave, but... not like that.
+- Aiden: I didn't realize he was that reckless.
+	Bailey: I don't think it was recklessness. I think it was something else.
+	Aiden: What? Courage?
+	Bailey: That too? But I meant... what he said. The Spirit speaking to him.
+- Aiden: I didn't realize he was that stupid.
+	Bailey: That wasn't stupidity.
+	Aiden: What would you call it? He just gave the Inquisitor everything he needed to take over the church.
+	Bailey: He spoke the truth in the face of power.
+	Aiden: That's not going to do any of us any good now.
+	Ira: I don't get it. What did he say that was wrong?
+	Bailey: He said a lot, Ira. 
+	Aiden: He said that love was more important than God. 
+	Bailey: And he said that God could be wrong.
+Aiden: What's going to happen to him?
+Bailey: I'm not sure. If he stands accused of heresy, there will have to be a trial. The Inquisitor can't discipline a priest directly; he'll have to be brought to the Holy City.
+Aiden: What about people who aren't priests?
+do CutsceneManager.play_animation("ira", "idle_right", false)
+Ira: He can appoint a jury in the case of laity.
+Aiden: How do you know that?
+Ira: My father studied to be a priest when he was younger. He never took his orders, but he knew a lot about the Inquisitors. 
+Ira: He said that they were the [i]reason[/i] he never took his orders.
+Bailey: Did... you talk to the Inquisitor, Aiden?
+Aiden: What? Why?
+do CutsceneManager.move_group("guard1,malachai", "GA3,IM3", "walk")
+Bailey: Because he's coming toward us.
+Aiden: We should go.
+Bailey: I think it's too late. Running is just going to make them hunt us down.
+do GameState.set_tag("samwell_to_speak")
+do CutsceneManager.move_group("guard1,malachai,samwell", "GA4,IM4, SW1", "walk")
+do CutsceneManager.play_animation("guard1", "idle_down", false)
+do CutsceneManager.play_animation("malachai", "idle_down", false)
+do CutsceneManager.play_animation("samwell", "idle_up", false)
+do GameState.set_player_input_enabled(true)
+do DialogSystem.start_dialog("samwell", "start")
+=> END!
+

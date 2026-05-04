@@ -1,0 +1,212 @@
+import "res://dialogues/Iris3.dialogue" as Iris
+
+
+~ beastmen_start
+Ira: Hey, it looks like there's a party over there!
+Bailey: That's no party. Do you hear the chanting? That's a protest.
+Aiden: Do you get a lot of those here?
+Bailey: I guess you could say that. People here are pretty active, politically. But...
+Aiden: Something about that tone scares me.
+Bailey: Yeah, that's what I was thinking. I can't make out what they're saying but the way they're saying it... something's off. 
+Ira: Maybe they're just angry about something bad.
+Bailey: Could be. But the level of hate in that chant makes me nervous. And... I think that that's the edgeof the Beastman enclave.
+if DialogSaid.aiden_knows_beastmen == false:
+	Aiden: Beastmen?
+	Ira: They're like humans but with some animnal qualities--
+	Aiden: I know what they are. I just didn't know any lived in human cities.
+	Bailey: Not many do. 
+Bailey: Theyr'e a tiny minority, even among--
+Aiden: Queer people?
+Bailey: Yeah. And I've heard some here complain that they shouldn't be let in. Like it's bringing the rest of us down.
+Aiden: What do you think?
+Bailey: I think I've heard enough people say that about me that I don't give a rat's ass for that opinion.
+Aiden: Let's check it out.
+Bailey: Okay. Let's be cautious, though.
+
+As you near the crowd, Bailey recognizes a face.
+Bailey: Wait, isn't that...?
+Aiden: Who?
+Bailey: That's Jamie. 
+if DialogSaid.aiden_knows("Jamie") == false:
+	Bailey: They're... they're queer. I can't believe they're here, in this crowd.
+else:
+	Aiden: Jamie from the coffee shop? The same Jamie who told us how awful it was that people were treating him like...
+	Bailey: ...like this? Yeah.
+
+Bailey: And that's Tanji! From the plant shop!
+if DialogSaid.aiden_knows("Tanji") == true:
+	Aiden: I guess her water's not the only thing she likes to keep pure.
+
+Ira: Isn't that Saanvi? 
+if DialogSaid.aiden_knows("Saanvi") == true:
+	Aiden: That sweet gierl from the bookstore? She can't be with these people!
+else:
+	Ira: I met her in the bookstore. She was... sweet. She can't be with these people!
+Bailey: If I had a coin for every time someone did something I never imagined they'd do... 
+
+~ face_crowd
+- Talk to Jamie
+	=> talk_to_Jamie
+- Talk to Tanji
+	=> talk_to_Tanji
+- Talk to Saanvi
+	=> talk_to_Saanvi
+- Talk to Bald Stranger
+	=> talk_to_NPC1
+- Talk to Pink-dressed Stranger
+	=> talk_to_NPC2
+- Talk to Leather-wearing Stranger
+	=> talk_to_NPC3
+- Talk to Foil-wearing Stranger
+	=> QAnon_guy
+
+
+~ talk_to_Jamie
+if DialogSaid.aiden_knows("Jamie") == true:
+	Aiden: Hey! Jaime! What did they do to you?
+else:
+	do DialogSaid.aiden_meets("Jamie")
+	Bailey: Hey! Jaime! What did they do to you?
+Jamie: They're doing it to everyone, just by being here! They're animals, and they're walking around like they're human! It's mockery!
+Bailey: Jamie, I can't believe you! I've listened to your stories of people doing this to you! I heard the pain in your voice when you were talking! How can you do the same thing to these people?
+Jamie: Bailey, are you insane? We should be treated like humans. These things aren't humans! Are you honestly conflating being queer with being an animal? You sound like the mouthpieces of the Holy City!
+Ira: These aren't animals. They... they talk. Don't they?
+Jamie: Parrots talk too! They're not human. You can just ask them yourselves.
+Jamie: (to Goatman) "Hey, goat-face! Are you human?
+Goatman: I am not human. I am not animal. I am myself.
+Jamie: (to Ira) "There you go! They know they're not human!
+- Aiden: That doesn't make them animals.
+	Jamie: They're not human, Aiden! That's all there is to it. They don't belong here.
+- Aiden: He has a point. If they're not human, does it matter what else they might be? Is this city for humans only or not? I don't know the laws.
+	Bailey: If the law says that people aren't people just because they're different, then the law. Is. WRONG!
+=> face_crowd
+
+~ talk_to_Tanji
+if DialogSaid.aiden_knows("Tanji") == true:
+	Aiden: Why are you here, Tanji?
+else:
+	do DialogSaid.aiden_meets("Tanji")
+	Bailey:Why are you here, Tanji?
+Tanji: I'm here because I believe in the sanctity of humanity. These... creatures... they're not human. They're an affront to our dignity.
+- Aiden: But they're sentient beings. Don't they deserve respect too?
+	Tanji: Respect, maybe. But not at the cost of our own dignity.
+- Aiden: I think there's room for everyone in this city, don't you?
+	Tanji: Not if it means diluting what it means to be human.
+	Bailey: And what does it mean to be human to you?
+	Tanji: Not having a tail is a good start.
+   	Ira: Actually, a surprising numbner of humans are born with tails! My uncle's a doctor and he's cut tails off of...
+	Tanji: ::irritated:: I'm talking basic principles! You don't base those one weird freaks!
+	Aiden: Most of the people in Stonewall are considered weird freaks outside of it.
+	Tanji: By bigots, not by normal people! Don't tryt get it twisted!
+	Bailey: ::grim:: Oh, that's already handled, thanks.
+=> face_crowd
+
+~ talk_to_Saanvi
+if DialogSaid.aiden_knows("Saanvi") == true:
+	Aiden: Saanvi, why are you part of this?
+	Saanvi: I'm scared, Aiden. I'm scared of what these creatures represent. They're unnatural.
+else:
+	do DialogSaid.aiden_meets("Saanvi")
+	Ira: Saanvi, why are you part of this?
+	Saanvi: I'm scared, Ira. I'm scared of what these creatures represent. They're unnatural.
+~ continue_with_Saanvi
+- Bailey: Fear often comes from misunderstanding. Maybe we should try to understand them better.
+	Saanvi: Maybe you're right, Aiden. But it's hard to overcome this fear.
+- Aiden: They're just trying to live their lives, Saanvi. Like us.
+	Saanvi: I... I'll try to keep that in mind, Aiden.
+- Aiden: That's what a lot of people say about us.
+	Saanvi: I... I hadn't thought of it that way, Aiden. But... They scare me.
+	Aiden: Did they? Or did they? ::pointing at the leaders of the mob::
+	Saanvi: I... They say things that make sense.
+	Aiden: A lot awful things make a lot of sense when you're afraid. It doesn't make them less awful. And it doesnt' make them right.
+	Saanvi: It's hard to think about that when you're afraid. 
+	Aiden: I know. So go somewhere else and stop being afraid, and start thinking instead.
+- Return to the crowd
+	=> face_crowd
+=> continue_with_Saanvi
+
+
+~ talk_to_NPC1
+- Aiden: What's your problem with the Beastmen?
+	NPC1: They're not natural! Look at them, half-human, half-animal. It's not right. It's against the natural order of things.
+- Bailey: And who decides what's natural? You?
+	NPC1: It's common sense! You don't see animals trying to be human, do you?
+- Ira: But they're not hurting anyone, are they?
+	NPC1: It's not about whether they're hurting anyone. It's about what's right and what's wrong!
+=> face_crowd
+
+~ talk_to_NPC2
+- Aiden: Why are you here protesting?
+	NPC2: I've heard stories, you know. These Beastmen, they're dangerous. They've got animal instincts, they can't be trusted.
+	Bailey: That's a stereotype. You can't judge an entire group based on the actions of a few.
+	NPC2: Maybe, but I'd rather be safe than sorry.
+	do DialogSaid.aiden_meets("NPC2_Conspiracy")
+- Aiden: ::to Bailey:: A few? How often have they attacked people? [if DialogSaid.aiden_knows("NPC2_Conspiracy") == true]
+	Bailey: I've never heard of them attaing anyone, and I've lived here since before they arrived.
+	NPC2: That's 'cause we don't get told everything. It happens, alright, it's just covered up.
+	Ira: Because I have SOURCES! Reliable ones whoparen't afraid to tell the truth!
+	Ira: But they seem peaceful...
+	NPC2: That's how they lure you in. You'll see, one day they'll show their true colors.
+=> face_crowd
+
+~ talk_to_NPC3
+Aiden: Don't you think everyone deserves a chance to live their life?
+NPC3: Sure, but not at the expense of others. These Beastmen, they're taking our jobs, our homes. What about us humans? And they're bringing the value of the property down!
+Bailey: There's enough for everyone if we share. Exclusion isn't the answer.
+NPC3: Easy for you to say. You probably live in a nice house, have a good job. Some of us aren't that lucky.
+Ira: But they need homes and jobs too...
+NPC3: Let them find their own place. This is ours!
+~ continue_with_NPC3
+- Ira: What do you do for a living?
+	NPC3: I'm... an interior design.
+	Ira: People are hiring Beastment as interior designers?
+- Aiden: You had a home in the Beastman Enclave?
+	NPC3: Well, no, but someone did, before they moved in!
+	Ira: Isn't this where the old saddle factory used to be? That they moved over to the Basalt District? 
+	Bailey: I remember that! Then all the other business moved out ove rhte next couple of years, and the neifghborhood became a ghost town!
+	Aiden: So wait, you're saying the Beastmen toook an empty part of town and filled it with homes and gardens?
+	NPC3: ::interrupting:: That doesn't matter! Humans should have moved in and planted their gardens! 
+	Ira: Then why didn't they? It's much nicer now!
+	NPC3: ::getting annoyed:: You can't just move to make a place nicer! It costs money and hard work!
+	Ira: So you're angry that the Beastmen are doing the hard work?
+	NPC3: No! I'm angry that they're [i]stealing[/i] the hard work!
+	Aiden: That nobody else wanted to do?
+	NPC3: Look! They're taking houses that should belong to humans! They got it cheap and now it's worth a lto more! Humans should be getting that value!
+	Ira: But you said they're bringing [i]down[/i] property values. Now you're mad that they're bringing them [i]up[/i]?
+- Leave
+	=> face_crowd	
+=> continue_with_NPC3
+
+
+~ talk_to_NPC4
+- Aiden: Why are you so against the Beastmen?
+	NPC4: Don't you see? They're part of a bigger plan. They're here to take over. It's all a plot!
+	=>QAnon_guy
+	
+~ QAnon_guy
+- Bailey: A plot? By whom?
+	NPC4: By the powers that be! They're using the Beastmen to distract us from the real issues. It's all a big game to them.
+	Aiden: But who are these "powers that be"? Can you name them?
+	NPC4: They're shadowy figures, operating behind the scenes. They don't want to be named. That's how they maintain control.
+	Aiden: But without concrete evidence, how can you be sure?
+	NPC4: Oh, the evidence is there. You just have to know where to look. You have to be willing to see the truth.
+- Ira: But they're just trying to live their lives...
+	NPC4: That's what they want you to think! But I've done my research. I've connected the dots. You'll see, it's all going to come out soon.
+	Aiden: But isn't it possible that you're misinterpreting the information?
+	NPC4: No, it's clear as day. You just have to be willing to open your eyes.
+	Aiden: But correlation doesn't imply causation. Just because events are connected doesn't mean one caused the other.
+	NPC4: That's just what they want you to think. It's all part of the cover-up.
+- Aiden: And where did you get this information?
+	NPC4: From sources. Reliable sources. People who aren't afraid to speak the truth. You wouldn't understand.
+	Aiden: But how can you verify these sources? How do you know they're reliable?
+	NPC4: I just know. You can tell when someone's speaking the truth. It resonates.
+	Aiden: But that's not a reliable method of determining truth. It's susceptible to bias and misinformation.
+	NPC4: Maybe for you. But I trust my instincts. They haven't failed me yet.
+- Go back to the crowd
+	=> face_crowd
+=> QAnon_guy
+
+
+
+Return to iris
+=> Iris/iris_map
