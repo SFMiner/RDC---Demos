@@ -4,12 +4,80 @@
 
 ~ start
 
+if not GameState.has_tag("met_bailey")
+	=> first_meeting
 if not GameState.has_tag("after_sermon")
 	=> before_sermon
 if GameState.has_tag("after_sermon")
 	=> after_sermon
 
 
+~ first_meeting
+do GameState.set_tag("met_bailey")
+Bailey: [[Hey stranger!|Hello stranger!|How've you been, stranger?]]
+do CutsceneManager.play_animation("player", "idle_right", true)
+Aiden: Huh? Who's there?  
+do CutsceneManager.move_to("bailey", "B1", "walk", true)
+do CutsceneManager.play_animation("bailey", "idle_down", true) [next]
+Bailey: Wow, I thought I was kidding when I called you a stranger. Has it really been that long?
+Aiden: Bailey? Is that you?
+do CutsceneManager.move_to("player", "A1", "walk", true)
+do CutsceneManager.play_animation("player", "idle_right", true) [next]
+- Bailey: No, it's Saraphina the Wise. 
+	do GameState.set_tag("bailey_said_saraphina")
+	Aiden: [i]::grins::[/i] You're still a smartass bitch, huh?
+	Bailey: Only with you!
+	Aiden: I'm honored!
+- Bailey: Still me. Are you still you? 
+	Aiden: Yep. Whoever that is.
+	Bailey: Have you forgotten? Because you seemed to know last time I saw you.
+	- Aiden: [i]::grins::[/i] Bigger, but still the same!
+		Bailey: I'm glad to hear it. I've missed that person.
+	- Aiden: That was a while ago. I hear people change.
+		Bailey: Nothing wrong with that. I'm just surprised because you seemed so sure.
+	- Aiden: Do we ever know who we are, really?
+		Bailey: You've gone from a person of action to a philosopher? That's a change, alright. But some of us know. I do.
+Aiden: Welcome home. It's good to see you again. 
+Bailey: Thanks. It's good to see you too. But home? I'm not sure this is home anymore. It's been a long time.
+do CutsceneManager.move_to("ira", "I1", "walk", true)
+do CutsceneManager.play_animation("ira", "idle_left", true) 
+do CutsceneManager.play_animation("aiden", "idle_down", true) [next]
+Aiden: Who's this?
+Bailey: Oh! Sorry, I didn't mean to be rude. Got lost in the moment! Aiden, this is Ira. Ira, this is Aiden; I might have mentioned them.
+Ira: Wow, it's so weird to finally meet you! 
+do GameState.set_tag("met_ira")
+Aiden: ?
+Ira: Ah... [b]Good[/b], I mean! It's [i]good[/i] [do CutsceneManager.play_animation("ira", "emote_left", true) ] [do CutsceneManager.play_animation("ira", "idle_left", true)] to meet you! Also weird! 
+ [next]
+Aiden: ???
+Ira: Because I've been hearing stories about you and Bailey for ages! I think in my head you became just a character in the stories, and now you're in front of me! Real!
+Aiden: What kind of stories?
+Bailey: Nothing that didn't happen! And only a few that you wouldn't want your mother to find out about.
+Bailey: Um... How [i]are[/i] your parents? 
+Aiden: Oh, they're okay. They're older too, of course, but they're still holding on. Daddy needs a little extra help in the fields now, but don't let him know you think so! 
+Bailey: I'm glad to hear it. I'd planned on going to visit them at the house in the morning. I didn't expect to run into you the second I was back in town!
+Aiden: Ah. It would have been awkward if I'd told you they'd [b]died[b]!
+Bailey: ...
+Bailey: Yeah. Kind of like what you said just now.
+Aiden: [i]::laughs::[/i]
+if GameState.has_tag("bailey_said_saraphina")
+	Aiden: I guess I can be a smartass bitch too!
+	Bailey: [i]::grins::[/i] I missed you [i]SO[/i] hard!
+else
+	Aiden: You finally tired of my morbid sense of humor? 
+	Bailey: [i]::grins::[/i] I think I can still put up with it!
+Aiden: Come on by the house, we'll get there just in time for supper!
+Bailey: Thanks, but we should get settled in. My parents are expecting us. I'll be there for breakfast, though, if that's okay!
+Aiden: Bet! 
+Bailey: Um. Any idea what your mom will be making?
+Aiden: She's probably planning on eggs and porridge, the usual.
+Bailey: Ah. That's... nice and hearty...
+Aiden: But as soon as I tell her you're coming, I'm sure she'll want to make her famous apple skillet!
+Bailey: Oh, I was hoping you'd say that!
+Aiden: I guess some things never do change. Don't sleep too late or the skillet'll get cold! You know my mom, she's up with the chickens. 
+
+
+=> END!
 
 ~ before_sermon
 do GameState.set_player_input_enabled(false)

@@ -539,6 +539,7 @@ func _setup_navigation():
 		nav_agent.avoidance_enabled = true
 		nav_agent.radius = 8.0
 		nav_agent.neighbor_distance = 32.0
+		nav_agent.target_position = global_position  # start idle; avoids navigating to default (0,0)
 
 # [Rest of existing NPC functionality preserved - movement, animation, etc.]
 # [All the existing methods from the original npc.gd should be included here]

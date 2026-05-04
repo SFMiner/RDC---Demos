@@ -796,9 +796,9 @@ func move_to(character_id: String, marker_id: String, mode: String = "walk", wai
 			actor.set_meta("pre_cutscene_collision_mask", actor.collision_mask)
 			actor.collision_mask = 0
 
-	# Use nav agent for NPCs so they path around obstacles; direct for player
-	# (player physics is blocked during cutscenes so nav path is never consumed).
-	var use_nav : bool = character_id != "player" and actor.get_node_or_null("NavigationAgent2D") != null
+	# collision_mask is already 0 for cutscene-controlled actors, so there are no
+	# obstacles to path around. Direct movement is simpler and avoids bad navmesh paths.
+	var use_nav : bool = false
 	if use_nav:
 		# Point the nav agent at the target — CutsceneManager's _physics_process
 		# will consume get_next_path_position() each frame (npc.gd is suspended).

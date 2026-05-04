@@ -10,18 +10,21 @@ var current_location_scene = null
 var is_player_controlled := true
 #var speed
 var current_scene_speed_mod = 1
-@export var character_name = "Aiden Young"
+@export var character_name = "Aiden"
 @export var character_id: String = ""
+
+@export_group("Visual Appearance")
+@export var initial_animation: String = "idle_down"
 @export var portrait: Texture2D
 var interaction_range : int
 @onready var max_interaction_distance : int= interaction_range  # Maximum distance for mouse clicks
 @onready var current_speed = base_speed
 @onready var AP = get_node_or_null("AnimationPlayer")
+@onready var char_anim = get_node_or_null("CharacterAnimator")
 #@onready var sprite = get_node_or_null("Sprite2D")
 @onready var interaction_area = get_node_or_null("InteractionArea")
 #@onready var animator = get_node_or_null("CharacterAnimator")
 var path_to_target = []
-
 
 # Jumping
 var run_toggle = false  # For CapsLock toggle functionality
@@ -146,7 +149,8 @@ func _ready():
 	
 	# Check if navigation is available in current scene
 	call_deferred("_check_navigation_region")
-
+	char_anim._initialize_animation_info(initial_animation)
+	
 		
 func move_to(target: Vector2):
 	nav_agent.target_position = target
@@ -394,7 +398,10 @@ func update_anim_direction():
 			anim_direction = "up"
 
 func play_animation(anim_name: String, direction: String = "") -> void:
-	var dir = direction if direction != "" else anim_direction
+	# Only fall back to stored anim_direction when the name has no embedded direction.
+	# If the name already contains "_" (e.g. "idle_right"), trust it — passing
+	# anim_direction would override the embedded direction inside set_animation.
+	var dir = direction if (direction != "" or "_" in anim_name) else anim_direction
 	if animator:
 		animator.set_animation(anim_name, dir, get_character_id())
 	else:

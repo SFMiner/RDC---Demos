@@ -239,10 +239,10 @@ func _unhandled_input(event):
 
 
 # Start a new game
-func start_new_game():
+func start_new_game(scene_id: String = "church_interior"):
 	var game_state = get_node_or_null("/root/GameState")
 	if game_state:
-		game_state.start_new_game()
+		game_state.start_new_game(scene_id)
 
 # Load a game
 func load_game(slot):

@@ -98,7 +98,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Save/Load System**: Persists game state between sessions with support for multiple save slots. Current;y saves current scene, inventory, 
 - **Fast Travel System**: Allows player to move between unlocked locations
 - **Character Data System**: Manages character information and fonts
-- **Phone System**: Provides an in-game smartphone interface with apps for narrative content
 
 ## Coding Style Guidelines
 
@@ -179,6 +178,35 @@ The game features an extensive memory system for character backstories and playe
 - Integrates with dialogue for conditional options and quest objectives
 - Memory tag registry system in `data/generated/memory_tag_registry.json`
 
+## CutsceneManager Dialogue API
+
+Functions called via `do CutsceneManager.*` in `.dialogue` files. All arguments are required unless marked optional.
+
+### NPC Following
+- `set_npc_follow(npc_id, target_id)` — make an NPC follow a target. `target_id` is `"player"` or another NPC id. Both arguments are **required**.
+  - ✅ `do CutsceneManager.set_npc_follow("bailey", "player")`
+  - ✅ `do CutsceneManager.set_npc_follow("ira", "bailey")`
+  - ❌ `do CutsceneManager.set_npc_follow("bailey")` — missing target_id, will crash
+- `stop_npc_follow(npc_id)` — stop an NPC from following
+
+### Movement
+- `move_to(npc_id, marker_id, anim, wait)` — move one NPC to a marker
+- `move_group(id_csv, marker_csv, anim)` — move multiple NPCs simultaneously; comma-separated ids and markers
+
+### Animation
+- `play_animation(npc_id, anim_name)` — play an animation; append `, true` to wait for completion
+
+### Camera
+- `camera_move_to(marker_id, duration)` — move camera to a marker
+- `camera_restore(duration)` — return camera to the player
+
+### Timing
+- `wait(seconds)` — pause cutscene execution for a duration
+
+## Known Orphaned Assets
+
+- `scenes/passage_collision.tscn` — a `CharacterBody2D` with a single `CollisionPolygon2D` (collision layer/mask 2, small ~24×11px polygon). Not referenced by any scene or script. Likely intended as a reusable collision blocker for a narrow passage; never placed.
+
 ## Scene Transitions
 
 Scene transitions are handled through:
@@ -189,32 +217,6 @@ Scene transitions are handled through:
 - Fast travel can be implemented through dialogue using `fast_travel.dialogue` template (currently broken)
 - Scene transition requires proper spawn point setup in both source and destination scenes
 
-## Phone Interface
-
-The game includes a phone interface with multiple apps:
-
-- PhoneScene as main container with app loading functionality
-- Supports multiple app types with different interfaces (messaging, social, email, etc.)
-- Content tagged using the game's tag framework for filtering/unlocking
-- Integrated with timestamp system for narrative flexibility
-- Structured as a full-screen UI built around a base phone scene
-- Basic phone system framework implemented and functioning
-- Snake app fully implemented and working as a mini-game
-
-### Phone Conversation Trees
-
-Connected multi-exchange text conversations driven by JSON node graphs:
-
-- **Data**: `data/phone_conversations/*.json` — each file defines a branching conversation tree with nodes containing `messages` and `options` (with `tag` and optional `next` pointer)
-- **Authoring**: Write `.dialogue` files in `data/phone_conversations/`, convert with `python tools/conv_dialogue_to_json.py`
-- **Triggering from dialogue**: `do GameState.start_text_conversation("poison_conversation", "start")`
-- **GameState API**:
-  - `start_text_conversation(conversation_id, start_node)` — begins a conversation tree
-  - `advance_text_conversation(conversation_id, next_node_id)` — advances to next node (called by phone apps when player picks an option with `next`)
-  - `phone_conversation_trees` — dict of loaded trees, populated at startup
-- **Convergence**: Multiple options can point `next` to the same node ID
-- **Terminal nodes**: Options without `next` end the conversation flow, restoring the free-text reply area
-- **Backward compatible**: Old `send_text_with_replies()` still works for simple one-shot replies
 
 #### Dialogue source format
 ```
@@ -242,7 +244,6 @@ Options without `=>` jumps followed by more content auto-link to that content (i
 - **Auto-Detected Function Names**: Debug output now automatically detects calling function names via Godot's `get_stack()` API. Use `DebugManager.print_debug_auto()` / `print_warning_auto()` / `print_error_auto()` — no manual `var _fname` declarations needed.
 - **DialogSystem Consolidation**: DialogMemoryExtension merged directly into DialogSystem to eliminate implicit child node anti-pattern
 - **Cleaned Orphaned Code**: Removed combat UI (opponent_entry), old dialog_panel UI, and dead code from Love & Lichens story framework
-- **Phone Conversation Trees**: Data-driven branching phone text conversations with JSON node graphs, `.dialogue` source format, and `tools/conv_dialogue_to_json.py` converter
 - Dialog system now correctly displays character-specific font styles
 - Memory tag system fully operational with observable features working as expected
 - Centralized and simplified tag system for better organization

@@ -1,0 +1,32 @@
+{
+	"auto_trigger": false,
+	"cutscene_id": "ithaca_intro",
+	"description": "Auto-generated cutscene",
+	"dialog_file": "bailey",
+	"dialog_title": "start",
+	"location": "church_interior",
+	"marker_positions": {
+		"B1": {
+			"x": -5350.0,
+			"y": 443.0
+		},
+		"A1": {
+			"x": -5436.0,
+			"y": 443.0
+		},
+		"I1": {
+			"x": -5386.0,
+			"y": 500.0
+		}
+		
+
+		
+	},
+	"npcs": [
+	],
+	"one_time": true,
+	"priority": 1.0,
+	"props": [],
+	"triggers": [],
+	"unlocks": []
+}
