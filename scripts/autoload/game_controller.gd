@@ -102,6 +102,7 @@ func _ready():
 #		InputMap.action_add_event("toggle_quest_panel", e#Avent)
 #		if debug: DebugManager.print_debug_auto(self, "Added 'toggle_quest_panel' action with J key")
 	GameState.get_current_npcs()
+	_setup_transition_overlay()
 	# By default, go to main menu
 	call_deferred("change_scene", Paths.get_scene("main_menu"))
 	player = GameState.get_player()
@@ -430,7 +431,55 @@ func change_scene(new_scene_path):
 
 	
 # Enhanced scene change method that preserves player state and handles spawn points
-func change_location(new_scene_path, spawn_point="default"):
+# ── Scene transition effects ──────────────────────────────────────────────────
+
+# Each entry: out_color, out_duration, hold_duration, in_color, in_duration.
+# Add new transitions here; reference them by key in change_location().
+const TRANSITIONS: Dictionary = {
+	"fade_night": {
+		"out_color":    Color(0.04, 0.04, 0.14),  # deep navy — dusk into night
+		"out_duration": 1.2,
+		"hold_duration": 0.4,
+		"in_color":     Color(0.04, 0.04, 0.14),  # same colour fades out on the other side
+		"in_duration":  1.5,
+	},
+}
+
+var _transition_layer : CanvasLayer
+var _transition_rect  : ColorRect
+
+func _setup_transition_overlay() -> void:
+	_transition_layer = CanvasLayer.new()
+	_transition_layer.layer = 128
+	add_child(_transition_layer)
+	_transition_rect = ColorRect.new()
+	_transition_rect.color = Color(0, 0, 0, 0)
+	_transition_rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_transition_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_transition_layer.add_child(_transition_rect)
+
+func _transition_out(type: String) -> void:
+	if type == "none" or not TRANSITIONS.has(type):
+		return
+	var cfg: Dictionary = TRANSITIONS[type]
+	var start := Color(cfg["out_color"].r, cfg["out_color"].g, cfg["out_color"].b, 0.0)
+	_transition_rect.color = start
+	var tw := create_tween()
+	tw.tween_property(_transition_rect, "color", cfg["out_color"], cfg["out_duration"])
+	await tw.finished
+	if cfg.get("hold_duration", 0.0) > 0.0:
+		await get_tree().create_timer(cfg["hold_duration"]).timeout
+
+func _transition_in(type: String) -> void:
+	if type == "none" or not TRANSITIONS.has(type):
+		return
+	var cfg: Dictionary = TRANSITIONS[type]
+	var end := Color(cfg["in_color"].r, cfg["in_color"].g, cfg["in_color"].b, 0.0)
+	var tw := create_tween()
+	tw.tween_property(_transition_rect, "color", end, cfg["in_duration"])
+	await tw.finished
+
+func change_location(new_scene_path, spawn_point: String = "default", transition: String = "none"):
 	if debug: DebugManager.print_debug_auto(self, "DEBUG: Changing location to: " + new_scene_path + " with spawn point: " + spawn_point)
 
 	# Save current player state if available
@@ -463,10 +512,9 @@ func change_location(new_scene_path, spawn_point="default"):
 	var location_name = new_scene_path.get_file().get_basename()
 	if debug: DebugManager.print_debug_auto(self, "DEBUG: Transitioning to location: " + location_name)
 
-	# Use basic scene change
+	# Fade out, swap scene (hidden under overlay), then fade back in
+	await _transition_out(transition)
 	change_scene(new_scene_path)
-
-	# Wait a frame to ensure scene is fully loaded
 	if debug: DebugManager.print_debug_auto(self, "DEBUG: Waiting for scene to load fully...")
 	await get_tree().process_frame
 	if debug: DebugManager.print_debug_auto(self, "DEBUG: Scene processed, looking for player and spawn points")
@@ -518,6 +566,8 @@ func change_location(new_scene_path, spawn_point="default"):
 		if debug: DebugManager.print_debug_auto(self, "DEBUG: Updated game state with new location and player position")
 	else:
 		if debug: DebugManager.print_debug_auto(self, "DEBUG: Game state not found, could not update persistent data")
+
+	await _transition_in(transition)
 
 # Helper function to find a spawn point in the current scene
 func _find_spawn_point(spawn_point_name):
