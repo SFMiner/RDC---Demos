@@ -7,7 +7,8 @@ const SCENES = {
 	"main_menu": "res://scenes/main_menu.tscn",
 	"game": "res://scenes/game.tscn",
 	"church_interior": "res://scenes/world/locations/church_interior.tscn",
-	"ithaca_exterior": "res://scenes/world/locations/ithaca_exterior.tscn"
+	"ithaca_exterior": "res://scenes/world/locations/ithaca_exterior.tscn",
+	"coras_kitchen": "res://scenes/world/locations/coras_kitchen.tscn"
 }
 
 const UI = {

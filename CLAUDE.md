@@ -83,7 +83,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
   - **data/characters/**: Character data in JSON format
   - **data/quests/**: Quest definitions
 - **scripts/autoload/**: Contains all singleton systems that manage game functionality
-- **scenes/world/locations/**: Main game areas with transitions
+- **scenes/world/locations/**: Main game areas with transitions. **Every new location scene must be registered in `scripts/autoload/paths.gd` `SCENES` dict** before `GameController.go_to_scene()` can reach it.
 - **scenes/ui/**: User interface components including phone interface
 - **addons/**: Third-party plugins including dialogue_manager and sound_manager
 

@@ -41,8 +41,12 @@ func _on_scene_ready() -> void:
 	pass
 
 ## Override to run logic after the 0.2s settle delay (e.g. auto-start a cutscene).
+## Always call super._on_scene_post_ready() first when overriding.
 func _on_scene_post_ready() -> void:
-	pass
+	var pending := GameState.pending_cutscene
+	if pending != "":
+		GameState.pending_cutscene = ""
+		CutsceneManager.start_cutscene(pending)
 
 func setup_player() -> void:
 	if not player:

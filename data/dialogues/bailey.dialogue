@@ -4,26 +4,28 @@
 
 ~ start
 
-if not GameState.has_tag("met_bailey")
+if not GameState.has_tag("ithaca.met_bailey")
 	=> first_meeting
-if not GameState.has_tag("after_sermon")
+if not GameState.has_tag("ithaca.after_sermon")
 	=> before_sermon
-if GameState.has_tag("after_sermon")
+if GameState.has_tag("ithaca.after_sermon")
 	=> after_sermon
 
 
 ~ first_meeting
-do GameState.set_tag("met_bailey")
+do GameState.set_tag("ithaca.met_bailey")
 Bailey: [[Hey stranger!|Hello stranger!|How've you been, stranger?]]
 do CutsceneManager.play_animation("player", "idle_right", true)
 Aiden: Huh? Who's there?  
 do CutsceneManager.move_to("bailey", "B1", "walk", true)
+do CutsceneManager.play_animation("ira", "idle_right", true) 
+
 Bailey: Wow, I thought I was kidding when I called you a stranger. Has it really been that long?
 Aiden: Bailey? Is that you?
 do CutsceneManager.move_to("player", "A1", "walk", true)
 do CutsceneManager.play_animation("player", "idle_right", true) [next]
 - Bailey: No, it's Saraphina the Wise. 
-	do GameState.set_tag("bailey_said_saraphina")
+	do GameState.set_tag("ithaca.bailey_said_saraphina")
 	Aiden: [i]::grins::[/i] You're still a smartass bitch, huh?
 	Bailey: Only with you!
 	Aiden: I'm honored!
@@ -39,14 +41,14 @@ do CutsceneManager.play_animation("player", "idle_right", true) [next]
 Aiden: Welcome home. It's good to see you again. 
 Bailey: Thanks. It's good to see you too. But home? I'm not sure this is home anymore. It's been a long time.
 do CutsceneManager.move_to("ira", "I1", "walk", true)
-Ira: It's really them!
+Ira: It's really you!
 do CutsceneManager.play_animation("ira", "idle_left", true) 
 do CutsceneManager.play_animation("aiden", "idle_down", true) [next]
 Aiden: Um. Who's this?
 do CutsceneManager.play_animation("bailey", "idle_down", true) [next]
 Bailey: Oh! Sorry, I didn't mean to be rude. Got lost in the moment! Aiden, this is Ira. Ira, this is Aiden; I might have mentioned them.
 Ira: Wow, it's so weird to finally meet you! 
-do GameState.set_tag("met_ira")
+do GameState.set_tag("ithaca.met_ira")
 Aiden: ?
 Ira: Ah... [b]Good[/b], I mean! It's [i]good[/i] [do CutsceneManager.play_animation("ira", "emote_left", true) ] [do CutsceneManager.play_animation("ira", "idle_left", true)] to meet you! Also weird! 
  [next]
@@ -61,7 +63,7 @@ Aiden: Ah. It would have been awkward if I'd told you they'd [b]died[b]!
 Bailey: ...
 Bailey: Yeah. Kind of like what you said just now.
 Aiden: [i]::laughs::[/i]
-if GameState.has_tag("bailey_said_saraphina")
+if GameState.has_tag("ithaca.bailey_said_saraphina")
 	Aiden: I guess I can be a smartass bitch too!
 	Bailey: [i]::grins::[/i] I missed you [i]SO[/i] hard!
 else
@@ -76,6 +78,9 @@ Bailey: Ah. That's... nice and hearty...
 Aiden: But as soon as I tell her you're coming, I'm sure she'll want to make her famous apple skillet instead!
 Bailey: Oh, I was hoping you'd say that!
 Aiden: I guess some things never do change. Don't sleep too late or the skillet'll get cold! You know my mom, she's up with the chickens. 
+
+do GameController.go_to_scene("coras_kitchen", "default", "fade_night", "first_morning")
+
 => END!
 
 ~ before_sermon

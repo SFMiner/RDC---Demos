@@ -479,6 +479,11 @@ func _transition_in(type: String) -> void:
 	tw.tween_property(_transition_rect, "color", end, cfg["in_duration"])
 	await tw.finished
 
+func go_to_scene(scene_id: String, spawn_point: String = "default",
+		transition: String = "none", cutscene_id: String = "") -> void:
+	GameState.pending_cutscene = cutscene_id
+	change_location(Paths.get_scene(scene_id), spawn_point, transition)
+
 func change_location(new_scene_path, spawn_point: String = "default", transition: String = "none"):
 	if debug: DebugManager.print_debug_auto(self, "DEBUG: Changing location to: " + new_scene_path + " with spawn point: " + spawn_point)
 

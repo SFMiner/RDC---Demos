@@ -24,7 +24,7 @@ var interaction_range = 0
 var player : CharacterBody2D = null
 var tracker_id : int = 0
 
-var tags: Dictionary = {}
+var tags: Dictionary = {"global": {}}
 var scenes: Dictionary = {
 	"ChurchInterior":{
 		"pickups":[]
@@ -51,6 +51,7 @@ var knowledge : Array[String] = []
 
 ## When false, clicking/pressing skip during typed dialogue has no effect.
 var dialogue_skip_enabled : bool = true
+var pending_cutscene : String = ""
 
 func set_dialogue_skip_enabled(enabled: bool) -> void:
 	dialogue_skip_enabled = enabled
@@ -248,13 +249,40 @@ func get_memory_tag_for_dialogue(character_id: String, dialogue_title: String) -
 	"""Legacy function - now uses registry"""
 	return get_memory_tag_for_dialogue_from_registry(character_id, dialogue_title)
 
-# Existing tag system functions remain the same...
+# ── Tag namespace helpers ─────────────────────────────────────────────────────
+# Tags may be plain ("met_bailey") or namespaced ("ithaca.met_bailey").
+# Plain tags are stored under "global" and searched across all namespaces.
+
+func _parse_tag(tag: String) -> Array:
+	var dot := tag.find(".")
+	if dot != -1:
+		return [tag.left(dot), tag.substr(dot + 1)]
+	return ["global", tag]
+
+## Create a tag namespace if it doesn't exist yet. Call from _on_scene_ready().
+func ensure_namespace(ns: String) -> void:
+	if not tags.has(ns):
+		tags[ns] = {}
+
 func has_tag(tag: String) -> bool:
-	return tags.has(tag)
+	var parsed := _parse_tag(tag)
+	var ns : String = parsed[0]
+	var key : String = parsed[1]
+	if "." in tag:
+		return tags.get(ns, {}).has(key)
+	# Plain tag — search every namespace
+	for bucket in tags.values():
+		if bucket is Dictionary and bucket.has(key):
+			return true
+	return false
 
 func set_tag(tag: String, value: Variant = true) -> void:
-
-	tags[tag] = value
+	var parsed := _parse_tag(tag)
+	var ns : String = parsed[0]
+	var key : String = parsed[1]
+	if not tags.has(ns):
+		tags[ns] = {}
+	tags[ns][key] = value
 	tag_added.emit(tag)
 	if debug: DebugManager.print_debug_auto(self, "Set tag '" + str(tag) + "' = " + str(value))
 
@@ -518,13 +546,30 @@ func get_memory_chain(chain_id: String) -> Dictionary:
 	return memory_chains.get(chain_id, {})
 
 func remove_tag(tag: String) -> void:
-	if tags.has(tag):
-		tags.erase(tag)
-		tag_removed.emit(tag)
+	var parsed := _parse_tag(tag)
+	var ns : String = parsed[0]
+	var key : String = parsed[1]
+	if "." in tag:
+		if tags.has(ns) and tags[ns].has(key):
+			tags[ns].erase(key)
+			tag_removed.emit(tag)
+	else:
+		for bucket in tags.values():
+			if bucket is Dictionary and bucket.has(key):
+				bucket.erase(key)
+				tag_removed.emit(tag)
+				return
 
 func get_tag_value(tag: String, default_value: Variant = null) -> Variant:
-	if tags.has(tag):
-		return tags[tag]
+	var parsed := _parse_tag(tag)
+	var ns : String = parsed[0]
+	var key : String = parsed[1]
+	if "." in tag:
+		return tags.get(ns, {}).get(key, default_value)
+	# Plain tag — search every namespace
+	for bucket in tags.values():
+		if bucket is Dictionary and bucket.has(key):
+			return bucket[key]
 	return default_value
 
 # Generate a unique ID for this game session
@@ -877,7 +922,10 @@ func _apply_save_data(save_data):
 	if save_data.has("game_data"):
 		game_data = save_data.game_data.duplicate(true)
 	if save_data.has("tags"):
-		tags = save_data.tags.duplicate(true)
+		var loaded_tags : Dictionary = save_data.tags.duplicate(true)
+		# Migrate old flat-dict saves (pre-namespace) into the "global" namespace
+		var is_flat := loaded_tags.is_empty() or not (loaded_tags.values()[0] is Dictionary)
+		tags = {"global": loaded_tags} if is_flat else loaded_tags
 
 	# GameState memory data
 	if save_data.has("discovered_memories"):

@@ -4,7 +4,7 @@ extends RefCounted
 # Save data migration system for Love & Lichens
 # Handles converting old save formats to current version
 
-const CURRENT_VERSION = 2
+const CURRENT_VERSION = 3
 
 # Migrate save data from any version to current
 static func migrate_save_data(data: Dictionary) -> Dictionary:
@@ -27,7 +27,8 @@ static func _migrate_to_next_version(data: Dictionary, from_version: int) -> Dic
 	match from_version:
 		1:
 			return _migrate_v1_to_v2(data)
-		# Add more migrations as needed
+		2:
+			return _migrate_v2_to_v3(data)
 		_:
 			push_warning("Unknown save version: " + str(from_version))
 			return data
@@ -47,6 +48,15 @@ static func _migrate_v1_to_v2(data: Dictionary) -> Dictionary:
 	if not data.has("pickup_system"):
 		data["pickup_system"] = {}
 
+	return data
+
+# Migrate from version 2 to version 3: wrap flat tags dict into namespaced form
+static func _migrate_v2_to_v3(data: Dictionary) -> Dictionary:
+	if data.has("tags"):
+		var t : Dictionary = data["tags"]
+		var is_flat := t.is_empty() or not (t.values()[0] is Dictionary)
+		if is_flat:
+			data["tags"] = {"global": t}
 	return data
 
 # Validate save data structure

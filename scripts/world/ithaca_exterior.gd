@@ -10,4 +10,5 @@ func _on_scene_ready() -> void:
 		player.char_anim._set_initial_frame("idle", "left")
 
 func _on_scene_post_ready() -> void:
+	super._on_scene_post_ready()
 	CutsceneManager.start_cutscene("ithaca_intro")

@@ -7,18 +7,17 @@ set ELog.said5 = false
 set ELog.said6 = false
 
 ::Birds twittering::
-[do ELog.join_party("Aiden")]
 ???: [[Hey stranger!|Hello stranger!|How've you been, stranger?]]
-Aiden: Huh? Who's there?  
+Aiden: Huh? Who's there?
 Woman: Wow, I thought I was kidding when I called you a stranger. Has it really been that long?
-[do ELog.join_party("Bailey")]
+do GameState.set_tag("ithaca.met_bailey")
 Aiden: Bailey? Is that you?
-- Bailey: No, it's Saraphina the Wise. 
-	set ELog.said1 = true
+- Bailey: No, it's Saraphina the Wise.
+	do GameState.set_tag("ithaca.baily_said_saraphina")
 	Aiden: [i]::grins::[/i] You're still a smartass bitch, huh?
 	Bailey: Only with you!
 	Aiden: I'm honored!
-- Bailey: Still me. Are you still you? [if ELog.said2 == false]
+- Bailey: Still me. Are you still you?
 	Aiden: Yep. Whoever that is.
 	Bailey: Have you forgotten? Because you seemed to know last time I saw you.
 	- Aiden: [i]::grins::[/i] Bigger, but still the same!
@@ -27,52 +26,45 @@ Aiden: Bailey? Is that you?
 		Bailey: Nothing wrong with that. I'm just surprised because you seemed so sure.
 	- Aiden: Do we ever know who we are, really?
 		Bailey: You've gone from a person of action to a philosopher? That's a change, alright. But some of us know. I do.
-Aiden: Welcome home. It's good to see you again. 
+Aiden: Welcome home. It's good to see you again.
 Bailey: Thanks. It's good to see you too. But home? I'm not sure this is home anymore. It's been a long time.
 Aiden: Who's this?
 Bailey: Oh! Sorry, I didn't mean to be rude. Got lost in the moment! Aiden, this is Ira. Ira, this is Aiden; I might have mentioned them.
-Ira: Wow, it's so weird to finally meet you! 
-[do ELog.join_party("Ira")]
+Ira: Wow, it's so weird to finally meet you!
+do GameState.set_tag("ithaca.met_ira")
 Aiden: ?
-Ira: Ah... [b]Good[/b], I mean! It's [i]good[/i] to meet you! Also weird! 
+Ira: Ah... [b]Good[/b], I mean! It's [i]good[/i] to meet you! Also weird!
 Aiden: ???
 Ira: Because I've been hearing stories about you and Bailey for ages! I think in my head you became just a character in the stories, and now you're in front of me! Real!
 Aiden: What kind of stories?
 Bailey: Nothing that didn't happen! And only a few that you wouldn't want your mother to find out about.
-Bailey: Um... How [i]are[/i] your parents? 
-Aiden: Oh, they're okay. They're older too, of course, but they're still holding on. Daddy needs a little extra help in the fields now, but don't let him know you think so! 
+Bailey: Um... How [i]are[/i] your parents?
+Aiden: Oh, they're okay. They're older too, of course, but they're still holding on. Daddy needs a little extra help in the fields now, but don't let him know you think so!
 Bailey: I'm glad to hear it. I'd planned on going to visit them at the house in the morning. I didn't expect to run into you the second I was back in town!
 Aiden: Ah. It would have been awkward if I'd told you they'd [b]died[b]!
 Bailey: ...
 Bailey: Yeah. Kind of like what you said just now.
 Aiden: [i]::laughs::[/i]
-if ELog.said1 == true
+if GameState.has_tag("ithaca.bailey_said_saraphina")
 	Aiden: I guess I can be a smartass bitch too!
 	Bailey: [i]::grins::[/i] I missed you [i]SO[/i] hard!
 else
-	Aiden: You finally tired of my morbid sense of humor? 
+	Aiden: You finally tired of my morbid sense of humor?
 	Bailey: [i]::grins::[/i] I think I can still put up with it!
 Aiden: Come on by the house, we'll get there just in time for supper!
 Bailey: Thanks, but we should get settled in. My parents are expecting us. I'll be there for breakfast, though, if that's okay!
-Aiden: Bet! 
+Aiden: Bet!
 Bailey: Um. Any idea what your mom will be making?
 Aiden: She's probably planning on eggs and porridge, the usual.
 Bailey: Ah. That's... nice and hearty...
 Aiden: But as soon as I tell her you're coming, I'm sure she'll want to make her famous apple skillet!
 Bailey: Oh, I was hoping you'd say that!
-Aiden: I guess some things never do change. Don't sleep too late or the skillet'll get cold! You know my mom, she's up with the chickens. 
-
-set ELog.said1 = false
-set ELog.said2 = false
-set ELog.said3 = false
-set ELog.said4 = false
-set ELog.said5 = false
-set ELog.said6 = false
+Aiden: I guess some things never do change. Don't sleep too late or the skillet'll get cold! You know my mom, she's up with the chickens.
 
 
 ~ kitchen
-#do Global.player_deparent_camera() 
-Cora: [do GI.get_csm().start_npc_movement("Cora", "MPCora1",201)] I'm so excited! I always knew Bailey would be back some day! You can take the girl out of Ithaca, but Ithaca always calls her home! 
+#do Global.player_deparent_camera()
+Cora: [do GI.get_csm().start_npc_movement("Cora", "MPCora1",201)] I'm so excited! I always knew Bailey would be back some day! You can take the girl out of Ithaca, but Ithaca always calls her home!
 do GI.get_csm().face_target("Cora", "right") # should turn right
 Aiden's Dad [i](from other room)[/i]: She never shoulda left, Cora!
 do GI.get_csm().face_target("Cora", "Samwell") # should turn left
@@ -83,7 +75,7 @@ Samwell: Coulda come stayed with us, Cora.
 do GI.get_csm().face_target("Cora", Vector2(200,138)): # should turn left
 Cora: Not like we got a lot of room, Samwell.
 do GI.get_csm().face_target("Cora", "Aiden") # should turn down
-Samwell: The child could sleep with the chickens. [i]::to Aiden::[/i] Right, child? 
+Samwell: The child could sleep with the chickens. [i]::to Aiden::[/i] Right, child?
 do GI.get_csm().face_target("Cora", "Bailey") # should turn down_right
 Cora: [do GI.get_csm().start_npc_movement("Aiden", "MPAiden1", 200)] That "child" is a half head taller than you, O Lord o' the Manor.
 do GI.get_csm().face_target("Cora", "down")   # should turn down
@@ -95,9 +87,9 @@ Cora: This is filler text!
 Aiden: [do GI.get_csm().start_npc_movement("Bailey", "MPBailey0",200)] Can the two of you stop the bickering before she gets here?
 Bailey: [do GI.get_csm().start_npc_movement("Bailey", "MPBailey1",200)] Are you kidding? This isn't bickering, this is love and I've missed hearing it it every day I've been gone!
 Cora: [do GI.get_csm().start_npc_movement("Ira", "MPIra1",200)] Bailey! You're just in time. The apple skillet's still warm.
-Bailey: [do GI.get_csm().start_npc_movement("Bailey", "MPBailey2",200)] I wouldn't miss it for the world, Cora. 
+Bailey: [do GI.get_csm().start_npc_movement("Bailey", "MPBailey2",200)] I wouldn't miss it for the world, Cora.
 [do GI.get_csm().start_npc_movement("Cora", "MPCora2",200)] [do GI.get_csm().start_npc_movement("Samwell", "MPSamwell2",50)]
-Cora: We missed you so much! 
+Cora: We missed you so much!
 do GI.get_csm().start_npc_movement("Aiden", "MPAiden2", 200)
 Samwell: [i]::grumbles::[/i] Should've stayed with us, girl.
 Bailey: [i]::laughs::[/i] And miss out on the big city? I think not, Samwell.
@@ -106,7 +98,7 @@ Bailey: [i]::glances at Ira::[/i] Oh, and this is Ira. They're my traveling comp
 Ira: [i]::nervously::[/i] The... the skillet smells really good, Mrs. Cora.
 Cora: Oh, you're a grownup, dear, it's Cora! And help yourself!
 Ira: Thank you, Cora!
-[do GI.get_csm().start_npc_movement("Ira", "MPIra3",200)] [do GI.get_csm().start_npc_movement("Samwell", "MPSamwell3",50)] [do GI.get_csm().start_npc_movement("Cora", "MPCora3",50)] [do GI.get_csm().start_npc_movement("Bailey", "MPBailey3",50)] [do GI.get_csm().start_npc_movement("Aiden", "MPAiden3", 50)] 
+[do GI.get_csm().start_npc_movement("Ira", "MPIra3",200)] [do GI.get_csm().start_npc_movement("Samwell", "MPSamwell3",50)] [do GI.get_csm().start_npc_movement("Cora", "MPCora3",50)] [do GI.get_csm().start_npc_movement("Bailey", "MPBailey3",50)] [do GI.get_csm().start_npc_movement("Aiden", "MPAiden3", 50)]
 do GI.get_csm().start_npc_movement("Aiden", "MPAiden4", 200)
 ::They all start eating::
 [do GI.get_csm().start_npc_movement("Samwell", "MPSamwell3",200)] [next]
@@ -158,27 +150,27 @@ Aiden: A test of the camera reparenting function.
 do Global.player_reparent_camera()
 
 ~ big_hill
-Ira: Oh. [wait=0.5] My. [wait=0.5] ZEE! [wait=1] [next] 
-Ira: This is the hilltop where the two of you used to watch the stars! 
+Ira: Oh. [wait=0.5] My. [wait=0.5] ZEE! [wait=1] [next]
+Ira: This is the hilltop where the two of you used to watch the stars!
 Ira: Aiden would make up stories about the constellations! Like the one about the evil angels filling the sky with black fire!
 Aiden: I, ah... I think you might remember it better than I do.
 Ira: Oh, Bailey's the one with the memory! I just remember her telling me about it! And I don't tell it nearly as well! [next]
 Ira: HEY! Is that... is that a SQUIRREL!? I've always wanted to see a squirrel! [i]::runs off::[/i]
 Aiden: So...
 Aiden: They seem nice.
-Bailey: They ARE! They're just a little... 
+Bailey: They ARE! They're just a little...
 - Aiden: Awkward?
-	Bailey: Sheltered. 
+	Bailey: Sheltered.
 	Bailey: But yes, that too.
 - Aiden: Annoying?
-	Bailey: Sheltered. 
+	Bailey: Sheltered.
 	Bailey: I guess they can be annoying too but they don't mean it.
 - Aiden: Stupid?
-	Bailey: Sheltered. 
-	Bailey: They're actually quite brilliant. Just not at knowing how to talk to people. 
+	Bailey: Sheltered.
+	Bailey: They're actually quite brilliant. Just not at knowing how to talk to people.
 Aiden: How can someone from Iris be so sheltered? I thought the city was where life and death things happened every day.
 Bailey: Life and death things happen everywhere every day.
-Bailey: It's... a complicated place. Ira's family was very protective. Didn't want them to ever be hurt, so they were very careful who they got to talk to. 
+Bailey: It's... a complicated place. Ira's family was very protective. Didn't want them to ever be hurt, so they were very careful who they got to talk to.
 Aiden: They must be rich.
 Bailey: They are. Or... were.
 Aiden: Not anymore?
@@ -197,11 +189,11 @@ Bailey: ...
 Aiden: Why did you come back?
 Aiden: I'm... not complaining. I'm glad you did. But what brought you here?
 Bailey: It was... partly Ira. They really wanted to see this place.
-Bailey: But also for me. To show people that it's okay to change, to grow, to be who you really are. 
-Bailey: And that there's life beyond the edge of town; people don't get swallowed up and vanish when they leave. 
+Bailey: But also for me. To show people that it's okay to change, to grow, to be who you really are.
+Bailey: And that there's life beyond the edge of town; people don't get swallowed up and vanish when they leave.
 Bailey: And maybe... to find some closure with my family.
 Aiden: How'd that go?
-- Bailey: Terribly. 
+- Bailey: Terribly.
 	set ELog.Bailey_Parents = 2
 	Bailey: They kept calling me by my deadname. And 'he'. And they wouldn't even talk to Ira.
 	Bailey: Not that Ira didn't try.
@@ -209,15 +201,15 @@ Aiden: How'd that go?
 	Bailey: They couldn't not. Ira's awkward but they're not stupid; and they're not used to that kind of reaction from people.
 - Bailey: Could have been better.
 	set ELog.Bailey_Parents = 1
-	Bailey: They called me by my deadname, and "he", about a half dozen times. 
+	Bailey: They called me by my deadname, and "he", about a half dozen times.
 	Bailey: They weren't doing it to make a point. But they weren't putting in a lot of effort not to, either.
 - Bailey: Could have been worse.
 	set ELog.Bailey_Parents = 0
-	Bailey: They called me by my deadname, and "he", about a half dozen times. 
+	Bailey: They called me by my deadname, and "he", about a half dozen times.
 	Bailey: But they did apologize when they noticed it. So I guess they're trying.
-Aiden: "Deadname"? 
+Aiden: "Deadname"?
 Bailey: My old name. From before I told them who I am. "Deadname" is what they call it in Iris.
-Aiden: "Deadname." That makes sense. 
+Aiden: "Deadname." That makes sense.
 Ira: [i]::huff::[/i]
 Ira: [i]::puff::[/i]
 Ira: [i]::huff::[/i]
@@ -243,7 +235,7 @@ Bailey: You'll have to climb it if you want to find it.
 Ira: It's awfully high...
 Aiden: Maybe there'll be squirrels.
 Ira: I'm on it! [i]::scoots up the tree::
-Bailey: How've [i]you[/i] been? 
+Bailey: How've [i]you[/i] been?
 Aiden: As you see it. Life here doesn't change much.
 Bailey: It's a good little town. Better than most of them around.
 Aiden: But not better than the city?
@@ -257,7 +249,7 @@ Bailey: Yeah. It seems to have worked out for you, though.
 Aiden: It's not perfect. There are still a few people here who call me by my... deadname.
 Aiden: Most of that stopped after Father Matthew talked to them.
 Bailey: I have to go see Matthew and Beatrice later.
-Aiden: You're the only one who just calls them by their names. I'll never get used to that. 
+Aiden: You're the only one who just calls them by their names. I'll never get used to that.
 Bailey: Well I practically grew up in that church. Between them and your parents, they made up for what I didn't find at home.
 Aiden: Mind if I come when you go? I haven't seen them in awhile.
 Bailey: [i]::gasp::[/i] Have you been skipping church?
@@ -279,11 +271,11 @@ Bailey: Let's go say hi.
 
 
 Father Matthew:  Sister Beatrice! Have you seen my alb?
-Sister Beatrice [i](from other room)[/i]: I washed it yesterday... 
+Sister Beatrice [i](from other room)[/i]: I washed it yesterday...
 Sister Beatrice: [i]::entering room::[/i] ...and gave it to you. Folded.
 Father Matthew: Are you sure? I don't remember that...
 Sister Beatrice: I gave you a ham sandwich at the same time.
-Father Matthew: Oh, I remember that sandwich! 
+Father Matthew: Oh, I remember that sandwich!
 Father Matthew: That was a really good sandwich! I ate it at my desk, while I was writing tomorrow's sermon.
 Sister Beatrice: Why don't you check by your desk, then?
 Father Matthew: [i]::walking into study::[/i] Okay, I'll check, but I--
@@ -295,7 +287,7 @@ Father Matthew: [b]Bailey?![b] Is that you?
 Bailey: Hi, Matthew! It's me.
 - Aiden: Um. I'm here too.
 	Father Matthew: Oh! I'm sorry, Aiden, of course you are! I didn't mean to ignore you!
-	Father Matthew: It's just that Bailey was so unexpected! It's been... how long? 
+	Father Matthew: It's just that Bailey was so unexpected! It's been... how long?
 - Aiden: [i]::say nothing::[/i]
 	Father Matthew: Oh, and Aiden, you're here as well! I'm sorry, seeing Bailey again just grabbed all of my attention.
 	Father Matthew: [i]to Bailey:: [/i] How long has it been?
@@ -304,10 +296,10 @@ Father Matthew: And Aiden, it feels like I haven't seen you in a long time, eith
 - Aiden: I, um. I've been feeling a little sick lately, Father.
 - Aiden: We're not all religious fanatics, Father.
 Father Matthew: Oh! Oh, no, I didn't mean it like [i]that[/i]! I just mean, around the village.
-Father Matthew: [i]::sigh::[/i] I guess I really haven't seen much of anyone lately! 
-Father Matthew: I've been holed away trying to write tomorrow's sermon. 
+Father Matthew: [i]::sigh::[/i] I guess I really haven't seen much of anyone lately!
+Father Matthew: I've been holed away trying to write tomorrow's sermon.
 Father Matthew: The Blessing of Flowers is important, and I always stress about the sermon, but this year is the worst ever!
-Father Matthew: I've been banging my head against my desk for weeks, and I just can't make the words come! 
+Father Matthew: I've been banging my head against my desk for weeks, and I just can't make the words come!
 Ira: That must have hurt!
 Father Matthew: ?
 Bailey: Matthew, this is Ira. Ira, this is Father--
@@ -319,26 +311,26 @@ Father Matthew: ...
 Father Matthew: No I don't.
 Aiden: It's okay, you just kind of get used to it.
 Father Matthew: O...kay. Anwyay. Come in, come in, all of you! What can we do for you?
-Bailey: I really just came to see you and Sister Beatrice again. 
-Father Matthew: I'm so glad you did! And that you brought company! 
+Bailey: I really just came to see you and Sister Beatrice again.
+Father Matthew: I'm so glad you did! And that you brought company!
 Father Matthew: [i]::shouts to other room::[/i] Sister! Come quickly, we have visitors!
 Father Matthew: Oh, she's going to be so happy to see you! Both of you!
-Sister Beatrice: Who is it, Fath-- 
+Sister Beatrice: Who is it, Fath--
 Sister Beatrice: !!!
-Sister Beatrice: BAILEY?! 
+Sister Beatrice: BAILEY?!
 Sister Beatrice: And Aiden too! Oh, it's been too long! Come here!
 ::Bailey moves forward for a warm embrace from Sister Beatrice::
 
 Sister Beatrice: You don't have one for me, Aiden?
 - Aiden: Of course I do!
-	Aiden: [i]::joins hug::[/i] 
+	Aiden: [i]::joins hug::[/i]
 - Aiden: I, um. I'm getting over a cold.
-	Sister Beatrice: [i]::laughs::[/i] It's fine, Aiden: it's an invitation, not a demand! 
+	Sister Beatrice: [i]::laughs::[/i] It's fine, Aiden: it's an invitation, not a demand!
 	Aiden: [i]::smiles::[/i] Thanks for understanding!
 - Aiden: No way. Sorry
-	Sister Beatrice: [i]::smiles::[/i] That's fine, Aiden! It was meant as an invitation, not a demand! 
+	Sister Beatrice: [i]::smiles::[/i] That's fine, Aiden! It was meant as an invitation, not a demand!
 Ira: Um. What about me?
-Sister Beatrice: Oh! 
+Sister Beatrice: Oh!
 Ira: I'm Ira!
 Sister Beatrice: You're a friend of Bailey and Aiden?
 Ira: I... think so? [i]::looks at Aiden::
@@ -360,29 +352,29 @@ Everyone: ???
 Father Matthew: A woman's age is her own business. I won't tell on you.
 Bailey: I'm not ashamed of my age, Matthew. I'm 25.
 Father Matthew: Gosh, I remember 25. Full of possibilities and adventures. In fact, your baptism was one of my adventures! That's almost the age was at that time.
-Aiden: We wanted to thank you both. For talking to Bailey's parents. 
+Aiden: We wanted to thank you both. For talking to Bailey's parents.
 if DialogSaid.Bailey_Parents == 2
 	Bailey: Things haven't much changed, but I really appreciate you trying.
 elif DialogSaid.said2 == 1
 	Bailey: Things seem a bit better now.
-else: 
+else:
 	Bailey: Things are a lot better now.
 Sister Beatrice: We're glad to hear that, Aiden. There are a lot of opinions in this town, and we want people to be able to work through them together.
 Father Matthew: Yes. We're all a family here.
 Bailey: And a better family than a lot of families.
 Father Matthew: It's our duty, Bailey. As religious, and as people who love you.
-Bailey: ... 
+Bailey: ...
 Bailey: Alright, Matthew, I'm going to have to go before you make me cry!
 Father Matthew: Oh, I'm sorry, I--
-Bailey: I'm kidding! I mean, I really am going to cry if you keep this up, but I had to go anyway. 
-Aiden: Same. I have to get back home by noon to help on the farm. 
+Bailey: I'm kidding! I mean, I really am going to cry if you keep this up, but I had to go anyway.
+Aiden: Same. I have to get back home by noon to help on the farm.
 Father Matthew: That's about... five minutes from now.
 Aiden: Oh. I'm not going to make it. Dad's going to want to have words with me.
 Sister Beatrice: Father, maybe we can... be a little late to ring the noon bell today?
-Father Matthew: [i]::smiles::[/i] I think I've forgotten it already! 
-Father Matthew: [i]::to Aiden::[/i] I'll remember it in about a quarter hour. Think you'll make it home by then? 
-Aiden: I can if I cut across Mrs. Azir's field! 
-Aiden: I'll remind her about church tomorrow as I go through. 
+Father Matthew: [i]::smiles::[/i] I think I've forgotten it already!
+Father Matthew: [i]::to Aiden::[/i] I'll remember it in about a quarter hour. Think you'll make it home by then?
+Aiden: I can if I cut across Mrs. Azir's field!
+Aiden: I'll remind her about church tomorrow as I go through.
 Aiden: That way it'll be a visit instead of trespassing!
 Bailey: And I have some other places to visit. I will see ALL of you soon!
 Sister Beatrice: Thank you for coming up the hill!
@@ -413,7 +405,7 @@ set DialogSaid.said6 = false
 Aiden: You said you had to leave. You have someplace to go, or do you want to come with me for lunch?
 Ira: Will there be more apple skillet?
 Bailey: I'd love to, but we have to go. I have some more people to see before we leave.
-Aiden: You're leaving? 
+Aiden: You're leaving?
 Bailey: Well yea. I mean, not for a few days, but when I go again I want to...
 Aiden: ...not leave any loose ends?
 Bailey: ...
@@ -433,20 +425,20 @@ Bailey: Aiden? Are you okay?
 Aiden: I don't know that carriage.  Or the horses. We don't get strange carriages coming through this little town, except sometimes on Market Day, and this isn't Market Day.
 Bailey: That's a Church carriage.
 Aiden: The church doesn't have a carriage.
-Bailey: No. Not the church. The Church. That's an emissary from the Holy City. 
+Bailey: No. Not the church. The Church. That's an emissary from the Holy City.
 Bailey: Even the Cathedral in Iris only gets a visit from one of those every year or two.
 Ira: They might just be passing through.
-Aiden: Ithaca is the outskirts of the hinterlands. There's nothing on the other side to pass through it [i]to[/i]. 
-Bailey:  It's going toward the church. 
+Aiden: Ithaca is the outskirts of the hinterlands. There's nothing on the other side to pass through it [i]to[/i].
+Bailey:  It's going toward the church.
 Aiden: Someone's getting out.
-::The carriage stops in front of the church. A dark figure in a hood and mask steps out, looks about suspiciously, and enters church.::  
-Aiden: That... 
+::The carriage stops in front of the church. A dark figure in a hood and mask steps out, looks about suspiciously, and enters church.::
+Aiden: That...
 Aiden: That has to be the most sinister way you can go into a church.
 Bailey: That was an Inquisitor. I've seen one before, at the Cathedral.
 Aiden: Why would one come here?
 Ira: Maybe they heard about your stories too?
-Bailey: I don't want to think of the stories that would have brought an Inquisitor here. 
-Bailey: We should go. 
+Bailey: I don't want to think of the stories that would have brought an Inquisitor here.
+Bailey: We should go.
 Aiden: Yeah, I'm already late.
 Bailey: Yeah. That too.
 
@@ -455,15 +447,15 @@ Bailey: Yeah. That too.
 Where does Aiden go next?
 - Mrs. Azir's [if DialogSaid.said6 == false]
 	set DialogSaid.said6 = true
-	=> mrs_azirs 
-- Straight home 
-	=> home_after_church1 
+	=> mrs_azirs
+- Straight home
+	=> home_after_church1
 - Hang around the church [if DialogSaid.said5 == false and DialogSaid.said6 == false]
 	set DialogSaid.Aiden_Late_for_Home = true
 	What does he do there?
 	- Wait around
 		set DialogSaid.said5 = true
-		=> outside_church 
+		=> outside_church
 	- Listen at the door
 		=> church_door
 	- Sneak into the church
@@ -479,14 +471,14 @@ Aiden: Mrs. Azir, you hardly even leave your farm, how many sins could you possi
 Mrs Azir: For a start, sins of wrath every time one of you children comes through my field and bothers my crows!
 Mrs Azir: For another thing, the same thing every time one of you asks persnippety questions about my private life like how many sins I can have.
 Mrs Azir: My sinnnin' is my own business, and if you think I can't do it at my age you got no idea just how many sins are out there waitin' to happen!
-- Aiden: O...kay. Well, I could come and help you carry them if you like. 
+- Aiden: O...kay. Well, I could come and help you carry them if you like.
 	[set DialogSaid.said1 = true] [next]
-	Mrs Azir: Hmm. Carryin' the flowers for another's sins. Why, that sounds almost scriptural. Alrighty, then, thank you Aiden. 
+	Mrs Azir: Hmm. Carryin' the flowers for another's sins. Why, that sounds almost scriptural. Alrighty, then, thank you Aiden.
 	Mrs Azir: I know I can get persnippety myself, but you always were a good... er, child. You come by here on your way to church tomorrow and I'll have my flowers ready.
 	Mrs Azir: And that way when you cut across, it won't be tresspassin', innit?
 	Aiden: ::blushes:: You got it, Mrs. Azir.
 - Aiden: Why don't you just bring seeds, then? They're tiny.
-	Mrs Azir: Seeds for sins? At my age, I don't expect to be around long enough for 'em to grow up and flower. 
+	Mrs Azir: Seeds for sins? At my age, I don't expect to be around long enough for 'em to grow up and flower.
 	Aiden: Well, we could always put them on your grave. Besides, my Daddy says you're probably going outlive us all.
 	Mrs Azir: Well, your Daddy was always a pessimist. But it would certainly be a powerful lot of flowers to remember me by...
 	Mrs Alrighty, then. I'll bring a pocket full of teff grains. I'll prbably be able to sow a field with 'em, you can bake my funeral bread with it.
@@ -498,8 +490,8 @@ else:
 	Aiden: ::smiles:: You always know the score, Mrs. Azir.
 	::Aiden leaves::
 => aiden_travel_choice
-	
-~ home_after_church1 
+
+~ home_after_church1
 if DialogSaid.Aiden_Late_for_Home == true
 	Samwell: Well, well. Tryin' a sneak in after the bell? That sort of thinkin' is why I never had no truck with school!
 	Aiden: I'm sorry, Daddy, but something really bad happened at the church.
@@ -512,12 +504,12 @@ if DialogSaid.Aiden_Late_for_Home == true
 	Samwell: Don't get used to it. I'm a crotchety old man, it's my whole thing. ::leaves::
 else:
 	::church bell rings::
-	Samwell: Well you made it. 
+	Samwell: Well you made it.
 	Samwell: Feels like the morning stretched itself out a bit fer ya. But I suppose if it's alright wi' God, it's alright wi' me.
 	Aiden: Yeah... speaking of that, Daddy... I think there's something bad going on at the church. Bailey thought so too and she knows more about it than I do.
 	Samwell: If'n it's on fire, that shoulda been the first thing out yer mouth. If it's anything else, Father Matthew can handle it.
 	Aiden: That just it, Daddy, I don't think he can. He got a visit from an inquisitor, from the Holy City.
-	Samwell: Well he can inquisit all he wants, he won;'t find anything against Father. He's as fine a man as any who isn't head of this household. I can't imagine him doing anything wrong. 
+	Samwell: Well he can inquisit all he wants, he won;'t find anything against Father. He's as fine a man as any who isn't head of this household. I can't imagine him doing anything wrong.
 	Aiden: I hope you're right, Daddy.
 	Samwell: Tell you what; I ain't been regular at the church for a year or twelve, but I've always like the Flower Party...
 	Aiden: Blessing of Flowers, Daddy.
@@ -527,13 +519,13 @@ else:
 	Cora (from other room): He had more hair then, mind.
 	Samwell: I've ever [i]quality[/i], woman, not [i]quantity[/i]! Silver's worth more than sable, that's all!
 	Samwell: now, you stop yer frettin'; about and go much out the crap from the barn. Them cow's been eatin' well.
-	
+
 => matthew_sermon
 
 
-~ outside_church 
+~ outside_church
 ::After a little while the noon bell rings.::
-Aiden: Oh, no, I'm gonna have words had with me. 
+Aiden: Oh, no, I'm gonna have words had with me.
 => aiden_travel_choice
 
 
@@ -552,29 +544,29 @@ Footsteps: [i]slumph[/i]
 Aiden: My feet can't possibly be this loud all the time!
 [i]::near door to Father's office, voices grow louder::[/i]
 Father Matthew: --I assure you, Inquisitor, there is nothing for the Church to be concerned about here. The people are devout. I've been pastor at this church for more than two decades, and never have I seen people more godly than these.
-Inquisitor: I am not here for your assurances, Father. I am here as the Eyes of God, and I will see for myself the way of things. 
-Inquisitor: There have been reports of the most terrible heresies, stamped from the Church proper centuries ago. 
+Inquisitor: I am not here for your assurances, Father. I am here as the Eyes of God, and I will see for myself the way of things.
+Inquisitor: There have been reports of the most terrible heresies, stamped from the Church proper centuries ago.
 Inquisitor: My presence here is a blessing. If the reports are unfounded, you have nothing to fear for these folk... or for yourself. If, however, they are, then the swiftest action of the Church will set things right.
 Father Matthew: I have neither hope, no fear, Inquisitor. I have only faith.
 Inquisitor: That is all that is asked of any if us, Father.
 Inquisitor: Even if your faith is strong, Father, it seems your punctuality is not. It is past noon. Are these people of yours so godly they do not need a reminder of their noon prayers?
 Sister Beatrice: Forgive me, Inquisitor. That is my responsibility. I let your unexpected visit distract me from it.
-Inquisitor: The offense is not against me, Sister, but against the Lord. Therefore forgiveness is not mine to give outside of Confession. 
+Inquisitor: The offense is not against me, Sister, but against the Lord. Therefore forgiveness is not mine to give outside of Confession.
 Inquisitor: But I suspect I will be hearing confessions while I am here.
-A footstep comes closer to the door!   
+A footstep comes closer to the door!
 - Flee through the front door.
 	Aiden: Whew! I... don't know what I just got away from but I feel like it's something. Oh, and they're about to ring the bell! Father Matthew gave me a break and I wasted it!
 	=> aiden_travel_choice
 
 - Stand your ground.
-	
+
 	Inquisitor: What is this... person?
 	Father Matthew: Aiden! What brings you here? Oh, forgive me, Inquisitor, this is Aiden, one of our congregation. They were here earleir discussing... matters of... faith.
 	Aiden: ?
-	Inquisitor: ::peering at Aiden:: I did not say "who" Father, I said "what". I cannot tell if this is a man or woman I am looking at. 
+	Inquisitor: ::peering at Aiden:: I did not say "who" Father, I said "what". I cannot tell if this is a man or woman I am looking at.
 	Inquisitor: ::to Aiden:: What are you, then?
 	- Answer Boldly.
-		Aiden: I'm neither. 
+		Aiden: I'm neither.
 		Inquisitor: ::laughs::
 		Inquisitor: Father, a [i]cow[/i] seems to have wandered into your church!
 		Inquisitor: Or is it a [i]dog[/i]?
@@ -588,16 +580,16 @@ A footstep comes closer to the door!
 		- Leave
 			=> aiden_travel_choice
 		=> post_inquisitor
-		
+
 	- Answer Cagily.
 		Aiden: ::opens eyes wide:: Can't you tell? ::looks around:: Everyone else can! The great Inquisitor from the Holy City doesn't know a man from a woman?
-		Inquisitor: ::narrows eyes:: 
-		Inquisitor: ::smiles:: Very well. Father, tomorrow after Mass you will introduce each and every member of the congregation to me. By their title in the Church: Brother, or Sister. 
+		Inquisitor: ::narrows eyes::
+		Inquisitor: ::smiles:: Very well. Father, tomorrow after Mass you will introduce each and every member of the congregation to me. By their title in the Church: Brother, or Sister.
 	- Answer Snarkily.
 		Aiden: What other options do you have?
 		Inquisitor: There are b[]no[/b] other options.
-		Father Matthew: Inquisitor.. please forgive Aiden's disrespect. Th-- she is sensitive about having... her gender mistaken. With her height... it's been happening of all her life. 
-		Inquisitor: Then she should dress to make matters more clear to those around her. I will expect your whole congregation to be suitably attired for Mass tomorrow. 
+		Father Matthew: Inquisitor.. please forgive Aiden's disrespect. Th-- she is sensitive about having... her gender mistaken. With her height... it's been happening of all her life.
+		Inquisitor: Then she should dress to make matters more clear to those around her. I will expect your whole congregation to be suitably attired for Mass tomorrow.
 		Inquisitor: ::pushes past Aiden, exits the front door::
 		- Aiden: [i]"Her"[/i]??
 		- Aiden: What was [i]that[/i] about?
@@ -608,17 +600,17 @@ A footstep comes closer to the door!
 
 ~ post_inquisitor
 Sister Beatrice: We're sorry, Aiden. Father Matthew was--
-Father Matthew: Don't try to shield me from my actions, Sister. 
+Father Matthew: Don't try to shield me from my actions, Sister.
 Father Matthew: Aiden, I'm sorry. I... know that was unexpected and hurtful.
 Aiden: Both of those, yes.
-Father Matthew: I... was trying to protect you. 
+Father Matthew: I... was trying to protect you.
 - Aiden: I understand.
 - Aiden: Don't protect me that way ever again.
 	Father Matthew: ...
 	Father Matthew: Alright. I won't. And I [i]am[/i] sorry.
 - Aiden: I think you were trying to protect yourself.
-	Father Matthew: I'm trying to protect this entire town. 
-Sister Beatrice: Aiden, we would never want to hurt you. But the Inquisitor... would. 
+	Father Matthew: I'm trying to protect this entire town.
+Sister Beatrice: Aiden, we would never want to hurt you. But the Inquisitor... would.
 Sister Beatrice: I don't think you understand how strict the Holy City can be about these things.
 Father Matthew: And that's my fault. I've tried to shield this town from... the worst of the Church. I should have taught the best while preparing you for the rest.
 Sister Beatrice: It wouldn't work that way, Matthew, you know it.
@@ -629,7 +621,7 @@ Sister Beatrice: Because that was a person to be scared of, Aiden.
 Father Matthew: Inquisitor Malachai was sent by the Church to investigate reports of heresy.
 Aiden: So? You're afraid you're going to get framed as heretics?
 Sister Beatrice: ...
-Father Matthew: No, Aiden. We're afraid... 
+Father Matthew: No, Aiden. We're afraid...
 Father Matthew: ...because we [i]are[/i] heretics.
 Sister Beatrice: You should go now, Aiden. It... may not be safe for you here while it Inquisitor is visiting.
 - Aiden: It sounds like it's not safe for you, either.
@@ -637,22 +629,22 @@ Sister Beatrice: You should go now, Aiden. It... may not be safe for you here wh
 - Aiden: What have you brought to this town?
 	Father Matthew: I think that we brought truth, Aiden. I hope that we brought love, and understanding.
 - Aiden: Is anyone safe?
-	Father Matthew: I think that most people are. At worst, they'll be able to say they were misled by us. At leat, the people who the Church doesn't see as... different. 
+	Father Matthew: I think that most people are. At worst, they'll be able to say they were misled by us. At leat, the people who the Church doesn't see as... different.
 	Aiden: Different like me. Like Bailey.
-	Father Matthew: ... Yes. And Ira, probably. A few others. Old Armory, for one. 
-	Sister Beatrice: Andrea Weaver told me last week after mass that they want to be called Andrew. 
+	Father Matthew: ... Yes. And Ira, probably. A few others. Old Armory, for one.
+	Sister Beatrice: Andrea Weaver told me last week after mass that they want to be called Andrew.
 	Aiden: They're only five years old. The Church wouldn't hurt them, would they?
 	Father Matthew: Physically? Maybe not. But they could torture a child like that without touching them at all.
-	Aiden: I... 
+	Aiden: I...
 	Aiden. Yes.
 Sister Beatrice: You should go now, Aiden. We have to get ready for tomorrow. Maybe we can get satisfy the Inquisitor that there's no problem.
 Aiden: I just made that harder, didn't I?
-Father Matthew: You spoke your truth, Aiden. That's all God would ask of you. I can't ask anything more. 
+Father Matthew: You spoke your truth, Aiden. That's all God would ask of you. I can't ask anything more.
 Father Matthew: Sister Beatrice is right, We need to work on a plan for tomorrow. You're already late for home, aren't you?
 Aiden: I... guess so...
 Sister Beatrice: It's brave of you to want to help, Aiden. We're so proud of you. But there isn't anything you can do here now.
-Aiden: I'll... 
-Aiden: Take care, both of you. 
+Aiden: I'll...
+Aiden: Take care, both of you.
 Father Matthew: Go with God.
 ::Aiden leaves::
 
@@ -687,7 +679,7 @@ Father Matthew: Go with God.
 => mrs_azirs
 
 ~ return_home_after_church1
-=> home_after_church1 
+=> home_after_church1
 
 ~ return_after_matthew_sermon
 => after_matthew_sermon
@@ -712,34 +704,34 @@ Father Matthew: It is one of the oldest of holy days... at least, one of the old
 Father Matthew: There are of course others that the church has changed its mind about...
 Father Matthew: We no longer chant the Litany of Liberation, or fast throughout the Month of Revelation.
 Father Matthew: We don't hear about the Month of Mercy or think up questions for the Celebration of Reason.
-Father Matthew: And of course we never, ever talk about the Festival of Libido! 
+Father Matthew: And of course we never, ever talk about the Festival of Libido!
 Father Matthew: Those things are gone now. Heresies. We do still have the Week of Wrath. Once just a single day of atonement.
-Father Matthew: And of course, we still have the Blessing of Flowers. 
+Father Matthew: And of course, we still have the Blessing of Flowers.
 Father Matthew: The day when we contemplate our sins, and plant flowers for them, that their ugliness may bring forth beauty in the world.
 Father Matthew: My... friends. I have been guilty of sin.
 Crowd: ::sudden muttering::
 Father Matthew: It's only now that I have realized that I have been guilty of... hubris.
 Father Matthew: I had... forgotten what faith is. But this morning, I am reminded.
 Father Matthew: I have spent weeks trying to write a sermon for today's celebration.
-Father Matthew: I sat at my desk, pen in hand, bent over a sheet of paper...  
-Father Matthew: Not always the same sheet. Often I wrote a few words, then crossed them out. I went through many pages that way. 
+Father Matthew: I sat at my desk, pen in hand, bent over a sheet of paper...
+Father Matthew: Not always the same sheet. Often I wrote a few words, then crossed them out. I went through many pages that way.
 Father Matthew: I kept trying to make the words come. I prayed for the words to come. I read past sermons, trying to make... the words... come.
-Father Matthew: Last night, I finally forced words onto the page. They looked wrong there... 
-Father Matthew: ...but we have to do, what we have to do. That is duty. Right? 
-Father Matthew: But it was [i]not[/i]. It was not my duty, as your priest, to make... the words... come. 
-Father Matthew: My duty is to open myself to the Spririt, and let it speak through me. 
+Father Matthew: Last night, I finally forced words onto the page. They looked wrong there...
+Father Matthew: ...but we have to do, what we have to do. That is duty. Right?
+Father Matthew: But it was [i]not[/i]. It was not my duty, as your priest, to make... the words... come.
+Father Matthew: My duty is to open myself to the Spririt, and let it speak through me.
 Father Matthew: The Spirit has shown me. The Spirit speaks through me now.
 Father Matthew: You've heard it said that without love, our works, however noble, are nothing.
 Father Matthew: You may have even heard it said that, without love, WE are nothing.
-Father Matthew: But the Spirit says more. 
+Father Matthew: But the Spirit says more.
 Father Matthew: Without love... GOD is nothing.
 Crowd: ::gasps::
 Father Matthew: For what would such a god be? What is a god who controls...
-Father Matthew: ...who commands...  
-Father Matthew: ...who condemns our sins... 
+Father Matthew: ...who commands...
+Father Matthew: ...who condemns our sins...
 Father Matthew: ...if that god sets one person's love above another's.
 Father Matthew: The only thing worse is a god... who [i]forbids[/i] love.
-Father Matthew: THAT is true heresy. 
+Father Matthew: THAT is true heresy.
 Father Matthew: God [i]is[/i], and must [i]be[/i], love.
 Father Matthew: For without love, we are not worthy of God.
 Father Matthew: But without love, [i]God[/i] would not be worthy... of [i]us[/i].
@@ -747,7 +739,7 @@ Inquisitor: ENOUGH!
 Inquisitor: ::to his guards:: Take him away!
 Aiden: !!!
 Bailey: ::whispers:: Wait!
-Inquisitor: ::to crowd:: I am Knight Inquisitor Malachai. I have been sent to this place by the Holy Church to investigate rumors of heresy. Rumors that I now see are well founded. 
+Inquisitor: ::to crowd:: I am Knight Inquisitor Malachai. I have been sent to this place by the Holy Church to investigate rumors of heresy. Rumors that I now see are well founded.
 Inquisitor Malachai: I am replacing Father Matthew as head priest of this church, effective immediately. During my investigation, this church will remain open from dawn until duskm, that all may come an make confession.
 Inquisitor Malachai: I foresee the need for many confessions.
 Inquisitor Malachai: This mass is ended. Go now, and serve the Lord.
@@ -767,15 +759,15 @@ Bailey: I can't believe he did that.
 	Bailey: He spoke the truth in the face of power.
 	Aiden: That's not going to do any of us any good now.
 	Ira: I don't get it. What did he say that was wrong?
-	Bailey: He said a lot, Ira. 
-	Aiden: He said that love was more important than God. 
+	Bailey: He said a lot, Ira.
+	Aiden: He said that love was more important than God.
 	Bailey: And he said that God could be wrong.
 Aiden: What's going to happen to him?
 Bailey: I'm not sure. If he stands accused of heresy, there will have to be a trial. The Inquisitor can't discipline a priest directly; he'll have to be brought to the Holy City.
 Aiden: What about people who aren't priests?
 Ira: He can appoint a jury in the case of laity.
 Aiden: How do you know that?
-Ira: My father studied to be a priest when he was younger. He never took his orders, but he knew a lot about the Inquisitors. 
+Ira: My father studied to be a priest when he was younger. He never took his orders, but he knew a lot about the Inquisitors.
 Ira: He said that they were the [i]reason[/i] he never took his orders.
 Bailey: Did... you talk to the Inquisitor, Aiden?
 Aiden: What? Why?
@@ -785,8 +777,8 @@ Bailey: I think it's too late. Running is just going to make them hunt us down.
 ::Inquisitor Malachai stops as Samwell puts himself in his path.::
 Samwell: Hey, Father Inquisitor, I need to speak with you.
 Inquisitor Malachai: ::surprised and annoyed::  You may call me Inquisitor Malachai. And now is not the time--
-Samwell: But yer actin' preist, ain't ya? You just said so. So you're a Father. 
-Samwell: An' I'm a father too, just the more physical, less spiritual, sort. And I gotta tell you, Dad to Dad, you're makin' a mistake on this one. 
+Samwell: But yer actin' preist, ain't ya? You just said so. So you're a Father.
+Samwell: An' I'm a father too, just the more physical, less spiritual, sort. And I gotta tell you, Dad to Dad, you're makin' a mistake on this one.
 Samwell: Father Matthew, he's as good a man a`s there is who ain't--
 Inquisitor Malachai: I will be taking interviews later as part of my investigation, right now I--
 Samwell: ::ahem:: I should tell you, Father, that my name, which I've not yet mentioned, not wantin' to abuse my reputation, is [i]Samwell[/i].
@@ -794,7 +786,7 @@ Inquisitor Malachai: ...
 Samwell: Of [i]Samwell's Farm[/i]!
 Guard: ::whispers to Inquisitor Malachai::
 Bailey: Okay, [i]now[/i] I think we should go.
-Aiden: Yeah, good plan. 
+Aiden: Yeah, good plan.
 ::Aiden, Bailey, and Ira leave::
 Inquisitor Malachai: [i]::to Guard::[/i] What do you mean you've heard of him? That has nothing to do with anything! [i]He[/i] has nothing to do with anything! Get him out of my way!
 Inquisitor Malachai: [i]::resumes moving toward Aiden and company:: [/i]
@@ -810,4 +802,3 @@ Mrs Azir: They're takin' away the flowers!? You tryin' to get folks to just stay
 
 ::This is as far as has been written::
 => END!
-
