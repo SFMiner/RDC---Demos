@@ -38,6 +38,9 @@ signal observed(feature_id)
 
 @export_group("UI Styling")
 @export var font_path: String = ""
+@export var font_bold_path: String = ""
+@export var font_italic_path: String = ""
+@export var font_bold_italic_path: String = ""
 @export var font_color: Color = Color(1, 1, 1, 1)
 @export var font_size: int = 20
 
@@ -189,8 +192,17 @@ func _load_additional_data_from_json():
 		character_data.description = json_data.description
 
 	if json_data.has("font_path") and json_data.font_path != "":
-		font_path = json_data.font_path  
+		font_path = json_data.font_path
 		character_data.font_path = json_data.font_path
+	if json_data.has("font_bold_path") and json_data.font_bold_path != "":
+		font_bold_path = json_data.font_bold_path
+		character_data.font_bold_path = json_data.font_bold_path
+	if json_data.has("font_italic_path") and json_data.font_italic_path != "":
+		font_italic_path = json_data.font_italic_path
+		character_data.font_italic_path = json_data.font_italic_path
+	if json_data.has("font_bold_italic_path") and json_data.font_bold_italic_path != "":
+		font_bold_italic_path = json_data.font_bold_italic_path
+		character_data.font_bold_italic_path = json_data.font_bold_italic_path
 
 	if json_data.has("font_size") and json_data.font_size:
 		font_size = json_data.font_size  

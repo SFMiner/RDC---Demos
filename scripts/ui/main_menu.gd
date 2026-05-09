@@ -8,6 +8,7 @@ var debug : bool
 const DEMO_SCENES: Array = [
 	{"id": "church_interior", "label": "Church Interior"},
 	{"id": "ithaca_exterior", "label": "Ithaca Exterior"},
+	{"id": "coras_kitchen", "label": "Cora's Kitchen"},
 ]
 
 func _ready():

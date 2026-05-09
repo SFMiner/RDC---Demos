@@ -3,6 +3,8 @@
 	"name": "Mrs Azir",
 	"description": "",
 	"font_path": "res://assets/fonts/baskevalley_old_face/BaketvalleyOldFace-WKaG.ttf",
+	"font_bold_path": "res://assets/fonts/baskevalley_old_face/BaketvalleyOldFace_bold.ttf",
+	"font_italic_path": "res://assets/fonts/baskevalley_old_face/BaketvalleyOldFace_italic.ttf",
 	"font_color": "#FF8D24",
 	"font_size": 2
 }

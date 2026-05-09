@@ -130,12 +130,21 @@ func apply_font_for_character(character_name: String):
 
 	# Default values
 	var font_to_use = loaded_fonts.get("Default")
+	var font_bold_to_use : Font = null
+	var font_italic_to_use : Font = null
+	var font_bold_italic_to_use : Font = null
 	var color_to_use = Color(1, 1, 1, 1)  # Default white
 	var font_size = 25  # Default font size
 
 	if character:
 		if character.font_path:
 			font_to_use = load(character.font_path)
+		if character.font_bold_path:
+			font_bold_to_use = load(character.font_bold_path)
+		if character.font_italic_path:
+			font_italic_to_use = load(character.font_italic_path)
+		if character.font_bold_italic_path:
+			font_bold_italic_to_use = load(character.font_bold_italic_path)
 		if character.font_color:
 			color_to_use = character.font_color
 		if character.font_size:
@@ -150,11 +159,16 @@ func apply_font_for_character(character_name: String):
 			var json = JSON.new()
 			if json.parse(file_text) == OK:
 				var data : Dictionary = json.get_data()
-				var fp : String = data.get("font_path", "")
-				var fc : String = data.get("font_color", "")
-				var fs : int    = data.get("font_size", 0)
-				if fp != "" and ResourceLoader.exists(fp):
-					font_to_use = load(fp)
+				var fp   : String = data.get("font_path", "")
+				var fbp  : String = data.get("font_bold_path", "")
+				var fip  : String = data.get("font_italic_path", "")
+				var fbip : String = data.get("font_bold_italic_path", "")
+				var fc   : String = data.get("font_color", "")
+				var fs   : int    = data.get("font_size", 0)
+				if fp   != "" and ResourceLoader.exists(fp):   font_to_use            = load(fp)
+				if fbp  != "" and ResourceLoader.exists(fbp):  font_bold_to_use       = load(fbp)
+				if fip  != "" and ResourceLoader.exists(fip):  font_italic_to_use     = load(fip)
+				if fbip != "" and ResourceLoader.exists(fbip): font_bold_italic_to_use = load(fbip)
 				if fc != "":
 					color_to_use = Color(fc)
 				if fs != 0:
@@ -164,12 +178,23 @@ func apply_font_for_character(character_name: String):
 				if debug: print(GameState.script_name_tag(self, _fname) + "Failed to parse character data file for: " + character_id)
 		else:
 			if debug: print(GameState.script_name_tag(self, _fname) + "No character data file found for: " + character_id)
-		
-	dialogue_label.add_theme_font_override("normal_font", font_to_use)
+
+	# Fall back to the normal font for any variant not provided
+	if font_bold_to_use == null:       font_bold_to_use       = font_to_use
+	if font_italic_to_use == null:     font_italic_to_use     = font_to_use
+	if font_bold_italic_to_use == null: font_bold_italic_to_use = font_to_use
+
+	dialogue_label.add_theme_font_override("normal_font",       font_to_use)
+	dialogue_label.add_theme_font_override("bold_font",         font_bold_to_use)
+	dialogue_label.add_theme_font_override("italics_font",      font_italic_to_use)
+	dialogue_label.add_theme_font_override("bold_italics_font", font_bold_italic_to_use)
 	if debug: print(GameState.script_name_tag(self, _fname) + "Applied font: ", font_to_use.resource_path if font_to_use.resource_path else "built-in")
-	
+
 	dialogue_label.add_theme_color_override("default_color", color_to_use)
 	dialogue_label.add_theme_font_size_override("normal_font_size", font_size)
+	dialogue_label.add_theme_font_size_override("bold_font_size", font_size)
+	dialogue_label.add_theme_font_size_override("italics_font_size", font_size)
+	dialogue_label.add_theme_font_size_override("bold_italics_font_size", font_size)
 	if debug: print(GameState.script_name_tag(self, _fname) + "Applied color: ", color_to_use, " and size: ", font_size)
 
 func _unhandled_input(_event: InputEvent) -> void:

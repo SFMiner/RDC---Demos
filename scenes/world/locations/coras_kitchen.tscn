@@ -668,6 +668,7 @@ tile_set = SubResource("TileSet_5xma3")
 tile_set = SubResource("TileSet_5xma3")
 
 [node name="nonwalkable_areas" type="StaticBody2D" parent="Node2D"]
+position = Vector2(-324, 0)
 collision_layer = 3
 collision_mask = 3
 
@@ -677,18 +678,18 @@ scale = Vector2(2.2551718, 0.60177803)
 shape = SubResource("RectangleShape2D_nl8ga")
 
 [node name="CollisionShape2D10" type="CollisionShape2D" parent="Node2D/nonwalkable_areas"]
-position = Vector2(620, 1047)
+position = Vector2(620, 482)
 scale = Vector2(2.2551713, 0.60177785)
 shape = SubResource("RectangleShape2D_nl8ga")
 
 [node name="CollisionShape2D8" type="CollisionShape2D" parent="Node2D/nonwalkable_areas"]
-position = Vector2(-31.564621, 576.4517)
+position = Vector2(333, 612)
 rotation = -3.1285992
 scale = Vector2(1.8011566, 2.8979313)
 shape = SubResource("RectangleShape2D_k1mv0")
 
 [node name="CollisionShape2D9" type="CollisionShape2D" parent="Node2D/nonwalkable_areas"]
-position = Vector2(1218, 803)
+position = Vector2(1207.9999, 604.00006)
 scale = Vector2(1.8011565, 2.897932)
 shape = SubResource("RectangleShape2D_k1mv0")
 
@@ -730,6 +731,7 @@ shape = SubResource("RectangleShape2D_80s8o")
 
 [node name="z_Objects" type="Node2D" parent="Node2D"]
 y_sort_enabled = true
+position = Vector2(-324, 0)
 
 [node name="Cora" parent="Node2D/z_Objects" instance=ExtResource("4_0yku1")]
 position = Vector2(558, 132.00002)
@@ -737,12 +739,14 @@ scale = Vector2(1.63, 1.63)
 character_id = "cora"
 character_name = "Cora"
 dialogue_file = "cora"
+metadata/_edit_group_ = true
 
 [node name="Sprite2D" parent="Node2D/z_Objects/Cora" index="0"]
 texture = ExtResource("5_a8ipt")
 
 [node name="Player" parent="Node2D/z_Objects" instance=ExtResource("3_tkrkf")]
-position = Vector2(1410.9999, 172)
+position = Vector2(178, 138)
+metadata/_edit_group_ = true
 
 [node name="Sprite2D" parent="Node2D/z_Objects/Player" index="0"]
 scale = Vector2(1.63, 1.63)
@@ -763,6 +767,7 @@ character_id = "bailey"
 character_name = "bailey"
 dialogue_file = "bailey"
 initial_animation = "idle_left"
+metadata/_edit_group_ = true
 
 [node name="Sprite2D" parent="Node2D/z_Objects/Bailey" index="0"]
 texture = ExtResource("9_s71lg")
@@ -775,18 +780,20 @@ character_id = "ira"
 character_name = "ira"
 dialogue_file = "ira"
 initial_animation = "idle_up"
+metadata/_edit_group_ = true
 
 [node name="Sprite2D" parent="Node2D/z_Objects/Ira" index="0"]
 texture = ExtResource("10_0r5xt")
 frame = 0
 
 [node name="Samwell" parent="Node2D/z_Objects" instance=ExtResource("4_0yku1")]
-position = Vector2(-142, 96)
+position = Vector2(287, 140)
 scale = Vector2(1.63, 1.63)
 character_id = "samwell"
 character_name = "Samwell"
 dialogue_file = "samwell"
 initial_animation = "idle_up"
+metadata/_edit_group_ = true
 
 [node name="Sprite2D" parent="Node2D/z_Objects/Samwell" index="0"]
 texture = ExtResource("15_q6snc")

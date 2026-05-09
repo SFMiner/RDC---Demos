@@ -19,7 +19,6 @@ do CutsceneManager.play_animation("player", "idle_right", true)
 Aiden: Huh? Who's there?  
 do CutsceneManager.move_to("bailey", "B1", "walk", true)
 do CutsceneManager.play_animation("ira", "idle_right", true) 
-
 Bailey: Wow, I thought I was kidding when I called you a stranger. Has it really been that long?
 Aiden: Bailey? Is that you?
 do CutsceneManager.move_to("player", "A1", "walk", true)
