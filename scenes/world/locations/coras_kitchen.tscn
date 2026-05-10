@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://0dbujw21d774" path="res://assets/character_sprites/cora/standard/idle.png" id="5_a8ipt"]
 [ext_resource type="Texture2D" uid="uid://cng7nogwxg7t8" path="res://assets/character_sprites/bailey/standard/idle.png" id="9_s71lg"]
 [ext_resource type="Texture2D" uid="uid://b0jq5337smctf" path="res://assets/character_sprites/ira/standard/idle.png" id="10_0r5xt"]
-[ext_resource type="Texture2D" uid="uid://dj4al42uq0o0q" path="res://assets/sprites/church_interior/pew_back.png" id="14_bwk3a"]
+[ext_resource type="PackedScene" uid="uid://div0lg3fnck5k" path="res://scenes/tools/cutscene_marker.tscn" id="11_b5830"]
 [ext_resource type="Texture2D" uid="uid://cukd5wgedvvhn" path="res://assets/character_sprites/samwell/standard/idle.png" id="15_q6snc"]
 [ext_resource type="Script" uid="uid://bhfkcl6u6ldi0" path="res://scripts/world/location_transition.gd" id="17_04nta"]
 
@@ -618,13 +618,13 @@ sources/2 = SubResource("TileSetAtlasSource_q3gja")
 size = Vector2(551.1271, 67.5789)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k1mv0"]
-size = Vector2(12.127549, 328.36307)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_rw0um"]
-size = Vector2(380, 17)
+size = Vector2(18.833275, 288.75314)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_80s8o"]
 size = Vector2(87.1676, 38)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v240c"]
+size = Vector2(36, 84)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dbj4a"]
 radius = 30.0
@@ -683,58 +683,30 @@ scale = Vector2(2.2551713, 0.60177785)
 shape = SubResource("RectangleShape2D_nl8ga")
 
 [node name="CollisionShape2D8" type="CollisionShape2D" parent="Node2D/nonwalkable_areas"]
-position = Vector2(332.9128, 618.7089)
+position = Vector2(332.9128, 594)
 rotation = -3.1285992
 scale = Vector2(1.8011566, 2.8979313)
 shape = SubResource("RectangleShape2D_k1mv0")
 
 [node name="CollisionShape2D9" type="CollisionShape2D" parent="Node2D/nonwalkable_areas"]
-position = Vector2(1207.9999, 604.00006)
+position = Vector2(1201.9609, 661.3935)
 scale = Vector2(1.8011565, 2.897932)
 shape = SubResource("RectangleShape2D_k1mv0")
-
-[node name="PewCollisionL1" type="CollisionShape2D" parent="Node2D/nonwalkable_areas"]
-position = Vector2(276, 533.5)
-shape = SubResource("RectangleShape2D_rw0um")
-
-[node name="PewCollisionL2" type="CollisionShape2D" parent="Node2D/nonwalkable_areas"]
-position = Vector2(276, 609)
-shape = SubResource("RectangleShape2D_rw0um")
-
-[node name="PewCollisionL3" type="CollisionShape2D" parent="Node2D/nonwalkable_areas"]
-position = Vector2(276, 690)
-shape = SubResource("RectangleShape2D_rw0um")
-
-[node name="PewCollisionL4" type="CollisionShape2D" parent="Node2D/nonwalkable_areas"]
-position = Vector2(276, 766)
-shape = SubResource("RectangleShape2D_rw0um")
-
-[node name="PewCollisionR1" type="CollisionShape2D" parent="Node2D/nonwalkable_areas"]
-position = Vector2(904, 533.5)
-shape = SubResource("RectangleShape2D_rw0um")
-
-[node name="PewCollisionR2" type="CollisionShape2D" parent="Node2D/nonwalkable_areas"]
-position = Vector2(904, 609)
-shape = SubResource("RectangleShape2D_rw0um")
-
-[node name="PewCollisionR3" type="CollisionShape2D" parent="Node2D/nonwalkable_areas"]
-position = Vector2(904, 690)
-shape = SubResource("RectangleShape2D_rw0um")
-
-[node name="PewCollisionR4" type="CollisionShape2D" parent="Node2D/nonwalkable_areas"]
-position = Vector2(904, 766)
-shape = SubResource("RectangleShape2D_rw0um")
 
 [node name="AltarCollision" type="CollisionShape2D" parent="Node2D/nonwalkable_areas"]
 position = Vector2(515.4162, 268)
 shape = SubResource("RectangleShape2D_80s8o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/nonwalkable_areas"]
+position = Vector2(1201, 120)
+shape = SubResource("RectangleShape2D_v240c")
 
 [node name="z_Objects" type="Node2D" parent="Node2D"]
 y_sort_enabled = true
 position = Vector2(-324, 0)
 
 [node name="Cora" parent="Node2D/z_Objects" instance=ExtResource("4_0yku1")]
-position = Vector2(558, 132.00002)
+position = Vector2(763, 138)
 scale = Vector2(1.63, 1.63)
 character_id = "cora"
 character_name = "Cora"
@@ -745,7 +717,7 @@ metadata/_edit_group_ = true
 texture = ExtResource("5_a8ipt")
 
 [node name="Player" parent="Node2D/z_Objects" instance=ExtResource("3_tkrkf")]
-position = Vector2(201, 157)
+position = Vector2(209, 125)
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" parent="Node2D/z_Objects/Player" index="0"]
@@ -761,7 +733,7 @@ metadata/_edit_use_anchors_ = true
 metadata/_edit_use_anchors_ = true
 
 [node name="Bailey" parent="Node2D/z_Objects" instance=ExtResource("4_0yku1")]
-position = Vector2(1312, 217)
+position = Vector2(1249.0001, 217)
 scale = Vector2(1.63, 1.63)
 character_id = "bailey"
 character_name = "bailey"
@@ -774,7 +746,7 @@ texture = ExtResource("9_s71lg")
 frame = 0
 
 [node name="Ira" parent="Node2D/z_Objects" instance=ExtResource("4_0yku1")]
-position = Vector2(1375.9999, 316.00006)
+position = Vector2(1311.0001, 216.00003)
 scale = Vector2(1.63, 1.63)
 character_id = "ira"
 character_name = "ira"
@@ -798,54 +770,6 @@ metadata/_edit_group_ = true
 [node name="Sprite2D" parent="Node2D/z_Objects/Samwell" index="0"]
 texture = ExtResource("15_q6snc")
 frame = 0
-
-[node name="PewBackL1" type="Sprite2D" parent="Node2D/z_Objects"]
-position = Vector2(278, 549)
-scale = Vector2(1.6395342, 1.6395342)
-texture = ExtResource("14_bwk3a")
-offset = Vector2(-0.24816895, -19.670227)
-
-[node name="PewBackL2" type="Sprite2D" parent="Node2D/z_Objects"]
-position = Vector2(277, 624)
-scale = Vector2(1.6395342, 1.6395342)
-texture = ExtResource("14_bwk3a")
-offset = Vector2(0.36175537, -19.060272)
-
-[node name="PewBackL3" type="Sprite2D" parent="Node2D/z_Objects"]
-position = Vector2(277, 697)
-scale = Vector2(1.6395342, 1.6395342)
-texture = ExtResource("14_bwk3a")
-offset = Vector2(0.36175537, -14.7907715)
-
-[node name="PewBackL4" type="Sprite2D" parent="Node2D/z_Objects"]
-position = Vector2(277, 778)
-scale = Vector2(1.6395342, 1.6395342)
-texture = ExtResource("14_bwk3a")
-offset = Vector2(0.36175537, -16.620575)
-
-[node name="PewBackL5" type="Sprite2D" parent="Node2D/z_Objects"]
-position = Vector2(1105, 452)
-scale = Vector2(1.6395342, 1.6395342)
-texture = ExtResource("14_bwk3a")
-offset = Vector2(-121.75189, 39.49292)
-
-[node name="PewBackL6" type="Sprite2D" parent="Node2D/z_Objects"]
-position = Vector2(911.00006, 624)
-scale = Vector2(1.6395342, 1.6395342)
-texture = ExtResource("14_bwk3a")
-offset = Vector2(-3.4255981, -19.060272)
-
-[node name="PewBackL7" type="Sprite2D" parent="Node2D/z_Objects"]
-position = Vector2(907, 695)
-scale = Vector2(1.6395342, 1.6395342)
-texture = ExtResource("14_bwk3a")
-offset = Vector2(-0.98583984, -13.570923)
-
-[node name="PewBackL8" type="Sprite2D" parent="Node2D/z_Objects"]
-position = Vector2(907, 776.99994)
-scale = Vector2(1.6395342, 1.6395342)
-texture = ExtResource("14_bwk3a")
-offset = Vector2(-0.98583984, -16.01062)
 
 [node name="ColorRect" type="ColorRect" parent="Node2D/z_Objects"]
 offset_left = 1226.0
@@ -893,10 +817,98 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
+[node name="Camera2D" type="Camera2D" parent="Node2D"]
+position = Vector2(451, 254)
+zoom = Vector2(2, 2)
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_h0ajb")
 }
+
+[node name="C0" parent="." instance=ExtResource("11_b5830")]
+position = Vector2(420, 103)
+color = Color(0.45882353, 1, 1, 1)
+
+[node name="C1" parent="." instance=ExtResource("11_b5830")]
+position = Vector2(78, 226)
+color = Color(0.5176471, 1, 1, 1)
+
+[node name="C2" parent="." instance=ExtResource("11_b5830")]
+position = Vector2(284, 174)
+color = Color(0.5176471, 1, 1, 1)
+
+[node name="C3" parent="." instance=ExtResource("11_b5830")]
+position = Vector2(276, 324)
+color = Color(0.5176471, 1, 1, 1)
+
+[node name="S0" parent="." instance=ExtResource("11_b5830")]
+position = Vector2(-58, 104)
+color = Color(0.44092298, 0.47636575, 0.2232731, 1)
+
+[node name="S1" parent="." instance=ExtResource("11_b5830")]
+position = Vector2(178, 142)
+color = Color(0.44092298, 0.47636575, 0.2232731, 1)
+
+[node name="S2" parent="." instance=ExtResource("11_b5830")]
+position = Vector2(209, 233)
+color = Color(0.44092298, 0.47636575, 0.2232731, 1)
+
+[node name="S3" parent="." instance=ExtResource("11_b5830")]
+position = Vector2(311, 123)
+color = Color(0.44092298, 0.47636575, 0.2232731, 1)
+
+[node name="S4" parent="." instance=ExtResource("11_b5830")]
+position = Vector2(222, 377)
+color = Color(0.44092298, 0.47636575, 0.2232731, 1)
+
+[node name="A0" parent="." instance=ExtResource("11_b5830")]
+position = Vector2(-120, 103)
+color = Color(0.076978885, 0.57695496, 0.2766143, 1)
+
+[node name="A1" parent="." instance=ExtResource("11_b5830")]
+position = Vector2(141, 132)
+color = Color(0.076978885, 0.57695496, 0.2766143, 1)
+
+[node name="A2" parent="." instance=ExtResource("11_b5830")]
+position = Vector2(269, 222)
+color = Color(0.076978885, 0.57695496, 0.2766143, 1)
+
+[node name="A3" parent="." instance=ExtResource("11_b5830")]
+position = Vector2(354, 289)
+color = Color(0.076978885, 0.57695496, 0.2766143, 1)
+
+[node name="B0" parent="." instance=ExtResource("11_b5830")]
+position = Vector2(911, 185)
+color = Color(0.6654909, 0.21501711, 0.87668985, 1)
+
+[node name="B1" parent="." instance=ExtResource("11_b5830")]
+position = Vector2(739, 181)
+color = Color(0.6654909, 0.21501711, 0.87668985, 1)
+
+[node name="B2" parent="." instance=ExtResource("11_b5830")]
+position = Vector2(340, 174)
+color = Color(0.6654909, 0.21501711, 0.87668985, 1)
+
+[node name="B3" parent="." instance=ExtResource("11_b5830")]
+position = Vector2(435, 328)
+color = Color(0.6654909, 0.21501711, 0.87668985, 1)
+
+[node name="I0" parent="." instance=ExtResource("11_b5830")]
+position = Vector2(968, 185)
+color = Color(0.05258341, 0.49197435, 0.83567625, 1)
+
+[node name="I1" parent="." instance=ExtResource("11_b5830")]
+position = Vector2(776, 233)
+color = Color(0.05258341, 0.49197435, 0.83567625, 1)
+
+[node name="I2" parent="." instance=ExtResource("11_b5830")]
+position = Vector2(316, 222)
+color = Color(0.05258341, 0.49197435, 0.83567625, 1)
+
+[node name="I3" parent="." instance=ExtResource("11_b5830")]
+position = Vector2(501, 378)
+color = Color(0.05258341, 0.49197435, 0.83567625, 1)
 
 [editable path="Node2D/z_Objects/Cora"]
 [editable path="Node2D/z_Objects/Player"]

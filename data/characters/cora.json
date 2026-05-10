@@ -1,0 +1,10 @@
+{
+	"id": "cora",
+	"name": "Cora",
+	"description": "",
+	"font_path": "res://assets/fonts/cat_cafe/Catcafe-v5yM.ttf",
+	"font_bold_path": "res://assets/fonts/cat_cafe/Catcafe_bold.ttf",
+	"font_italic_path": "res://assets/fonts/cat_cafe/Catcafe-v5yM.ttf",
+	"font_color": "#FFFFFF",
+	"font_size": 2
+}

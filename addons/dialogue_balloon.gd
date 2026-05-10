@@ -214,6 +214,27 @@ func apply_font_for_character(character_name: String):
 func _to_screen(world_pos: Vector2) -> Vector2:
 	return get_viewport().get_canvas_transform() * world_pos
 
+func _get_character_screen_rect(character: Node2D) -> Rect2:
+	var area : Node = character.get_node_or_null("InteractionArea")
+	if area:
+		var col : Node = area.get_node_or_null("CollisionShape2D")
+		if col and col.shape is CircleShape2D:
+			var center_world : Vector2 = character.to_global(area.position + col.position)
+			var center_s     : Vector2 = _to_screen(center_world)
+			var edge_s       : Vector2 = _to_screen(center_world + Vector2((col.shape as CircleShape2D).radius, 0))
+			var r            : float   = (edge_s - center_s).length()
+			return Rect2(center_s - Vector2(r, r), Vector2(r * 2.0, r * 2.0))
+
+	var col : Node = character.get_node_or_null("CollisionShape2D")
+	if col and col.shape is RectangleShape2D:
+		var shape : RectangleShape2D = col.shape as RectangleShape2D
+		var tl : Vector2 = _to_screen(character.to_global(col.position - shape.size * 0.5))
+		var br : Vector2 = _to_screen(character.to_global(col.position + shape.size * 0.5))
+		return Rect2(tl, br - tl)
+
+	var s : Vector2 = _to_screen(character.global_position)
+	return Rect2(s - Vector2(16, 32), Vector2(32, 48))
+
 func _position_balloon() -> void:
 	var panel : Panel = balloon.get_node("Panel")
 	# Set width first so the DialogueLabel wraps text at the correct column width.
@@ -242,39 +263,44 @@ func _position_balloon() -> void:
 		panel.position = Vector2((vw - bw) / 2.0, vh - bh - BALLOON_MARGIN)
 		return
 
-	# Top of the character's collision shape in screen space
-	var col := _current_speaker.get_node_or_null("CollisionShape2D")
-	var top_world : Vector2
-	if col and col.shape is RectangleShape2D:
-		var half_h : float = (col.shape as RectangleShape2D).size.y / 2.0
-		top_world = _current_speaker.to_global(Vector2(col.position.x, col.position.y - half_h))
-	else:
-		top_world = _current_speaker.global_position + Vector2(0, -20.0)
+	var speaker_rect  : Rect2   = _get_character_screen_rect(_current_speaker)
+	var char_center_s : Vector2 = speaker_rect.get_center()
 
-	var char_top_screen : Vector2 = _to_screen(top_world)
-	var char_screen_x   : float   = _to_screen(_current_speaker.global_position).x
+	var other_rects : Array[Rect2] = []
+	for npc in get_tree().get_nodes_in_group("npc"):
+		if npc != _current_speaker and is_instance_valid(npc):
+			other_rects.append(_get_character_screen_rect(npc))
 
-	# X: place balloon on opposite side of facing direction.
-	# last_direction (from CharacterBase) is updated by both movement and explicit
-	# facing calls, making it more reliable than anim_direction for stationary NPCs.
-	var facing_left : bool = false
-	if "last_direction" in _current_speaker:
-		facing_left = _current_speaker.last_direction.x < 0.0
+	var candidates : Array[Vector2] = [
+		Vector2(char_center_s.x - bw * 0.5, speaker_rect.position.y - bh - BALLOON_MARGIN),
+		Vector2(speaker_rect.position.x - bw - BALLOON_MARGIN, char_center_s.y - bh * 0.5),
+		Vector2(speaker_rect.position.x + speaker_rect.size.x + BALLOON_MARGIN, char_center_s.y - bh * 0.5),
+		Vector2(char_center_s.x - bw * 0.5, speaker_rect.position.y + speaker_rect.size.y + BALLOON_MARGIN),
+	]
 
-	# X: compute ideal side position, then check if it actually fits.
-	# If the character is too close to the screen edge, centre above them instead.
-	const NUDGE : float = 50.0
-	var ideal_bx : float = char_screen_x + BALLOON_MARGIN + NUDGE if facing_left \
-		else char_screen_x - bw - BALLOON_MARGIN - NUDGE
-	var fits_on_side : bool = ideal_bx >= BALLOON_MARGIN and (ideal_bx + bw) <= (vw - BALLOON_MARGIN)
-	var bx : float = ideal_bx if fits_on_side else char_screen_x - bw / 2.0
-	bx = clamp(bx, BALLOON_MARGIN, vw - bw - BALLOON_MARGIN)
+	var best_pos : Vector2 = Vector2(
+		clamp(candidates[0].x, BALLOON_MARGIN, vw - bw - BALLOON_MARGIN),
+		clamp(candidates[0].y, BALLOON_MARGIN, vh - bh - BALLOON_MARGIN)
+	)
+	var best_score : int = 999
 
-	# Y: bottom of balloon at top of collision shape, clamped to screen
-	var by : float = char_top_screen.y - bh - BALLOON_MARGIN
-	by = clamp(by, BALLOON_MARGIN, vh - bh - BALLOON_MARGIN)
+	for candidate in candidates:
+		var bx : float = clamp(candidate.x, BALLOON_MARGIN, vw - bw - BALLOON_MARGIN)
+		var by : float = clamp(candidate.y, BALLOON_MARGIN, vh - bh - BALLOON_MARGIN)
+		var brect := Rect2(bx, by, bw, bh)
+		if brect.intersects(speaker_rect):
+			continue
+		var score : int = 0
+		for r in other_rects:
+			if brect.intersects(r):
+				score += 1
+		if score < best_score:
+			best_score = score
+			best_pos   = Vector2(bx, by)
+			if score == 0:
+				break
 
-	panel.position = Vector2(bx, by)
+	panel.position = best_pos
 
 func _unhandled_input(_event: InputEvent) -> void:
 	# Only the balloon is allowed to handle input while it's showing

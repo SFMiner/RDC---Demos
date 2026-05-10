@@ -5,45 +5,64 @@
 #do CutsceneManager.move_to("malachai", "IM0", "walk", true)
 #do CutsceneManager.play_animation("malachai", "idle_left", true)
 
-Cora: [do CutsceneManager.move_to("cora", "C1", "walk", true)] I'm so excited! I always knew Bailey would be back some day! You can take the girl out of Ithaca, but Ithaca always calls her home!
-
-do GI.get_csm().face_target("Cora", "right") # should turn right
-Aiden's Dad [i](from other room)[/i]: She never shoulda left, Cora!
-do GI.get_csm().face_target("Cora", "Samwell") # should turn left
+Cora: I'm so excited! [do CutsceneManager.move_to("cora", "C1", "walk", true)][do CutsceneManager.play_animation("cora", "idle_left", true)]I always knew Bailey would be back some day! You can take the girl out of Ithaca, but Ithaca always calls her home!
+do CutsceneManager.play_animation("cora", "idle_left", true)
+Samwell: She never shoulda left, Cora!
+do CutsceneManager.play_animation("cora", "idle_up", true)
 Cora: Samwell! You know they had a bad time over her place!
-do GI.get_csm().face_target("Cora", "up")  # should turn up
-#[do GI.get_csm().start_npc_movement("Samwell", "MPSamwell1",200)]
+do CutsceneManager.move_to("samwell", "S1", "walk", true)
+do CutsceneManager.play_animation("samwell", "idle_down", true)
 Samwell: Coulda come stayed with us, Cora.
-do GI.get_csm().face_target("Cora", Vector2(200,138)): # should turn left
+do CutsceneManager.play_animation("cora", "idle_left", true)
 Cora: Not like we got a lot of room, Samwell.
-do GI.get_csm().face_target("Cora", "Aiden") # should turn down
-Samwell: The child could sleep with the chickens. [i]::to Aiden::[/i] Right, child?
-do GI.get_csm().face_target("Cora", "Bailey") # should turn down_right
-Cora: [do GI.get_csm().start_npc_movement("Aiden", "MPAiden1", 200)] That "child" is a half head taller than you, O Lord o' the Manor.
-do GI.get_csm().face_target("Cora", "down")   # should turn down
+Samwell: The child could sleep with the chickens. 
+do CutsceneManager.play_animation("samwell", "idle_left", true)
+Samwell:[b]Right, child?[/b]
+do CutsceneManager.play_animation("cora", "idle_up", true)
+do CutsceneManager.play_animation("samwell", "idle_down", true)
+Cora: That "child" is a half head taller than you, O Lord o' the Manor.
+do CutsceneManager.move_to("samwell", "S2", "walk", true)
+do CutsceneManager.play_animation("cora", "idle_right", true)
+do CutsceneManager.play_animation("samwell", "idle_left", true)
 Samwell: That's only 'cause I've shrunk with age. A fella reaches a certain level o' dignity, he can let the body deflate a little.
-do GI.get_csm().face_target("Cora", "up")   # should turn down
 Cora: You ain't deflated, the inflation just moved to your middle!
-do GI.get_csm().face_target("Cora", "Samwell")   # should turn down_right
-Cora: This is filler text!
-Aiden: [do GI.get_csm().start_npc_movement("Bailey", "MPBailey0",200)] Can the two of you stop the bickering before she gets here?
-Bailey: [do GI.get_csm().start_npc_movement("Bailey", "MPBailey1",200)] Are you kidding? This isn't bickering, this is love and I've missed hearing it it every day I've been gone!
-Cora: [do GI.get_csm().start_npc_movement("Ira", "MPIra1",200)] Bailey! You're just in time. The apple skillet's still warm.
-Bailey: [do GI.get_csm().start_npc_movement("Bailey", "MPBailey2",200)] I wouldn't miss it for the world, Cora.
-[do GI.get_csm().start_npc_movement("Cora", "MPCora2",200)] [do GI.get_csm().start_npc_movement("Samwell", "MPSamwell2",50)]
+do CutsceneManager.move_to("player", "A1", "walk", true)
+do CutsceneManager.play_animation("player", "idle_down", true)
+do CutsceneManager.move_group("bailey,ira", "B1,I1", "walk")
+do CutsceneManager.play_animation("bailey", "idle_left", true)
+do CutsceneManager.play_animation("ira", "idle_left", true)
+Aiden: Can the two of you stop the bickering before she gets here?
+do CutsceneManager.play_animation("player", "idle_right", true)
+do CutsceneManager.play_animation("samwell", "idle_right", true)
+Bailey: Are you kidding? This isn't bickering, this is love and I've missed hearing it it every day I've been gone!
+do CutsceneManager.move_group("cora,samwell", "C2,S3", "walk")
+do CutsceneManager.play_animation("cora", "idle_right", true)
+do CutsceneManager.play_animation("samwell", "idle_right", true)
+Cora: Bailey! You're just in time. The apple skillet's still warm.
+do CutsceneManager.move_to("bailey", "B2", "walk", true)
+do CutsceneManager.play_animation("samwell", "idle_down", true)
+do CutsceneManager.play_animation("bailey", "idle_left", true)
+Bailey: I wouldn't miss it for the world, Cora.s
 Cora: We missed you so much!
-do GI.get_csm().start_npc_movement("Aiden", "MPAiden2", 200)
-Samwell: [i]::grumbles::[/i] Should've stayed with us, girl.
+do CutsceneManager.move_to("player", "A2", "walk", true)
+do CutsceneManager.play_animation("player", "idle_right", true)
+do CutsceneManager.play_animation("samwell", "idle_right", true)
+Samwell: Should've stayed here with us, girl.
+do CutsceneManager.play_animation("player", "idle_down", true)
 Bailey: [i]::laughs::[/i] And miss out on the big city? I think not, Samwell.
-Aiden: [do GI.get_csm().start_npc_movement("Ira", "MPIra2",200)] [next] [i]::grinning::[/i] Bailey's seen more than just chickens and apple skillets, Dad.
-Bailey: [i]::glances at Ira::[/i] Oh, and this is Ira. They're my traveling companion.
+Aiden: [i]::grinning::[/i] Bailey's seen more than just chickens and apple skillets, Dad.
+[do CutsceneManager.move_to("ira", "I2", "walk", true)] 
+do CutsceneManager.play_animation("ira", "idle_left", true)
+Bailey: [do CutsceneManager.play_animation("bailey", "idle_down", true)] Oh, and this is Ira. They're my traveling companion.
 Ira: [i]::nervously::[/i] The... the skillet smells really good, Mrs. Cora.
 Cora: Oh, you're a grownup, dear, it's Cora! And help yourself!
 Ira: Thank you, Cora!
-[do GI.get_csm().start_npc_movement("Ira", "MPIra3",200)] [do GI.get_csm().start_npc_movement("Samwell", "MPSamwell3",50)] [do GI.get_csm().start_npc_movement("Cora", "MPCora3",50)] [do GI.get_csm().start_npc_movement("Bailey", "MPBailey3",50)] [do GI.get_csm().start_npc_movement("Aiden", "MPAiden3", 50)]
-do GI.get_csm().start_npc_movement("Aiden", "MPAiden4", 200)
-::They all start eating::
-[do GI.get_csm().start_npc_movement("Samwell", "MPSamwell3",200)] [next]
+do CutsceneManager.move_group("Samwell,cora,player,bailey,ira", "S4,C3,A3,B3,I3", "walk")
+do CutsceneManager.play_animation("samwell", "idle_right", true)
+do CutsceneManager.play_animation("cora", "idle_down", true)
+do CutsceneManager.play_animation("player", "idle_down", true)
+do CutsceneManager.play_animation("bailey", "idle_down", true)
+do CutsceneManager.play_animation("ira", "idle_down", true)
 Bailey: [i]::mouth full::[/i] This is just as good as I remember.
 Samwell: City didn't teach you any manners, girl?
 Bailey: [i]::laughs::[/i] I'm afraid not, Samwell. Some things never change.
