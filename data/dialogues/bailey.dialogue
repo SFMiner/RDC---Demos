@@ -4,7 +4,7 @@
 
 ~ start
 
-if not GameState.has_tag("ithaca.met_bailey")
+if not GameState.has_tag("ithaca.met_bailey")#
 	=> first_meeting
 if not GameState.has_tag("ithaca.after_sermon")
 	=> before_sermon
@@ -18,7 +18,7 @@ Bailey: [[Hey stranger!|Hello stranger!|How've you been, stranger?]]
 do CutsceneManager.play_animation("player", "idle_right", true)
 Aiden: Huh? Who's there?  
 do CutsceneManager.move_to("bailey", "B1", "walk", true)
-do CutsceneManager.play_animation("ira", "idle_right", true) 
+do CutsceneManager.play_animation("bailey", "idle_left", true) 
 Bailey: Wow, I thought I was kidding when I called you a stranger. Has it really been that long?
 Aiden: Bailey? Is that you?
 do CutsceneManager.move_to("player", "A1", "walk", true)
@@ -48,13 +48,14 @@ do CutsceneManager.play_animation("bailey", "idle_down", true) [next]
 Bailey: Oh! Sorry, I didn't mean to be rude. Got lost in the moment! Aiden, this is Ira. Ira, this is Aiden; I might have mentioned them.
 Ira: Wow, it's so weird to finally meet you! 
 do GameState.set_tag("ithaca.met_ira")
-Aiden: ?
-Ira: Ah... [b]Good[/b], I mean! It's [i]good[/i] [do CutsceneManager.play_animation("ira", "emote_left", true) ] [do CutsceneManager.play_animation("ira", "idle_left", true)] to meet you! Also weird! 
+Aiden: [b]?[/b]
+Ira: Ah... [b]Good[/b], I mean! [do CutsceneManager.play_animation("ira", "emote_left", true) ][do CutsceneManager.play_animation("ira", "idle_left", true)]It's [i]good[/i] to meet you! Also weird! 
  [next]
-Aiden: ???
+Aiden: [b]???[/b]
 Ira: Because I've been hearing stories about you and Bailey for ages! I think in my head you became just a character in the stories, and now you're in front of me! Real!
 Aiden: What kind of stories?
-Bailey: Nothing that didn't happen! And only a few that you wouldn't want your mother to find out about.
+Bailey: Nothing that didn't happen! 
+Bailey: And only a few that you wouldn't want your mother to find out about.
 Bailey: Um... How [i]are[/i] your parents? 
 Aiden: Oh, they're okay. They're older too, of course, but they're still holding on. Daddy needs a little extra help in the fields now, but don't let him know you think so! 
 Bailey: I'm glad to hear it. I'd planned on going to visit them at the house in the morning. I didn't expect to run into you the second I was back in town!
@@ -81,6 +82,14 @@ Aiden: I guess some things never do change. Don't sleep too late or the skillet'
 do GameController.go_to_scene("coras_kitchen", "default", "fade_night", "first_morning")
 
 => END!
+
+~ pre_sermon
+do CutsceneManager.set_npc_follow("bailey", "player")
+do CutsceneManager.set_npc_follow("ira", "player")
+=> END!
+
+
+
 
 ~ before_sermon
 do GameState.set_player_input_enabled(false)

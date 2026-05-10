@@ -61,6 +61,11 @@ var loaded_fonts = {}
 const scr_debug :bool = false
 var debug
 
+const BALLOON_WIDTH  : float = 320.0
+const BALLOON_MARGIN : float = 16.0
+
+var _current_speaker : Node2D = null  # set during font application, used for positioning
+
 func _ready() -> void:
 	var _fname = "_ready"
 	debug = scr_debug or GameController.sys_debug
@@ -127,6 +132,14 @@ func apply_font_for_character(character_name: String):
 	if debug: print(GameState.script_name_tag(self, _fname) + "Applying font for character: '", character_name, "' with character_id '" + character_id + "'")
 
 	var character = GameState.get_npc_by_id(character_id)
+	if not is_instance_valid(character):
+		# Speaker is not an NPC — check if it's the player character
+		var player = GameState.get_player()
+		if is_instance_valid(player):
+			var pid : String = player.character_id if "character_id" in player else ""
+			if pid == character_id or character_id == "player":
+				character = player
+	_current_speaker = character  # store for balloon positioning
 
 	# Default values
 	var font_to_use = loaded_fonts.get("Default")
@@ -136,14 +149,15 @@ func apply_font_for_character(character_name: String):
 	var color_to_use = Color(1, 1, 1, 1)  # Default white
 	var font_size = 25  # Default font size
 
-	if character:
+	if character and "font_path" in character:
+		# NPC node with font properties directly on it
 		if character.font_path:
 			font_to_use = load(character.font_path)
-		if character.font_bold_path:
+		if "font_bold_path" in character and character.font_bold_path:
 			font_bold_to_use = load(character.font_bold_path)
-		if character.font_italic_path:
+		if "font_italic_path" in character and character.font_italic_path:
 			font_italic_to_use = load(character.font_italic_path)
-		if character.font_bold_italic_path:
+		if "font_bold_italic_path" in character and character.font_bold_italic_path:
 			font_bold_italic_to_use = load(character.font_bold_italic_path)
 		if character.font_color:
 			color_to_use = character.font_color
@@ -196,6 +210,71 @@ func apply_font_for_character(character_name: String):
 	dialogue_label.add_theme_font_size_override("italics_font_size", font_size)
 	dialogue_label.add_theme_font_size_override("bold_italics_font_size", font_size)
 	if debug: print(GameState.script_name_tag(self, _fname) + "Applied color: ", color_to_use, " and size: ", font_size)
+
+func _to_screen(world_pos: Vector2) -> Vector2:
+	return get_viewport().get_canvas_transform() * world_pos
+
+func _position_balloon() -> void:
+	var panel : Panel = balloon.get_node("Panel")
+	# Set width first so the DialogueLabel wraps text at the correct column width.
+	panel.custom_minimum_size = Vector2(BALLOON_WIDTH, 0)
+	panel.size = Vector2(BALLOON_WIDTH, panel.size.y)
+	await get_tree().process_frame  # first frame: establish width
+	await get_tree().process_frame  # second frame: text reflows at that width
+
+	var vw : float = get_viewport().get_visible_rect().size.x
+	var vh : float = get_viewport().get_visible_rect().size.y
+
+	# Measure actual content height so the balloon resizes every line.
+	var char_h  : float = character_label.size.y if character_label.visible else 0.0
+	var text_h  : float = dialogue_label.get_content_height()
+	const PADDING : float = 32.0
+	var bh : float = clampf(
+		maxf(char_h + text_h + PADDING, BALLOON_WIDTH / 2.0),
+		BALLOON_WIDTH / 2.0,
+		vh * 0.75)
+	panel.size = Vector2(BALLOON_WIDTH, bh)
+
+	var bw : float = BALLOON_WIDTH
+
+	if not is_instance_valid(_current_speaker):
+		# Fallback: bottom-centre for narrator / player lines with no NPC node
+		panel.position = Vector2((vw - bw) / 2.0, vh - bh - BALLOON_MARGIN)
+		return
+
+	# Top of the character's collision shape in screen space
+	var col := _current_speaker.get_node_or_null("CollisionShape2D")
+	var top_world : Vector2
+	if col and col.shape is RectangleShape2D:
+		var half_h : float = (col.shape as RectangleShape2D).size.y / 2.0
+		top_world = _current_speaker.to_global(Vector2(col.position.x, col.position.y - half_h))
+	else:
+		top_world = _current_speaker.global_position + Vector2(0, -20.0)
+
+	var char_top_screen : Vector2 = _to_screen(top_world)
+	var char_screen_x   : float   = _to_screen(_current_speaker.global_position).x
+
+	# X: place balloon on opposite side of facing direction.
+	# last_direction (from CharacterBase) is updated by both movement and explicit
+	# facing calls, making it more reliable than anim_direction for stationary NPCs.
+	var facing_left : bool = false
+	if "last_direction" in _current_speaker:
+		facing_left = _current_speaker.last_direction.x < 0.0
+
+	# X: compute ideal side position, then check if it actually fits.
+	# If the character is too close to the screen edge, centre above them instead.
+	const NUDGE : float = 50.0
+	var ideal_bx : float = char_screen_x + BALLOON_MARGIN + NUDGE if facing_left \
+		else char_screen_x - bw - BALLOON_MARGIN - NUDGE
+	var fits_on_side : bool = ideal_bx >= BALLOON_MARGIN and (ideal_bx + bw) <= (vw - BALLOON_MARGIN)
+	var bx : float = ideal_bx if fits_on_side else char_screen_x - bw / 2.0
+	bx = clamp(bx, BALLOON_MARGIN, vw - bw - BALLOON_MARGIN)
+
+	# Y: bottom of balloon at top of collision shape, clamped to screen
+	var by : float = char_top_screen.y - bh - BALLOON_MARGIN
+	by = clamp(by, BALLOON_MARGIN, vh - bh - BALLOON_MARGIN)
+
+	panel.position = Vector2(bx, by)
 
 func _unhandled_input(_event: InputEvent) -> void:
 	# Only the balloon is allowed to handle input while it's showing
@@ -256,10 +335,11 @@ func apply_dialogue_line() -> void:
 	responses_menu.hide()
 	responses_menu.responses = dialogue_line.responses
 
-	# Show our balloon
+	# Show our balloon and position it near the speaking character
 	if debug: print(GameState.script_name_tag(self, _fname) + "About to show balloon")
 	balloon.show()
 	will_hide_balloon = false
+	await _position_balloon()
 
 	dialogue_label.show()
 	if debug: print(GameState.script_name_tag(self, _fname) + "Dialogue label shown")

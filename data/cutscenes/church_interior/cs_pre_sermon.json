@@ -1,14 +1,14 @@
 {
-	"auto_trigger": false,
-	"cutscene_id": "first_breakfast",
+	"auto_trigger": true,
+	"cutscene_id": "pre_sermon",
 	"description": "Auto-generated cutscene",
-	"dialog_file": "introduction",
-	"dialog_title": "first_breakfast",
+	"dialog_file": "bailey",
+	"dialog_title": "pre_sermon",
 	"location": "church_interior",
 	"marker_positions": {
-		"C0": {
-			"x": 558.0,
-			"y": 132.0
+		"FM0": {
+			"x": 594.0,
+			"y": 235.0
 		},
 		"FM2": {
 			"x": 1433.0,

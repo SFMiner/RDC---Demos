@@ -618,7 +618,7 @@ sources/2 = SubResource("TileSetAtlasSource_q3gja")
 size = Vector2(551.1271, 67.5789)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k1mv0"]
-size = Vector2(12.127549, 332.99362)
+size = Vector2(12.127549, 328.36307)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rw0um"]
 size = Vector2(380, 17)
@@ -673,7 +673,7 @@ collision_layer = 3
 collision_mask = 3
 
 [node name="CollisionShape2D7" type="CollisionShape2D" parent="Node2D/nonwalkable_areas"]
-position = Vector2(583.55695, 16.718702)
+position = Vector2(583.00006, 69)
 scale = Vector2(2.2551718, 0.60177803)
 shape = SubResource("RectangleShape2D_nl8ga")
 
@@ -683,7 +683,7 @@ scale = Vector2(2.2551713, 0.60177785)
 shape = SubResource("RectangleShape2D_nl8ga")
 
 [node name="CollisionShape2D8" type="CollisionShape2D" parent="Node2D/nonwalkable_areas"]
-position = Vector2(333, 612)
+position = Vector2(332.9128, 618.7089)
 rotation = -3.1285992
 scale = Vector2(1.8011566, 2.8979313)
 shape = SubResource("RectangleShape2D_k1mv0")
@@ -745,7 +745,7 @@ metadata/_edit_group_ = true
 texture = ExtResource("5_a8ipt")
 
 [node name="Player" parent="Node2D/z_Objects" instance=ExtResource("3_tkrkf")]
-position = Vector2(178, 138)
+position = Vector2(201, 157)
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" parent="Node2D/z_Objects/Player" index="0"]
@@ -857,7 +857,7 @@ metadata/_edit_use_anchors_ = true
 [node name="Transitions" type="Node2D" parent="Node2D"]
 
 [node name="entrance" type="Marker2D" parent="Node2D/Transitions" groups=["spawn_point"]]
-position = Vector2(610, 791)
+position = Vector2(920, 82)
 scale = Vector2(0.239448, 0.239448)
 
 [node name="CampusExitPoint" type="Area2D" parent="Node2D/Transitions" groups=["interactable"]]

@@ -497,6 +497,8 @@ func _process_movement(character_id, movement_data, delta):
 		character.move_and_slide()
 	else:
 		character.global_position += direction * speed * delta
+	if "last_direction" in character:
+		character.last_direction = direction
 	_update_animation(character, direction, animation)
 
 	return false

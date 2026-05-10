@@ -2,10 +2,10 @@
 
 ~ first_breakfast
 #do Global.player_deparent_camera()
-do CutsceneManager.move_to("malachai", "IM0", "walk", true)
-do CutsceneManager.play_animation("malachai", "idle_left", true)
+#do CutsceneManager.move_to("malachai", "IM0", "walk", true)
+#do CutsceneManager.play_animation("malachai", "idle_left", true)
 
-Cora: [do GI.get_csm().start_npc_movement("Cora", "MPCora1",201)] I'm so excited! I always knew Bailey would be back some day! You can take the girl out of Ithaca, but Ithaca always calls her home!
+Cora: [do CutsceneManager.move_to("cora", "C1", "walk", true)] I'm so excited! I always knew Bailey would be back some day! You can take the girl out of Ithaca, but Ithaca always calls her home!
 
 do GI.get_csm().face_target("Cora", "right") # should turn right
 Aiden's Dad [i](from other room)[/i]: She never shoulda left, Cora!
